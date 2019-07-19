@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.8.0.final using JasperReports Library version 6.8.0-2ed8dfabb690ff337a5797129f2cd92902b0c87b  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_excel_pesaje_diario_trabajador" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="1fcd69d3-0240-482f-9c90-566e5af91ab2">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SQLLITE.xml"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<parameter name="f_inicio" class="java.lang.String"/>
+	<parameter name="id_cliente" class="java.lang.String"/>
+	<parameter name="id_sucursal" class="java.lang.String"/>
+	<parameter name="id_trabajador" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select pesaje_diario.fecha, pesaje_trabajador.hora, clientes.razon_social, clientes_sucursal.nombre, tipo_trabajo.descripcion, tipo_trabajo.preciokg, trabajadores_sucursal.colaborador, trabajadores_sucursal.dni, pesaje_trabajador.cantidad as cantidad_diaria from pesaje_trabajador 
+inner join pesaje_diario on pesaje_diario.id_pesaje = pesaje_trabajador.id_pesaje and pesaje_diario.id_cliente = pesaje_trabajador.id_cliente and pesaje_diario.id_sucursal = pesaje_trabajador.id_sucursal
+inner join tipo_trabajo on tipo_trabajo.id_cliente = pesaje_diario.id_cliente and tipo_trabajo.id_sucursal = pesaje_diario.id_sucursal and tipo_trabajo.id_tipo_trabajo = pesaje_diario.id_tipo_trabajo
+inner join trabajadores_sucursal on trabajadores_sucursal.id_cliente = pesaje_trabajador.id_cliente and trabajadores_sucursal.id_sucursal = pesaje_trabajador.id_sucursal and trabajadores_sucursal.id_trabajador = pesaje_trabajador.id_trabajador
+inner join clientes_sucursal on clientes_sucursal.id_cliente = pesaje_diario.id_cliente and clientes_sucursal.id_sucursal = pesaje_diario.id_sucursal
+inner join clientes on clientes.id_cliente = pesaje_diario.id_cliente
+where pesaje_trabajador.id_cliente = $P{id_cliente}   and pesaje_trabajador.id_sucursal =  $P{id_sucursal} and pesaje_diario.fecha = $P{f_inicio} and pesaje_trabajador.id_trabajador =  $P{id_trabajador}]]>
+	</queryString>
+	<field name="fecha" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="fecha"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pesaje_diario"/>
+	</field>
+	<field name="hora" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="hora"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pesaje_trabajador"/>
+	</field>
+	<field name="razon_social" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="razon_social"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="clientes"/>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="clientes_sucursal"/>
+	</field>
+	<field name="descripcion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="descripcion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tipo_trabajo"/>
+	</field>
+	<field name="preciokg" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="preciokg"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tipo_trabajo"/>
+	</field>
+	<field name="colaborador" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="colaborador"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="trabajadores_sucursal"/>
+	</field>
+	<field name="dni" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="dni"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="trabajadores_sucursal"/>
+	</field>
+	<field name="cantidad_diaria" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="cantidad_diaria"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pesaje_trabajador"/>
+	</field>
+	<variable name="parcial" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{cantidad_diaria} * $F{preciokg}]]></variableExpression>
+	</variable>
+	<variable name="total_cantidad" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{cantidad_diaria}]]></variableExpression>
+	</variable>
+	<variable name="total_parcial" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{cantidad_diaria}  * $F{preciokg}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="15" uuid="b68e06b5-e482-47d0-8a26-d5c726d9c745"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[REPORTE DE PESAJE POR TRABAJADOR DIARIO]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="45" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="15" uuid="9f80da74-91a3-4d5c-b247-ab1dda14ccb8"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLIENTE:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="0" width="455" height="15" uuid="2017424e-6d04-4978-b51a-f9c3e54a3cb9"/>
+				<textFieldExpression><![CDATA[$F{razon_social} + " - " + $F{nombre}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="15" width="100" height="15" uuid="952a53de-4595-4d9a-8cc6-798579ae9961">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="57dba0f9-d126-485c-9dc9-c3798c482155"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo de Trabajo]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="15" width="220" height="15" uuid="55ea196d-c1a7-4c5e-bc70-a6f0a928dcf4">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="57dba0f9-d126-485c-9dc9-c3798c482155"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="490" y="15" width="65" height="15" uuid="8a552300-f7f0-4411-90a4-65541ffe4d27">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="57dba0f9-d126-485c-9dc9-c3798c482155"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="410" y="15" width="80" height="15" uuid="9402c685-5172-4cb5-aa32-4f3d636df0ba">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="57dba0f9-d126-485c-9dc9-c3798c482155"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="15" splitType="Stretch">
+			<staticText>
+				<reportElement x="100" y="0" width="310" height="15" uuid="361eb55b-9cd7-4db5-8a64-5febce04498d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="57dba0f9-d126-485c-9dc9-c3798c482155"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Trabajador]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="410" y="0" width="80" height="15" uuid="c284cd76-93e2-4a6c-9f3f-463724d87e39">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="57dba0f9-d126-485c-9dc9-c3798c482155"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Kg]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="490" y="0" width="65" height="15" uuid="182bbc66-50b1-4076-9380-ded07ad2f80e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="57dba0f9-d126-485c-9dc9-c3798c482155"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Parcial]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="15" uuid="278cbdb5-fba5-40f9-bc07-b01e497c8086">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="57dba0f9-d126-485c-9dc9-c3798c482155"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Hora]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField pattern="#,##0.00#">
+				<reportElement x="410" y="0" width="80" height="15" uuid="189d4108-45fa-4090-9152-6406a80bdfc5">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b9a0f916-6ab8-4a2b-acf4-d9a5844137dd"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cantidad_diaria}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="490" y="0" width="65" height="15" uuid="322762eb-35c6-4b70-8c5c-88e6ae865268"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{parcial}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="0" width="310" height="15" uuid="945b9a66-edc3-4222-98dc-335cd2a43fb7">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5d2d0f92-b0a5-4bf6-b413-ef2b00131d0e"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{dni} + " " + $F{colaborador}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="0" y="0" width="100" height="15" uuid="bcf927c8-b6cc-4a10-a979-2f83ad346b11">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b9a0f916-6ab8-4a2b-acf4-d9a5844137dd"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{hora}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="15" splitType="Stretch">
+			<textField pattern="#,##0.00#">
+				<reportElement x="410" y="0" width="80" height="15" uuid="105e8da1-14e8-4768-8fd6-46d4807daea5">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b9a0f916-6ab8-4a2b-acf4-d9a5844137dd"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{total_cantidad}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="490" y="0" width="65" height="15" uuid="372628a6-c144-49d0-a37d-64af317110c0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{total_parcial}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+</jasperReport>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.8.0.final using JasperReports Library version 6.8.0-2ed8dfabb690ff337a5797129f2cd92902b0c87b  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_excel_pagos" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="40e44d02-efcf-494c-810d-951e150452ed">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SQLLITE"/>
+	<queryString language="SQL">
+		<![CDATA[select pesaje_diario.fecha, clientes.razon_social, clientes_sucursal.nombre, tipo_trabajo.descripcion, tipo_trabajo.preciokg, trabajadores_sucursal.colaborador, trabajadores_sucursal.dni, bancos.nombre as nbanco, trabajadores_sucursal.nro_cuenta, sum(pesaje_trabajador.cantidad) as cantidad_diaria from pesaje_trabajador 
+inner join pesaje_diario on pesaje_diario.id_pesaje = pesaje_trabajador.id_pesaje and pesaje_diario.id_cliente = pesaje_trabajador.id_cliente and pesaje_diario.id_sucursal = pesaje_trabajador.id_sucursal
+inner join tipo_trabajo on tipo_trabajo.id_cliente = pesaje_diario.id_cliente and tipo_trabajo.id_sucursal = pesaje_diario.id_sucursal and tipo_trabajo.id_tipo_trabajo = pesaje_diario.id_tipo_trabajo
+inner join trabajadores_sucursal on trabajadores_sucursal.id_cliente = pesaje_trabajador.id_cliente and trabajadores_sucursal.id_sucursal = pesaje_trabajador.id_sucursal and trabajadores_sucursal.id_trabajador = pesaje_trabajador.id_trabajador
+inner join bancos on bancos.id_banco = trabajadores_sucursal.id_banco 
+inner join clientes_sucursal on clientes_sucursal.id_cliente = pesaje_diario.id_cliente and clientes_sucursal.id_sucursal = pesaje_diario.id_sucursal
+inner join clientes on clientes.id_cliente = pesaje_diario.id_cliente
+where pesaje_trabajador.id_cliente =   2  and pesaje_trabajador.id_sucursal =  2   and pesaje_diario.fecha between "2019-01-01" and "2019-07-17" 
+group by pesaje_trabajador.id_trabajador, pesaje_diario.id_tipo_trabajo]]>
+	</queryString>
+	<field name="fecha" class="java.lang.Object">
+		<property name="com.jaspersoft.studio.field.label" value="fecha"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pesaje_diario"/>
+	</field>
+	<field name="razon_social" class="java.lang.Object">
+		<property name="com.jaspersoft.studio.field.label" value="razon_social"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="clientes"/>
+	</field>
+	<field name="nombre" class="java.lang.Object">
+		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="clientes_sucursal"/>
+	</field>
+	<field name="descripcion" class="java.lang.Object">
+		<property name="com.jaspersoft.studio.field.label" value="descripcion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tipo_trabajo"/>
+	</field>
+	<field name="preciokg" class="java.lang.Object">
+		<property name="com.jaspersoft.studio.field.label" value="preciokg"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tipo_trabajo"/>
+	</field>
+	<field name="colaborador" class="java.lang.Object">
+		<property name="com.jaspersoft.studio.field.label" value="colaborador"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="trabajadores_sucursal"/>
+	</field>
+	<field name="dni" class="java.lang.Object">
+		<property name="com.jaspersoft.studio.field.label" value="dni"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="trabajadores_sucursal"/>
+	</field>
+	<field name="nbanco" class="java.lang.Object">
+		<property name="com.jaspersoft.studio.field.label" value="nbanco"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="bancos"/>
+	</field>
+	<field name="nro_cuenta" class="java.lang.Object">
+		<property name="com.jaspersoft.studio.field.label" value="nro_cuenta"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="trabajadores_sucursal"/>
+	</field>
+	<field name="cantidad_diaria" class="java.lang.Object">
+		<property name="com.jaspersoft.studio.field.label" value="cantidad_diaria"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
