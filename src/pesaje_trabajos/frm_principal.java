@@ -16,11 +16,13 @@ import formularios.frm_reg_pesaje;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import models.m_clientes;
 import models.m_sucursal;
+import net.sf.jasperreports.engine.JRParameter;
 import objects.o_clientes;
 import objects.o_sucursal;
 import vistas.frm_ver_clientes;
@@ -991,7 +993,7 @@ public class frm_principal extends javax.swing.JFrame {
         parametros.put("f_inicio", fecha_inicio);
         parametros.put("id_cliente", c_sucursales.getId_cliente());
         parametros.put("id_sucursal", c_sucursales.getId_sucursal());
-        
+        parametros.put(JRParameter.REPORT_LOCALE, Locale.US);
         if (cbx_reporte.getSelectedIndex() == 0) {
             //c_varios.ver_reporte("rpt_excel_pesaje_diario_resumen", parametros);
             c_varios.ver_reporte_excel("rpt_excel_pesaje_diario_resumen", parametros, "rpt_excel_pesaje_diario_resumen");
