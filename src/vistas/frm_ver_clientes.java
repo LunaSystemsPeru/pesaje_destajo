@@ -293,6 +293,11 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/magnifier.png"))); // NOI18N
         jLabel1.setText("Buscar por RUC o Razon Social:");
 
+        txt_buscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_buscarActionPerformed(evt);
+            }
+        });
         txt_buscar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_buscarKeyPressed(evt);
@@ -573,13 +578,13 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
 
     private void txt_buscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_buscarKeyReleased
 
-        String t_buscar = txt_buscar.getText().trim();
-        String query = "select * "
-                + "from clientes "
-                + "where ruc = '" + t_buscar + "' or razon_social like '%" + t_buscar + "%' "
-                + "order by razon_social asc";
-        c_cliente.mostrar(t_clientes, query);
-        txt_buscar.setText("");
+//        String t_buscar = txt_buscar.getText().trim();
+//        String query = "select * "
+//                + "from clientes "
+//                + "where ruc = '" + t_buscar + "' or razon_social like '%" + t_buscar + "%' "
+//                + "order by razon_social asc";
+//        c_cliente.mostrar(t_clientes, query);
+//        txt_buscar.setText("");
 
     }//GEN-LAST:event_txt_buscarKeyReleased
 
@@ -607,7 +612,7 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
             c_cliente.mostrar(t_clientes, query);
             btn_eliminar.setEnabled(false);
             btn_modificar.setEnabled(false);
-            txt_buscar.requestFocus();
+            //txt_buscar.requestFocus();
 
         }
 
@@ -629,6 +634,17 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
         }
 
     }//GEN-LAST:event_btn_eliminar1ActionPerformed
+
+    private void txt_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_buscarActionPerformed
+       String t_buscar = txt_buscar.getText().trim();
+        String query = "select * "
+                + "from clientes "
+                + "where ruc = '" + t_buscar + "' or razon_social like '%" + t_buscar + "%' "
+                + "order by razon_social asc";
+        c_cliente.mostrar(t_clientes, query);
+        txt_buscar.setText("");
+
+    }//GEN-LAST:event_txt_buscarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
