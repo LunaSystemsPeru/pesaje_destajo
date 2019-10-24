@@ -50,6 +50,7 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
         jToolBar3 = new javax.swing.JToolBar();
         btnuevo = new javax.swing.JButton();
         btnmodificar = new javax.swing.JButton();
+        btn_eliminar1 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         t_sucursalcliente = new javax.swing.JScrollPane();
         t_sucursales = new javax.swing.JTable();
@@ -68,10 +69,10 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
         txt_buscar = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         t_clientes = new javax.swing.JTable();
-        jComboBox1 = new javax.swing.JComboBox();
         jToolBar1 = new javax.swing.JToolBar();
         btn_nuevo = new javax.swing.JButton();
         btn_modificar = new javax.swing.JButton();
+        btn_eliminar = new javax.swing.JButton();
         btn_ver_sucursales = new javax.swing.JButton();
         btn_cerrar = new javax.swing.JButton();
 
@@ -105,7 +106,21 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
         });
         jToolBar3.add(btnmodificar);
 
-        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/cross.png"))); // NOI18N
+        btn_eliminar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/cross.png"))); // NOI18N
+        btn_eliminar1.setText("Eliminar");
+        btn_eliminar1.setEnabled(false);
+        btn_eliminar1.setFocusable(false);
+        btn_eliminar1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btn_eliminar1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        btn_eliminar1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btn_eliminar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_eliminar1ActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(btn_eliminar1);
+
+        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/delete.png"))); // NOI18N
         jButton7.setText("Salir");
         jButton7.setFocusable(false);
         jButton7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -157,7 +172,7 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
             .addGroup(jd_ver_sucursalesLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jd_ver_sucursalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(t_sucursalcliente, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE)
+                    .addComponent(t_sucursalcliente, javax.swing.GroupLayout.DEFAULT_SIZE, 566, Short.MAX_VALUE)
                     .addGroup(jd_ver_sucursalesLayout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -302,15 +317,11 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 t_clientesMouseClicked(evt);
             }
-        });
-        jScrollPane1.setViewportView(t_clientes);
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "TODOS", "DEUDORES", "INACTIVOS" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                t_clientesMouseEntered(evt);
             }
         });
+        jScrollPane1.setViewportView(t_clientes);
 
         jToolBar1.setFloatable(false);
         jToolBar1.setOpaque(false);
@@ -339,6 +350,20 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
             }
         });
         jToolBar1.add(btn_modificar);
+
+        btn_eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/cross.png"))); // NOI18N
+        btn_eliminar.setText("Eliminar");
+        btn_eliminar.setEnabled(false);
+        btn_eliminar.setFocusable(false);
+        btn_eliminar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btn_eliminar.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        btn_eliminar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btn_eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_eliminarActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btn_eliminar);
 
         btn_ver_sucursales.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/banco.png"))); // NOI18N
         btn_ver_sucursales.setText("Sucursal");
@@ -374,9 +399,7 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txt_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 321, Short.MAX_VALUE)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 966, Short.MAX_VALUE)
         );
@@ -387,10 +410,9 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(17, 17, 17)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE))
+                .addComponent(jScrollPane1))
         );
 
         pack();
@@ -431,10 +453,6 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
         this.dispose();
     }//GEN-LAST:event_btn_nuevoActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
-
     private void t_clientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_t_clientesMouseClicked
         if (evt.getClickCount() == 2) {
             //capture el nro de fla
@@ -443,6 +461,7 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
             c_cliente.setId_cliente(Integer.parseInt(t_clientes.getValueAt(fila_seleccionada, 0).toString()));
             btn_modificar.setEnabled(true);
             btn_ver_sucursales.setEnabled(true);
+            btn_eliminar.setEnabled(true);
         }
     }//GEN-LAST:event_t_clientesMouseClicked
 
@@ -456,6 +475,10 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btn_modificarActionPerformed
 
     private void btn_salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_salirActionPerformed
+        btn_eliminar.enable(true);
+        btn_modificar.enable(true);
+        btn_ver_sucursales.enable(true);
+
         jd_crear_sucursal.dispose();
     }//GEN-LAST:event_btn_salirActionPerformed
 
@@ -495,7 +518,11 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btn_grabarActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+  btn_eliminar.enable(true);
+        btn_modificar.enable(true);
+        btn_ver_sucursales.enable(true);
         jd_ver_sucursales.dispose();
+
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void txtnombreKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtnombreKeyPressed
@@ -536,6 +563,7 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
             fila_seleccionada = t_sucursales.getSelectedRow();
             c_sucursales.setId_sucursal(Integer.parseInt(t_sucursales.getValueAt(fila_seleccionada, 0).toString()));
             btnmodificar.setEnabled(true);
+            btn_eliminar1.setEnabled(true);
         }
     }//GEN-LAST:event_t_sucursalesMouseClicked
 
@@ -567,9 +595,46 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
         c_colaborador.mostrar(this.t_sucursales, query);
     }//GEN-LAST:event_txtclienteKeyReleased
 
+    private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
+        String query = "select * "
+                + "from clientes "
+                + "order by razon_social asc";
+        c_cliente.mostrar(t_clientes, query);
+
+        int confirmado = JOptionPane.showConfirmDialog(null, "¿Esta Seguro de Eliminar al Cliente?");
+        if (JOptionPane.OK_OPTION == confirmado) {
+            c_cliente.eliminar();
+            c_cliente.mostrar(t_clientes, query);
+            btn_eliminar.setEnabled(false);
+            btn_modificar.setEnabled(false);
+            txt_buscar.requestFocus();
+
+        }
+
+
+    }//GEN-LAST:event_btn_eliminarActionPerformed
+
+    private void t_clientesMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_t_clientesMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_t_clientesMouseEntered
+
+    private void btn_eliminar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminar1ActionPerformed
+
+        int confirmado = JOptionPane.showConfirmDialog(null, "¿Esta Seguro de Eliminar Sucursal?");
+        if (JOptionPane.OK_OPTION == confirmado) {
+            c_sucursales.setId_cliente(c_sucursales.getId_cliente());
+            c_sucursales.eliminar();
+            c_sucursales.mostrar(t_sucursales);
+
+        }
+
+    }//GEN-LAST:event_btn_eliminar1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cerrar;
+    private javax.swing.JButton btn_eliminar;
+    private javax.swing.JButton btn_eliminar1;
     private javax.swing.JButton btn_grabar;
     private javax.swing.JButton btn_mod;
     private javax.swing.JButton btn_modificar;
@@ -579,7 +644,6 @@ public class frm_ver_clientes extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnmodificar;
     private javax.swing.JButton btnuevo;
     private javax.swing.JButton jButton7;
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
