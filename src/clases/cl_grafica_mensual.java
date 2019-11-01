@@ -13,6 +13,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import pesaje_trabajos.frm_principal;
 
 /**
  *
@@ -20,10 +21,17 @@ import org.jfree.data.xy.XYSeriesCollection;
  */
 public class cl_grafica_mensual {
 
-    cl_pesaje_diario c_pesaje = new cl_pesaje_diario();
+    cl_pesaje_trabajador c_pesaje = new cl_pesaje_trabajador();
+    
+    int id_cliente = frm_principal.c_sucursales.getId_cliente();
+    int id_sucursal = frm_principal.c_sucursales.getId_sucursal();
+    int id_usuario = frm_principal.c_usuario.getId_usuario();
 
     public void llenar_series(JPanel panel) {
 
+        c_pesaje.setId_cliente(id_cliente);
+        c_pesaje.setId_sucursal(id_sucursal);
+        
         XYSeries series = new XYSeries("Kg");
         Integer[] valor_x = c_pesaje.pesaje_mensual();
        // System.out.println("canidad_items" + valor_x.length);

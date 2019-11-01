@@ -315,7 +315,7 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
     private void btn_nuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nuevoActionPerformed
         frm_reg_colaborador.registrar = true;
         frm_reg_colaborador reg_colaborador = new frm_reg_colaborador();
-        c_varios.llamar_ventana(reg_colaborador);
+        c_varios.llamar_ventana_normal(reg_colaborador);
         this.dispose();
     }//GEN-LAST:event_btn_nuevoActionPerformed
 

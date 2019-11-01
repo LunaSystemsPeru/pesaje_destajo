@@ -191,7 +191,7 @@ public class cl_tipo_trabajo {
         boolean actualizado = false;
         Statement st = c_conectar.conexion();
         String query = "update tipo_trabajo "
-                + "set descripcion='" + descripcion + "', id_sucursal='" + id_sucursal + "', id_cliente='" + id_cliente + "', preciokg='" + preciokg + "' "
+                + "set descripcion='" + descripcion + "', id_sucursal='" + id_sucursal + "', id_cliente='" + id_cliente + "', preciokg='" + preciokg + "', tope = '"+tope+"' "
                 + "where id_tipo_trabajo='" + id_tipo_trabajo + "' ";
         System.out.println(query);
         int resultado = c_conectar.actualiza(st, query);

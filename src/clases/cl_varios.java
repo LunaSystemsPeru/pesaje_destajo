@@ -96,6 +96,23 @@ public class cl_varios {
 
         }
     }
+    
+    public void llamar_ventana_normal(JInternalFrame ventana) {
+        if (mostrar(ventana)) {
+            pesaje_trabajos.frm_principal.jDesktopPane1.add(ventana);
+            ventana.show();
+            Dimension desktopSize = pesaje_trabajos.frm_principal.jDesktopPane1.getSize();
+
+            int ancho = (int) (desktopSize.getWidth() / 1.05);
+            int alto = (int) (desktopSize.getHeight() / 1.05);
+           // ventana.setSize(ancho, alto);
+            Dimension jInternalFrameSize = ventana.getSize();
+
+            ventana.setLocation((desktopSize.width - jInternalFrameSize.width) / 2,
+                    (desktopSize.height - jInternalFrameSize.height) / 2);
+
+        }
+    }
 
     public void solo_numeros(KeyEvent evt) {
         char car = evt.getKeyChar();

@@ -27,7 +27,7 @@ public class frm_reg_trabajo extends javax.swing.JInternalFrame {
     public frm_reg_trabajo() {
         initComponents();
 
-        if (registrar == false) {
+        if (!registrar) {
             c_tipo_trabajo.setId_cliente(frm_principal.c_sucursales.getId_cliente());
             c_tipo_trabajo.setId_sucursal(frm_principal.c_sucursales.getId_sucursal());
             c_tipo_trabajo.obtener_datos();
@@ -38,6 +38,7 @@ public class frm_reg_trabajo extends javax.swing.JInternalFrame {
             txtpreciokg.setEnabled(true);
             txt_tope.setEnabled(true);
             btn_modificar.setEnabled(true);
+            btn_guardar.setEnabled(false);
         }
     }
 
@@ -198,6 +199,7 @@ public class frm_reg_trabajo extends javax.swing.JInternalFrame {
         c_tipo_trabajo.setId_cliente(frm_principal.c_sucursales.getId_cliente());
         c_tipo_trabajo.setId_sucursal(frm_principal.c_sucursales.getId_sucursal());
         c_tipo_trabajo.setPreciokg(Double.parseDouble(txtpreciokg.getText()));
+        c_tipo_trabajo.setTope(Double.parseDouble(txt_tope.getText()));
 
         boolean actualizado = c_tipo_trabajo.actualizar();
 
@@ -248,8 +250,10 @@ public class frm_reg_trabajo extends javax.swing.JInternalFrame {
     private void txt_topeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_topeKeyPressed
 
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            if (txt_tope.getText().length() > 0) {
-                btn_guardar.setEnabled(true);
+            if (registrar) {
+                if (txt_tope.getText().length() > 0) {
+                    btn_guardar.setEnabled(true);
+                }
             }
         }
 
