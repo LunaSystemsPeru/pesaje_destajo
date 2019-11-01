@@ -200,6 +200,25 @@ public class cl_clientes {
         c_conectar.cerrar(st);
         return actualizado;
     }
+        
+        
+        
+       public boolean eliminar() {
+        boolean eliminar = false;
+        Statement st = c_conectar.conexion();
+        String query = "delete from clientes "
+                 + "where id_cliente = '" + id_cliente+ "'";
+        System.out.println(query);
+        int resultado = c_conectar.actualiza(st, query);
+        if (resultado > -1) {
+            eliminar = true;
+        }
+        c_conectar.cerrar(st);
+        return eliminar; 
+    }
+
+       
+       
     /*  public boolean comprobar_cliente() {
         boolean existe = false;
 
@@ -253,4 +272,6 @@ public class cl_clientes {
 
         return existe;
     } */
+        
+       
 }

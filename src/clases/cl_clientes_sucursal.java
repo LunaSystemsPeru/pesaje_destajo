@@ -173,5 +173,22 @@ public class cl_clientes_sucursal {
         }
 
     }
+     
+      public boolean eliminar() {
+        boolean eliminar = false;
+        Statement st = c_conectar.conexion();
+        String query = "delete from clientes_sucursal "
+                 + "where id_sucursal = '" + id_sucursal+ "'";
+        System.out.println(query);
+        int resultado = c_conectar.actualiza(st, query);
+        if (resultado > -1) {
+            eliminar = true;
+        }
+        c_conectar.cerrar(st);
+        return eliminar; 
+    }
+     
+     
+     
 
 }
