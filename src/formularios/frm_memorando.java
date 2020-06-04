@@ -1,44 +1,27 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package formularios;
 
-import clases.cl_memoramdo;
-import clases.cl_trabajadores_sucursal;
+import clases.cl_colaborador;
 import clases.cl_varios;
 import java.awt.event.KeyEvent;
-import javax.swing.JOptionPane;
-import pesaje_trabajos.frm_principal;
-import vistas.frm_ver_memorandos;
-import vistas.frm_ver_tipo_servicio;
 
 /**
  *
- * @author KALEK
+ * @author Mariela
  */
-public class frm_reg_memorando extends javax.swing.JInternalFrame {
-
-    cl_varios c_varios = new cl_varios();
-    public static cl_memoramdo c_memorando = new cl_memoramdo();
-    cl_trabajadores_sucursal c_trabajador = new cl_trabajadores_sucursal();
-
-    public static boolean registrar;
-
-    int id_cliente = frm_principal.c_sucursales.getId_cliente();
-    int id_sucursal = frm_principal.c_sucursales.getId_sucursal();
-    int id_usuario = frm_principal.c_usuario.getId_usuario();
-
+public class frm_memorando extends javax.swing.JDialog {
+cl_varios c_varios = new cl_varios();
+    cl_colaborador c_trabajador = new cl_colaborador();
     /**
-     * Creates new form frm_reg_trabajo
+     * Creates new form frm_memorando
      */
-    public frm_reg_memorando() {
+    public frm_memorando(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         initComponents();
-
-        if (registrar == false) {
-            c_memorando.cargar_datos();
-            txt_motivo.setText(c_memorando.getContenido());
-            txt_fecha.setText(c_varios.fecha_usuario(c_memorando.getFecha()));
-            btn_modificar.setEnabled(true);
-        } else {
-            txt_fecha.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
-        }
     }
 
     /**
@@ -50,10 +33,7 @@ public class frm_reg_memorando extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jToolBar1 = new javax.swing.JToolBar();
-        btn_guardar = new javax.swing.JButton();
-        btn_modificar = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -61,11 +41,46 @@ public class frm_reg_memorando extends javax.swing.JInternalFrame {
         txt_colaborador = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         txt_fecha = new javax.swing.JFormattedTextField();
+        jToolBar1 = new javax.swing.JToolBar();
+        btn_guardar = new javax.swing.JButton();
+        btn_modificar = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         txt_motivo = new javax.swing.JTextPane();
-        jLabel2 = new javax.swing.JLabel();
 
-        setTitle("Agregar Llamada de Atencion");
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        jLabel2.setText("Enter para buscar");
+        jLabel2.setEnabled(false);
+
+        jLabel1.setText("Descripcion:");
+
+        jLabel3.setText("Colaborador:");
+
+        jLabel5.setText("Buscar por Codigo:");
+
+        txt_codigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_codigoKeyPressed(evt);
+            }
+        });
+
+        txt_colaborador.setEnabled(false);
+
+        jLabel6.setText("Fecha:");
+
+        try {
+            txt_fecha.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        txt_fecha.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txt_fecha.setEnabled(false);
+        txt_fecha.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_fechaKeyPressed(evt);
+            }
+        });
 
         jToolBar1.setFloatable(false);
         jToolBar1.setOpaque(false);
@@ -108,40 +123,8 @@ public class frm_reg_memorando extends javax.swing.JInternalFrame {
         });
         jToolBar1.add(jButton2);
 
-        jLabel1.setText("Descripcion:");
-
-        jLabel3.setText("Colaborador:");
-
-        jLabel5.setText("Buscar por Codigo:");
-
-        txt_codigo.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txt_codigoKeyPressed(evt);
-            }
-        });
-
-        txt_colaborador.setEnabled(false);
-
-        jLabel6.setText("Fecha:");
-
-        try {
-            txt_fecha.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-        txt_fecha.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txt_fecha.setEnabled(false);
-        txt_fecha.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txt_fechaKeyPressed(evt);
-            }
-        });
-
         txt_motivo.setEnabled(false);
         jScrollPane1.setViewportView(txt_motivo);
-
-        jLabel2.setText("Enter para buscar");
-        jLabel2.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -166,7 +149,7 @@ public class frm_reg_memorando extends javax.swing.JInternalFrame {
                                 .addComponent(txt_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel2)))
-                        .addGap(0, 261, Short.MAX_VALUE)))
+                        .addGap(0, 258, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -196,56 +179,13 @@ public class frm_reg_memorando extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btn_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_guardarActionPerformed
-
-        //capturar a la bd de sistema
-        c_memorando.setContenido(txt_motivo.getText());
-        c_memorando.setFecha(c_varios.fecha_myql(txt_fecha.getText()));
-        c_memorando.setId_cliente(id_cliente);
-        c_memorando.setId_sucursal(id_sucursal);
-        c_memorando.setId_trabajador(Integer.parseInt(txt_codigo.getText()));
-        c_memorando.obtener_codigo();
-        boolean registrado = c_memorando.registrar();
-
-        if (registrado) {
-            int contar_memos = c_memorando.contar_memos();
-            if (contar_memos >= 3) {
-                JOptionPane.showMessageDialog(null, txt_colaborador.getText() + " YA TIENE 03 LLAMADAS DE ATENCION", "Maximo de Llamadas de Atencion", 1, frameIcon);
-            }
-            this.dispose();
-            frm_ver_memorandos formulario = new frm_ver_memorandos();
-            c_varios.llamar_ventana(formulario);
-        }
-    }//GEN-LAST:event_btn_guardarActionPerformed
-
-    private void btn_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificarActionPerformed
-
-        c_memorando.setContenido(txt_motivo.getText().toUpperCase());
-        c_memorando.setFecha(c_varios.fecha_myql(txt_fecha.getText()));
-        boolean actualizado = c_memorando.actualizar();
-
-        if (actualizado) {
-            this.dispose();
-            frm_ver_memorandos formulario = new frm_ver_memorandos();
-            c_varios.llamar_ventana(formulario);
-        }
-    }//GEN-LAST:event_btn_modificarActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        this.dispose();
-        frm_ver_memorandos formulario = new frm_ver_memorandos();
-        c_varios.llamar_ventana(formulario);
-    }//GEN-LAST:event_jButton2ActionPerformed
-
     private void txt_codigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_codigoKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER){ 
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER){
             String codigo = txt_codigo.getText();
             if (c_varios.esEntero(codigo)) {
-                c_trabajador.setId_trabajador(Integer.parseInt(codigo)); 
-                c_trabajador.setId_cliente(id_cliente);
-                c_trabajador.setId_sucursal(id_sucursal);
-                c_trabajador.cargar_datos();
-                txt_colaborador.setText(c_trabajador.getColaborador());
+                c_trabajador.setIdcolaborador(Integer.parseInt(codigo));
+                c_trabajador.obtener_datos();
+                txt_colaborador.setText(c_trabajador.getDatos());
                 txt_fecha.setEnabled(true);
                 txt_fecha.requestFocus();
             }
@@ -253,8 +193,8 @@ public class frm_reg_memorando extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txt_codigoKeyPressed
 
     private void txt_fechaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_fechaKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER){ 
-           if (txt_fecha.getText().length() == 10){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER){
+            if (txt_fecha.getText().length() == 10){
                 txt_motivo.setEnabled(true);
                 btn_guardar.setEnabled(true);
                 txt_motivo.requestFocus();
@@ -262,6 +202,63 @@ public class frm_reg_memorando extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_txt_fechaKeyPressed
 
+    private void btn_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_guardarActionPerformed
+
+        //capturar a la bd de sistema
+        
+    }//GEN-LAST:event_btn_guardarActionPerformed
+
+    private void btn_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificarActionPerformed
+
+     
+    }//GEN-LAST:event_btn_modificarActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.dispose();
+      
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(frm_memorando.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(frm_memorando.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(frm_memorando.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(frm_memorando.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the dialog */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                frm_memorando dialog = new frm_memorando(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_guardar;

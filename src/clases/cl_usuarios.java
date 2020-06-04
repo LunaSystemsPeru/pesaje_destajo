@@ -24,9 +24,9 @@ public class cl_usuarios {
     private int id_usuario;
     private String username;
     private String contrasena;
-    private String nombre_completo;
-    private String telefono;
     private String email;
+    private String datos;
+    private int estado;
 
     public cl_usuarios() {
     }
@@ -55,22 +55,6 @@ public class cl_usuarios {
         this.contrasena = contrasena;
     }
 
-    public String getNombre_completo() {
-        return nombre_completo;
-    }
-
-    public void setNombre_completo(String nombre_completo) {
-        this.nombre_completo = nombre_completo;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -79,13 +63,29 @@ public class cl_usuarios {
         this.email = email;
     }
 
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
+    public String getDatos() {
+        return datos;
+    }
+
+    public void setDatos(String datos) {
+        this.datos = datos;
+    }
+
     public boolean comprobar_usuario_nick() {
         boolean existe = false;
 
         try {
             Statement st = c_conectar.conexion();
-                       
-            String query = "select id_usuario "
+
+            String query = "select idusuario "
                     + "from usuarios "
                     + "where username = '" + username + "'";
             //System.out.println(query);
@@ -93,7 +93,7 @@ public class cl_usuarios {
 
             while (rs.next()) {
                 existe = true;
-                id_usuario = rs.getInt("id_usuario");
+                id_usuario = rs.getInt("idusuario");
             }
             c_conectar.cerrar(rs);
             c_conectar.cerrar(st);
@@ -111,18 +111,17 @@ public class cl_usuarios {
             Statement st = c_conectar.conexion();
             String query = "select * "
                     + "from usuarios "
-                    + "where id_usuario = '" + id_usuario + "'";
+                    + "where idusuario = '" + id_usuario + "'";
             //System.out.println(query);
             ResultSet rs = c_conectar.consulta(st, query);
 
             while (rs.next()) {
                 existe = true;
                 username = rs.getString("username");
-                contrasena = rs.getString("contrasena");
-                nombre_completo = rs.getString("nombre_completo");
-                telefono = rs.getString("telefono");
+                contrasena = rs.getString("password");
+                estado = rs.getInt("estado");
+                datos = rs.getString("datos");
                 email = rs.getString("email");
-
             }
             c_conectar.cerrar(rs);
             c_conectar.cerrar(st);
@@ -149,16 +148,16 @@ public class cl_usuarios {
             modelo.addColumn("id");
             modelo.addColumn("Username");
             modelo.addColumn("Nombre completos");
-            modelo.addColumn("Telefono");
-            modelo.addColumn("email");
+            modelo.addColumn("Email");
+            modelo.addColumn("Estado");
 
             while (rs.next()) {
                 Object[] fila = new Object[5];
-                fila[0] = rs.getInt("id_usuario");
+                fila[0] = rs.getInt("idusuario");
                 fila[1] = rs.getString("username");
-                fila[2] = rs.getString("nombre_completo");
-                fila[3] = rs.getString("telefono");
-                fila[4] = rs.getString("email");
+                fila[2] = rs.getString("datos");
+                fila[3] = rs.getString("email");
+                fila[4] = rs.getString("estado");
 
                 modelo.addRow(fila);
 
@@ -171,6 +170,7 @@ public class cl_usuarios {
             tabla.getColumnModel().getColumn(1).setPreferredWidth(80);
             tabla.getColumnModel().getColumn(2).setPreferredWidth(350);
             tabla.getColumnModel().getColumn(3).setPreferredWidth(80);
+            tabla.getColumnModel().getColumn(4).setPreferredWidth(80);
 
         } catch (SQLException e) {
             System.out.print(e);
@@ -181,7 +181,7 @@ public class cl_usuarios {
         boolean registrado = false;
         Statement st = c_conectar.conexion();
         String query = "insert into usuarios "
-                + "Values ('" + id_usuario + "', '" + username + "', '" + contrasena + "', '" + nombre_completo + "', '" + telefono + "', '" + email + "')";
+                + "Values ('" + id_usuario + "', '" + username + "', '" + contrasena + "', '" + email + "', '" + datos + "', '1')";
         int resultado = c_conectar.actualiza(st, query);
         if (resultado > -1) {
             registrado = true;
@@ -194,7 +194,7 @@ public class cl_usuarios {
     public void obtener_codigo() {
         try {
             Statement st = c_conectar.conexion();
-            String query = "select ifnull(max(id_usuario) + 1, 1) as codigo "
+            String query = "select ifnull(max(idusuario) + 1, 1) as codigo "
                     + "from usuarios ";
             ResultSet rs = c_conectar.consulta(st, query);
 
@@ -209,39 +209,12 @@ public class cl_usuarios {
 
     }
 
-    public void cargar_datos() {
-        try {
-            Statement st = c_conectar.conexion();
-            String query = "select * "
-                    + "from usuarios "
-                    + "where id_usuario='" + id_usuario + "'";
-            System.out.println(query);
-            ResultSet rs = c_conectar.consulta(st, query);
-
-            while (rs.next()) {
-
-                username = rs.getString("username");
-                contrasena = rs.getString("contrasena");
-                nombre_completo = rs.getString("nombre_completo");
-                telefono = rs.getString("telefono");
-                email = rs.getString("email");
-
-            }
-            c_conectar.cerrar(rs);
-            c_conectar.cerrar(st);
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
-        }
-
-    }
-
     public boolean actualizar() {
         boolean actualizado = false;
         Statement st = c_conectar.conexion();
         String query = "update usuarios "
-                + "set username='" + username + "', contrasena='" + contrasena + "', nombre_completo='" + nombre_completo + "', telefono='" + telefono + "',email= '"
-                + email + "' "
-                + "where id_usuario='" + id_usuario + "' ";
+                + "set username='" + username + "', contrasena='" + contrasena + "', datos='" + datos + "', estado='" + estado + "',email= '" + email + "' "
+                + "where idusuario ='" + id_usuario + "' ";
         System.out.println(query);
         int resultado = c_conectar.actualiza(st, query);
         if (resultado > -1) {

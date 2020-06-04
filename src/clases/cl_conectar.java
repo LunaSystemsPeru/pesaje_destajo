@@ -16,7 +16,7 @@ public class cl_conectar {
     private static final cl_varios c_varios= new cl_varios();
     private static final String direccion = c_varios.obtenerDireccionCarpeta();
     
-    private static final String url= direccion +"/bd_pesaje.db";
+    private static final String url= direccion +"/pesaje_db.db";
     
     private static Connection conexion = null;
     //private static String bd = "bd_pesaje"; // Nombre de BD.

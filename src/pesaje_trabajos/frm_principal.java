@@ -5,10 +5,7 @@
  */
 package pesaje_trabajos;
 
-import clases.cl_clientes;
-import clases.cl_clientes_sucursal;
 import clases.cl_conectar;
-import clases.cl_grafica_mensual;
 import clases.cl_pesaje_trabajador;
 import clases.cl_usuarios;
 import clases.cl_varios;
@@ -18,38 +15,25 @@ import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import models.m_clientes;
-import models.m_sucursal;
 import net.sf.jasperreports.engine.JRParameter;
-import objects.o_clientes;
-import objects.o_sucursal;
-import vistas.frm_ver_clientes;
 import vistas.frm_ver_colaboradores;
-import vistas.frm_ver_descuentos;
-import vistas.frm_ver_memorandos;
-import vistas.frm_ver_tipo_servicio;
 import vistas.frm_ver_usuarios;
+import pesaje_trabajos.frm_login;
 
 /**
  *
  * @author luis
  */
 public class frm_principal extends javax.swing.JFrame {
-    
+
     cl_conectar c_conectar = new cl_conectar();
     cl_varios c_varios = new cl_varios();
-    
+
     public static cl_usuarios c_usuario = new cl_usuarios();
-    public static cl_clientes c_cliente = new cl_clientes();
-    
-    public static cl_clientes_sucursal c_sucursales = new cl_clientes_sucursal();
-    
+
     cl_pesaje_trabajador c_pesaje_trabajador = new cl_pesaje_trabajador();
-    
-    m_clientes m_cliente = new m_clientes();
-    m_sucursal m_sucursal = new m_sucursal();
 
     /**
      * Creates new form frm_principal
@@ -60,41 +44,34 @@ public class frm_principal extends javax.swing.JFrame {
         System.out.println(c_varios.getHoraActual());
         c_conectar.conectar();
         cargar_login();
-        
+
         txt_fecha_inicio.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
         txt_fecha_fin.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
     }
-    
+
     private void cargar_login() {
-        jd_login.setModal(true);
-        jd_login.setSize(771, 456);
-        jd_login.setLocationRelativeTo(null);
-        jd_login.setVisible(true);
+        JDialog dialogo = new frm_login(this,true);
+        dialogo.setLocationRelativeTo(null);
+        dialogo.setVisible(true);
     }
-    
+
     private void cargar_resumen_anual() {
-        c_pesaje_trabajador.setId_cliente(c_cliente.getId_cliente());
-        c_pesaje_trabajador.setId_sucursal(c_sucursales.getId_sucursal());
         String[] resumen_anual = c_pesaje_trabajador.mostrar_minimos();
         lbl_pe_maximo.setText(resumen_anual[1]);
         lbl_pe_minimo.setText(resumen_anual[2]);
         lbl_pe_promedio.setText(resumen_anual[3]);
         lbl_pe_total.setText(resumen_anual[0]);
     }
-    
+
     private void cargar_mas_produce() {
-        c_pesaje_trabajador.setId_cliente(c_cliente.getId_cliente());
-        c_pesaje_trabajador.setId_sucursal(c_sucursales.getId_sucursal());
         String[] resultado = c_pesaje_trabajador.mostrar_mas_produce();
         lbl_dtrabajados_mas.setText(resultado[2]);
         lbl_ppromedio_mas.setText(resultado[1]);
         lbl_tpesaje_mas.setText(resultado[0]);
         lbl_trabajador_mas.setText(resultado[3]);
     }
-    
+
     private void cargar_menos_produce() {
-        c_pesaje_trabajador.setId_cliente(c_cliente.getId_cliente());
-        c_pesaje_trabajador.setId_sucursal(c_sucursales.getId_sucursal());
         String[] resultado = c_pesaje_trabajador.mostrar_menos_produce();
         lbl_dtrabajados_menos.setText(resultado[2]);
         lbl_ppromedio_menos.setText(resultado[1]);
@@ -111,19 +88,6 @@ public class frm_principal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jd_login = new javax.swing.JDialog();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        txt_usuario = new javax.swing.JTextField();
-        txt_contrasena = new javax.swing.JPasswordField();
-        cbx_clientes = new javax.swing.JComboBox<>();
-        cbx_sucursales = new javax.swing.JComboBox<>();
-        btn_entrar = new javax.swing.JButton();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel13 = new javax.swing.JLabel();
-        jButton11 = new javax.swing.JButton();
         jd_menu_reportes = new javax.swing.JDialog();
         jLabel6 = new javax.swing.JLabel();
         cbx_reporte = new javax.swing.JComboBox<>();
@@ -133,12 +97,9 @@ public class frm_principal extends javax.swing.JFrame {
         txt_fecha_fin = new javax.swing.JFormattedTextField();
         btn_generar_excel = new javax.swing.JButton();
         jToolBar1 = new javax.swing.JToolBar();
-        jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jSeparator4 = new javax.swing.JToolBar.Separator();
         jButton3 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JToolBar.Separator();
         jButton6 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
@@ -176,154 +137,6 @@ public class frm_principal extends javax.swing.JFrame {
         lbl_dtrabajados_menos = new javax.swing.JTextField();
         jButton10 = new javax.swing.JButton();
         jp_lineas = new javax.swing.JPanel();
-
-        jd_login.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        jd_login.setTitle("Iniciar Sesion");
-        jd_login.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabel1.setText("Usuario:");
-
-        jLabel2.setText("Contraseña:");
-
-        jLabel3.setText("Cliente:");
-
-        jLabel4.setText("Sucursal:");
-
-        txt_usuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_usuarioActionPerformed(evt);
-            }
-        });
-        txt_usuario.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txt_usuarioKeyPressed(evt);
-            }
-        });
-
-        txt_contrasena.setEnabled(false);
-        txt_contrasena.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_contrasenaActionPerformed(evt);
-            }
-        });
-        txt_contrasena.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txt_contrasenaKeyPressed(evt);
-            }
-        });
-
-        cbx_clientes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "MERBAR" }));
-        cbx_clientes.setEnabled(false);
-        cbx_clientes.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbx_clientesActionPerformed(evt);
-            }
-        });
-        cbx_clientes.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                cbx_clientesKeyPressed(evt);
-            }
-        });
-
-        cbx_sucursales.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "27 DE OCTUBRE", "VILLA MARIA" }));
-        cbx_sucursales.setEnabled(false);
-        cbx_sucursales.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbx_sucursalesActionPerformed(evt);
-            }
-        });
-        cbx_sucursales.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                cbx_sucursalesKeyPressed(evt);
-            }
-        });
-
-        btn_entrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/accept.png"))); // NOI18N
-        btn_entrar.setText("acceder");
-        btn_entrar.setEnabled(false);
-        btn_entrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_entrarActionPerformed(evt);
-            }
-        });
-
-        jPanel4.setBackground(javax.swing.UIManager.getDefaults().getColor("Menu.acceleratorForeground"));
-
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/balanza.png"))); // NOI18N
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(42, 42, 42)
-                .addComponent(jLabel13)
-                .addContainerGap(52, Short.MAX_VALUE))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(65, 65, 65)
-                .addComponent(jLabel13)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/cross.png"))); // NOI18N
-        jButton11.setText("Salir");
-        jButton11.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton11ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jd_loginLayout = new javax.swing.GroupLayout(jd_login.getContentPane());
-        jd_login.getContentPane().setLayout(jd_loginLayout);
-        jd_loginLayout.setHorizontalGroup(
-            jd_loginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jd_loginLayout.createSequentialGroup()
-                .addGroup(jd_loginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton11)
-                    .addGroup(jd_loginLayout.createSequentialGroup()
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(71, 71, 71)
-                        .addGroup(jd_loginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btn_entrar, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbx_clientes, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_contrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbx_sucursales, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(46, 46, 46))
-        );
-        jd_loginLayout.setVerticalGroup(
-            jd_loginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jd_loginLayout.createSequentialGroup()
-                .addGap(61, 61, 61)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txt_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txt_contrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cbx_clientes, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cbx_sucursales, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42)
-                .addComponent(btn_entrar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
 
         jd_menu_reportes.setTitle("Seleccionar Reporte");
 
@@ -429,18 +242,6 @@ public class frm_principal extends javax.swing.JFrame {
         jToolBar1.setFloatable(false);
         jToolBar1.setOpaque(false);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/company_building-512.png"))); // NOI18N
-        jButton1.setText("Clientes");
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(jButton1);
-
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Identity-separation-man-qr-code-data-barcode-512.png"))); // NOI18N
         jButton2.setText("Colaboradores");
         jButton2.setFocusable(false);
@@ -465,34 +266,10 @@ public class frm_principal extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(jButton3);
-
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/86-512.png"))); // NOI18N
-        jButton5.setText("Memorandums");
-        jButton5.setFocusable(false);
-        jButton5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(jButton5);
-
-        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Sales-by-payment-method-icon.png"))); // NOI18N
-        jButton7.setText("Descuentos");
-        jButton7.setFocusable(false);
-        jButton7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton7.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(jButton7);
         jToolBar1.add(jSeparator3);
 
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/archiver-512.png"))); // NOI18N
-        jButton6.setText("Trabajo");
+        jButton6.setText("Parametros");
         jButton6.setFocusable(false);
         jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -834,11 +611,6 @@ public class frm_principal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        frm_ver_clientes formulario = new frm_ver_clientes();
-        c_varios.llamar_ventana(formulario);
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         frm_ver_colaboradores formulario = new frm_ver_colaboradores();
         c_varios.llamar_ventana(formulario);
@@ -849,98 +621,13 @@ public class frm_principal extends javax.swing.JFrame {
         c_varios.llamar_ventana(formulario);
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void txt_usuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usuarioKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            c_usuario.setUsername(txt_usuario.getText().trim());
-            boolean existe = c_usuario.comprobar_usuario_nick();
-            if (existe) {
-                c_usuario.obtener_datos();
-                txt_contrasena.setEnabled(true);
-                txt_contrasena.requestFocus();
-            } else {
-                JOptionPane.showMessageDialog(null, "EL USUARIO INGRESADO NO EXISTE!");
-                txt_usuario.selectAll();
-                txt_usuario.requestFocus();
-            }
-        }
-    }//GEN-LAST:event_txt_usuarioKeyPressed
-
-    private void txt_contrasenaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_contrasenaKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            String password = txt_contrasena.getText();
-            if (password.equals(c_usuario.getContrasena())) {
-                //casrgar clintes
-                cbx_clientes.removeAllItems();
-                m_cliente.cbx_clientes(cbx_clientes);
-                cbx_clientes.setEnabled(true);
-                cbx_clientes.requestFocus();
-            } else {
-                JOptionPane.showMessageDialog(null, "Contraseña Incorrecta");
-            }
-            
-        }
-    }//GEN-LAST:event_txt_contrasenaKeyPressed
-
-    private void cbx_clientesKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cbx_clientesKeyPressed
-        // TODO add your handling code here:
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            o_clientes o_clientes = (o_clientes) cbx_clientes.getSelectedItem();
-            int id_cliente = o_clientes.getId_cliente();
-            c_cliente.setId_cliente(id_cliente);
-            cbx_sucursales.removeAllItems();
-            m_sucursal.cbx_sucursales(cbx_sucursales, id_cliente);
-            cbx_sucursales.setEnabled(true);
-            cbx_sucursales.requestFocus();
-        }
-    }//GEN-LAST:event_cbx_clientesKeyPressed
-
-    private void btn_entrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_entrarActionPerformed
-        jd_login.dispose();
-        cargar_resumen_anual();
-        cargar_mas_produce();
-        cargar_menos_produce();
-        
-        cl_grafica_mensual c_grafica = new cl_grafica_mensual();
-        c_grafica.llenar_series(jp_lineas);
-    }//GEN-LAST:event_btn_entrarActionPerformed
-
-    private void cbx_sucursalesKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cbx_sucursalesKeyPressed
-        // TODO add your handling code here:
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            o_sucursal o_sucursal = (o_sucursal) cbx_sucursales.getSelectedItem();
-            int id_sucursal = o_sucursal.getId_sucursal();
-            c_sucursales.setId_cliente(c_cliente.getId_cliente());
-            c_sucursales.setId_sucursal(id_sucursal);
-            btn_entrar.setEnabled(true);
-            btn_entrar.requestFocus();
-            
-        }
-    }//GEN-LAST:event_cbx_sucursalesKeyPressed
-
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         frm_ver_usuarios formulario = new frm_ver_usuarios();
         c_varios.llamar_ventana(formulario);
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void txt_usuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_usuarioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_usuarioActionPerformed
-
-    private void cbx_clientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbx_clientesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbx_clientesActionPerformed
-
-    private void cbx_sucursalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbx_sucursalesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbx_sucursalesActionPerformed
-
-    private void txt_contrasenaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_contrasenaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_contrasenaActionPerformed
-
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        frm_ver_tipo_servicio formulario = new frm_ver_tipo_servicio();
-        c_varios.llamar_ventana(formulario);
+
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void btn_exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_exitActionPerformed
@@ -948,7 +635,7 @@ public class frm_principal extends javax.swing.JFrame {
         jd_menu_reportes.setSize(452, 218);
         jd_menu_reportes.setLocationRelativeTo(null);
         jd_menu_reportes.setVisible(true);
-        
+
 
     }//GEN-LAST:event_btn_exitActionPerformed
 
@@ -967,7 +654,7 @@ public class frm_principal extends javax.swing.JFrame {
                     txt_fecha_fin.setEnabled(true);
                     txt_fecha_fin.requestFocus();
                 }
-                
+
                 if (cbx_reporte.getSelectedIndex() == 2) {
                     txt_fecha_fin.setEnabled(true);
                     txt_fecha_fin.requestFocus();
@@ -998,41 +685,29 @@ public class frm_principal extends javax.swing.JFrame {
 
     private void btn_generar_excelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generar_excelActionPerformed
         String fecha_inicio = c_varios.fecha_myql(txt_fecha_inicio.getText());
-        
+
         Map<String, Object> parametros = new HashMap<>();
         parametros.put("f_inicio", fecha_inicio);
-        parametros.put("id_cliente", c_sucursales.getId_cliente());
-        parametros.put("id_sucursal", c_sucursales.getId_sucursal());
         parametros.put(JRParameter.REPORT_LOCALE, Locale.US);
         if (cbx_reporte.getSelectedIndex() == 0) {
             //c_varios.ver_reporte("rpt_excel_pesaje_diario_resumen", parametros);
             c_varios.ver_reporte_excel("rpt_excel_pesaje_diario_resumen", parametros, "rpt_excel_pesaje_diario_resumen");
         }
-        
+
         if (cbx_reporte.getSelectedIndex() == 1) {
             String fecha_fin = c_varios.fecha_myql(txt_fecha_fin.getText());
             parametros.put("f_fin", fecha_fin);
             c_varios.ver_reporte_excel("rpt_excel_pesaje_periodo", parametros, "rpt_excel_pesaje_periodo");
         }
-        
+
         if (cbx_reporte.getSelectedIndex() == 2) {
             String fecha_fin = c_varios.fecha_myql(txt_fecha_fin.getText());
             parametros.put("f_fin", fecha_fin);
             c_varios.ver_reporte_excel("rpt_excel_pesaje_periodo_detalle", parametros, "rpt_excel_pesaje_periodo_detalle");
         }
-        
+
 
     }//GEN-LAST:event_btn_generar_excelActionPerformed
-
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        frm_ver_memorandos formulario = new frm_ver_memorandos();
-        c_varios.llamar_ventana(formulario);
-    }//GEN-LAST:event_jButton5ActionPerformed
-
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        frm_ver_descuentos formulario = new frm_ver_descuentos();
-        c_varios.llamar_ventana(formulario);
-    }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         cargar_resumen_anual();
@@ -1045,10 +720,6 @@ public class frm_principal extends javax.swing.JFrame {
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         cargar_menos_produce();
     }//GEN-LAST:event_jButton10ActionPerformed
-
-    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-        System.exit(0);
-    }//GEN-LAST:event_jButton11ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1086,39 +757,27 @@ public class frm_principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_entrar;
     private javax.swing.JButton btn_exit;
     private javax.swing.JButton btn_exit1;
     private javax.swing.JButton btn_generar_excel;
-    private javax.swing.JComboBox<String> cbx_clientes;
     private javax.swing.JComboBox<String> cbx_reporte;
-    private javax.swing.JComboBox<String> cbx_sucursales;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     public static javax.swing.JDesktopPane jDesktopPane1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -1126,13 +785,11 @@ public class frm_principal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JToolBar.Separator jSeparator4;
     private javax.swing.JToolBar jToolBar1;
-    private javax.swing.JDialog jd_login;
     private javax.swing.JDialog jd_menu_reportes;
     private javax.swing.JPanel jp_lineas;
     private javax.swing.JTextField lbl_dtrabajados_mas;
@@ -1147,9 +804,7 @@ public class frm_principal extends javax.swing.JFrame {
     private javax.swing.JTextField lbl_tpesaje_menos;
     private javax.swing.JLabel lbl_trabajador_mas;
     private javax.swing.JLabel lbl_trabajador_menos;
-    private javax.swing.JPasswordField txt_contrasena;
     private javax.swing.JFormattedTextField txt_fecha_fin;
     private javax.swing.JFormattedTextField txt_fecha_inicio;
-    private javax.swing.JTextField txt_usuario;
     // End of variables declaration//GEN-END:variables
 }

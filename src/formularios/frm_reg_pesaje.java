@@ -5,10 +5,9 @@
  */
 package formularios;
 
-import clases.cl_memoramdo;
+import clases.cl_colaborador;
+import clases.cl_parametro_detalle;
 import clases.cl_pesaje_trabajador;
-import clases.cl_tipo_trabajo;
-import clases.cl_trabajadores_sucursal;
 import clases.cl_varios;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
@@ -22,14 +21,13 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
 
     cl_varios c_varios = new cl_varios();
     m_trabajo m_trabajo = new m_trabajo();
-    cl_trabajadores_sucursal c_trabajadores_sucursal = new cl_trabajadores_sucursal();
+    cl_colaborador c_colaborador = new cl_colaborador();
     cl_pesaje_trabajador c_pesaje_trabajador = new cl_pesaje_trabajador();
-    cl_tipo_trabajo c_tipo = new cl_tipo_trabajo();
-    cl_memoramdo c_memoramdo = new cl_memoramdo();
 
-    int id_cliente = frm_principal.c_sucursales.getId_cliente();
-    int id_sucursal = frm_principal.c_sucursales.getId_sucursal();
+    cl_parametro_detalle c_detalle = new cl_parametro_detalle();
+
     int id_usuario = frm_principal.c_usuario.getId_usuario();
+    double tope = 0;
 
     double dneto;
 
@@ -41,7 +39,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
     public frm_reg_pesaje() {
         initComponents();
         ftffecha.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
-        m_trabajo.cbx_trabajo(cbx_trabajo, id_sucursal, id_cliente);
+        m_trabajo.cbx_trabajo(cbx_trabajo);
         modelotabla();
     }
 
@@ -75,7 +73,6 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         txt_nombrecolaborador.setText("");
         txt_cantidad.setText("");
         txt_colaborador.requestFocus();
-        c_trabajadores_sucursal.setId_trabajador(0);
         desactivar_botones_trabajador();
     }
 
@@ -96,7 +93,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
     }
 
     private boolean validar_trabajador() {
-        if (c_trabajadores_sucursal.getId_trabajador() > 0) {
+        if (c_colaborador.getCodigo() > 0) {
             return true;
         } else {
             JOptionPane.showMessageDialog(null, "NO HA INGRESADO CODIGO DE TRABAJADOR");
@@ -381,19 +378,17 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cbx_trabajo, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ftffecha, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(124, 124, 124)
-                        .addComponent(ftffecha, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbx_trabajo, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txt_tope, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -405,14 +400,15 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ftffecha, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cbx_trabajo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(ftffecha, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(36, 36, 36)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txt_tope, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -424,33 +420,33 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel3.setText("Colaborador:");
 
-        txt_colaborador.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        txt_colaborador.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
         txt_colaborador.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txt_colaborador.setEnabled(false);
         txt_colaborador.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txt_colaboradorKeyTyped(evt);
-            }
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_colaboradorKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_colaboradorKeyTyped(evt);
             }
         });
 
         txt_nombrecolaborador.setEditable(false);
-        txt_nombrecolaborador.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        txt_nombrecolaborador.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
 
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel4.setText("Peso - Cantidad:");
 
-        txt_cantidad.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        txt_cantidad.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
         txt_cantidad.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txt_cantidad.setEnabled(false);
         txt_cantidad.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txt_cantidadKeyTyped(evt);
-            }
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txt_cantidadKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_cantidadKeyTyped(evt);
             }
         });
 
@@ -463,7 +459,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
             }
         });
 
-        txt_tara_balanza.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        txt_tara_balanza.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
         txt_tara_balanza.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txt_tara_balanza.setText("0.00");
         txt_tara_balanza.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -472,11 +468,13 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel6.setText("=");
 
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel7.setText("-");
 
-        txt_neto.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        txt_neto.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
         txt_neto.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txt_neto.setText("0.00");
         txt_neto.setEnabled(false);
@@ -526,12 +524,12 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
                         .addComponent(jButton8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton9)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 107, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
                         .addComponent(btn_agregar))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_colaborador, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txt_colaborador, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txt_nombrecolaborador)))
                 .addContainerGap())
@@ -541,19 +539,19 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txt_colaborador, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_colaborador, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txt_nombrecolaborador, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txt_nombrecolaborador, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_agregar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_tara_balanza, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_tara_balanza, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7)
                     .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txt_neto, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_neto, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -573,6 +571,9 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
                 "Hora", "ID.", "Colaborador", "Cantidad"
             }
         ));
+        t_listrabaj.setRowHeight(20);
+        t_listrabaj.setShowHorizontalLines(false);
+        t_listrabaj.setShowVerticalLines(false);
         jScrollPane1.setViewportView(t_listrabaj);
         if (t_listrabaj.getColumnModel().getColumnCount() > 0) {
             t_listrabaj.getColumnModel().getColumn(0).setPreferredWidth(80);
@@ -721,13 +722,11 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         modelo.addRow(fila);
 
         //ingresar a la base de datos
-        c_pesaje_trabajador.setId_cliente(id_cliente);
-        c_pesaje_trabajador.setId_sucursal(id_sucursal);
         c_pesaje_trabajador.setHora(c_varios.getHoraActual());
-        c_pesaje_trabajador.setId_trabajador(Integer.parseInt(txt_colaborador.getText()));
+        c_pesaje_trabajador.setIdcolaborador(c_colaborador.getIdcolaborador());
         c_pesaje_trabajador.setCantidad(dneto);
         c_pesaje_trabajador.setFecha(c_varios.fecha_myql(ftffecha.getText()));
-        c_pesaje_trabajador.setId_tipo_trabajo(c_tipo.getId_tipo_trabajo());
+        c_pesaje_trabajador.setIdservicio(c_detalle.getIddetalle());
         c_pesaje_trabajador.registrar();
 
         //limpiar campos
@@ -747,20 +746,17 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
             // btn_iniciar.requestFocus();
             o_trabajo o_trabajo = (o_trabajo) cbx_trabajo.getSelectedItem();
 
-            c_tipo.setId_cliente(id_cliente);
-            c_tipo.setId_sucursal(id_sucursal);
-            c_tipo.setId_tipo_trabajo(o_trabajo.getId_tipo_trabajo());
-            c_tipo.obtener_datos();
+            c_detalle.setIddetalle(o_trabajo.getId_tipo_trabajo());
+            c_detalle.obtener_datos();
 
-            txt_tope.setText(c_varios.formato_numero(c_tipo.getTope()));
+            tope = Double.parseDouble(c_detalle.getValor());
+            txt_tope.setText(c_varios.formato_numero(Double.parseDouble(c_detalle.getValor())));
 
             //mostrar datos grabados 
             modelotabla();
 
             c_pesaje_trabajador.setFecha(c_varios.fecha_myql(ftffecha.getText()));
-            c_pesaje_trabajador.setId_cliente(id_cliente);
-            c_pesaje_trabajador.setId_sucursal(id_sucursal);
-            c_pesaje_trabajador.setId_tipo_trabajo(o_trabajo.getId_tipo_trabajo());
+            c_pesaje_trabajador.setIdservicio(o_trabajo.getId_tipo_trabajo());
             c_pesaje_trabajador.ver_pesaje_fecha(modelo);
             t_listrabaj.setModel(modelo);
 
@@ -777,12 +773,11 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             if (txt_colaborador.getText().length() > 0) {
                 int colaborador = Integer.parseInt(txt_colaborador.getText());
-                c_trabajadores_sucursal.setId_trabajador(colaborador);
-                c_trabajadores_sucursal.setId_cliente(id_cliente);
-                c_trabajadores_sucursal.setId_sucursal(id_sucursal);
+                c_colaborador.setCodigo(colaborador);
 
-                if (c_trabajadores_sucursal.cargar_datos()) {
-                    txt_nombrecolaborador.setText(c_trabajadores_sucursal.getColaborador());
+                if (c_colaborador.obtener_datos_codigo()) {
+                    c_colaborador.obtener_datos();
+                    txt_nombrecolaborador.setText(c_colaborador.getDatos());
 
                     //activar botones trabajador
                     activar_botones_trabajador();
@@ -818,16 +813,20 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
                     dneto = dcantidad - dtara;
                     txt_neto.setText(c_varios.formato_numero(dneto));
 
-                    if (dneto <= c_tipo.getTope()) {
+                    if (dneto <= Double.parseDouble(c_detalle.getValor()) & dneto <= 15) {
                         btn_agregar.setEnabled(true);
                         btn_agregar.doClick();
-                    } else {
+                    } else if (dneto > Double.parseDouble(c_detalle.getValor()) & dneto <= 15) {
                         JOptionPane.showMessageDialog(null, "ESTE NUMERO ES MAYOR AL TOPE");
                         // txt_cantidad.selectAll();
                         //txt_cantidad.requestFocus();
                         btn_agregar.setEnabled(true);
                         btn_agregar.requestFocus();
-                        //btn_agregar.doClick();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "ESTE NUMERO ES MAYOR AL TOPE FINAL");
+                        btn_agregar.setEnabled(false);
+                        txt_cantidad.selectAll();
+                        txt_cantidad.requestFocus();
                     }
                 }
             }
@@ -855,8 +854,8 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String texto = txt_tope.getText();
             if (c_varios.esDecimal(texto)) {
-                c_tipo.setTope(Double.parseDouble(texto));
-                c_tipo.actualizar();
+                c_detalle.setValor(tope + "");
+                c_detalle.actualizar();
                 txt_colaborador.setEnabled(true);
                 txt_colaborador.requestFocus();
             }
@@ -882,7 +881,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         if (validar_trabajador()) {
-            c_pesaje_trabajador.setId_trabajador(c_trabajadores_sucursal.getId_trabajador());
+            c_pesaje_trabajador.setIdcolaborador(c_colaborador.getIdcolaborador());
             double total = c_pesaje_trabajador.obtener_total_trabajador_fecha();
 
             JOptionPane.showMessageDialog(null, "<html>El pesaje total del trabajador es: <h2>" + c_varios.formato_numero(total) + "</h2></html>");
@@ -897,12 +896,12 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         jd_detalle_trabajador.setModal(true);
         jd_detalle_trabajador.setSize(436, 474);
 
-        c_pesaje_trabajador.setId_trabajador(c_trabajadores_sucursal.getId_trabajador());
+        c_pesaje_trabajador.setIdcolaborador(c_colaborador.getIdcolaborador());
         c_pesaje_trabajador.ver_detalle_trabajador(t_detalle_trabajador);
 
         jTextField1.setText(txt_nombrecolaborador.getText());
         jTextField2.setText(ftffecha.getText());
-        jTextField3.setText(c_tipo.getDescripcion());
+        //jTextField3.setText(c_tipo.getDescripcion());
 
         double total = 0;
         for (int i = 0; i < t_detalle_trabajador.getRowCount(); i++) {
@@ -917,29 +916,14 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         if (jTextArea1.getText().length() > 0) {
-            c_memoramdo.setContenido(jTextArea1.getText());
-            c_memoramdo.setFecha(c_varios.fecha_myql(ftffecha.getText()));
-            c_memoramdo.setId_cliente(id_cliente);
-            c_memoramdo.setId_sucursal(id_sucursal);
-            c_memoramdo.setId_trabajador(c_trabajadores_sucursal.getId_trabajador());
-            c_memoramdo.obtener_codigo();
-
-            if (c_memoramdo.registrar()) {
-                int contar_memos = c_memoramdo.contar_memos();
-                if (contar_memos >= 3) {
-                    JOptionPane.showMessageDialog(null, txt_nombrecolaborador.getText() + " YA TIENE 03 LLAMADAS DE ATENCION", "Maximo de Llamadas de Atencion", 1, frameIcon);
-                }
-                jd_memorandum.dispose();
-                
-                txt_colaborador.requestFocus();
-            }
+           
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         jd_memorandum.setModal(true);
         jd_memorandum.setSize(578, 440);
-        
+
         jTextField5.setText(txt_nombrecolaborador.getText());
         jTextField6.setText(ftffecha.getText());
         jTextArea1.requestFocus();

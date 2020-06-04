@@ -21,31 +21,23 @@ public class cl_pesaje_trabajador {
     cl_conectar c_conectar = new cl_conectar();
     cl_varios c_varios = new cl_varios();
 
-    private int id_trabajador;
-    private int id_tipo_trabajo;
+    private int idpesaje;
     private String fecha;
     private String hora;
-    private Double cantidad;
-    private int id_sucursal;
-    private int id_cliente;
+    private int idcolaborador;
+    private int idservicio;
+    private double cantidad;
+    private int idusuario;
 
     public cl_pesaje_trabajador() {
     }
 
-    public int getId_trabajador() {
-        return id_trabajador;
+    public int getIdpesaje() {
+        return idpesaje;
     }
 
-    public void setId_trabajador(int id_trabajador) {
-        this.id_trabajador = id_trabajador;
-    }
-
-    public int getId_tipo_trabajo() {
-        return id_tipo_trabajo;
-    }
-
-    public void setId_tipo_trabajo(int id_tipo_trabajo) {
-        this.id_tipo_trabajo = id_tipo_trabajo;
+    public void setIdpesaje(int idpesaje) {
+        this.idpesaje = idpesaje;
     }
 
     public String getFecha() {
@@ -64,35 +56,43 @@ public class cl_pesaje_trabajador {
         this.hora = hora;
     }
 
-    public Double getCantidad() {
+    public int getIdcolaborador() {
+        return idcolaborador;
+    }
+
+    public void setIdcolaborador(int idcolaborador) {
+        this.idcolaborador = idcolaborador;
+    }
+
+    public int getIdservicio() {
+        return idservicio;
+    }
+
+    public void setIdservicio(int idservicio) {
+        this.idservicio = idservicio;
+    }
+
+    public double getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(Double cantidad) {
+    public void setCantidad(double cantidad) {
         this.cantidad = cantidad;
     }
 
-    public int getId_sucursal() {
-        return id_sucursal;
+    public int getIdusuario() {
+        return idusuario;
     }
 
-    public void setId_sucursal(int id_sucursal) {
-        this.id_sucursal = id_sucursal;
-    }
-
-    public int getId_cliente() {
-        return id_cliente;
-    }
-
-    public void setId_cliente(int id_cliente) {
-        this.id_cliente = id_cliente;
+    public void setIdusuario(int idusuario) {
+        this.idusuario = idusuario;
     }
 
     public boolean registrar() {
         boolean registrado = false;
         Statement st = c_conectar.conexion();
         String query = "insert into pesaje "
-                + "Values ('" + id_trabajador + "','" + id_sucursal + "','" + id_cliente + "', '" + fecha + "', '" + hora + "','" + cantidad + "','" + id_tipo_trabajo + "' )";
+                + "Values ('" + idpesaje + "','" + fecha + "','" + hora + "', '" + idcolaborador + "', '" + idusuario + "','" + cantidad + "','" + idservicio + "' )";
         //System.out.println(query);
         int resultado = c_conectar.actualiza(st, query);
         if (resultado > -1) {
@@ -101,17 +101,15 @@ public class cl_pesaje_trabajador {
         c_conectar.cerrar(st);
         return registrado;
     }
-    
-    
-    
+
     public double obtener_total_fecha() {
         double total_cantidad = 0;
         try {
             Statement st = c_conectar.conexion();
             String query = "select sum(cantidad) as total "
                     + "from pesaje "
-                    + "where fecha = '" + fecha + "' and id_sucursal = '" + id_sucursal + "' and id_cliente = '" + id_cliente + "' "
-                    + "and id_tipo_trabajo = '" + id_tipo_trabajo + "' ";
+                    + "where fecha = '" + fecha + "' "
+                    + "and idservicio = '" + idservicio + "' ";
             ResultSet rs = c_conectar.consulta(st, query);
 
             while (rs.next()) {
@@ -125,15 +123,15 @@ public class cl_pesaje_trabajador {
         return total_cantidad;
 
     }
-    
+
     public double obtener_total_trabajador_fecha() {
         double total_cantidad = 0;
         try {
             Statement st = c_conectar.conexion();
             String query = "select sum(cantidad) as total "
                     + "from pesaje "
-                    + "where fecha = '" + fecha + "' and id_sucursal = '" + id_sucursal + "' and id_cliente = '" + id_cliente + "' "
-                    + "and id_tipo_trabajo = '" + id_tipo_trabajo + "' and id_trabajador = '"+id_trabajador+"'";
+                    + "where fecha = '" + fecha + "' "
+                    + "and idservicio = '" + idservicio + "' and idcolaborador = '" + idcolaborador + "'";
             ResultSet rs = c_conectar.consulta(st, query);
 
             while (rs.next()) {
@@ -147,39 +145,39 @@ public class cl_pesaje_trabajador {
         return total_cantidad;
 
     }
-    
+
     public void ver_pesaje_fecha(DefaultTableModel modelo) {
-      //  DefaultTableModel modelo;
+        //  DefaultTableModel modelo;
         try {
-           /* modelo = new DefaultTableModel() {
+            /* modelo = new DefaultTableModel() {
                 @Override
                 public boolean isCellEditable(int fila, int columna) {
                     return false;
                 }
             };
-*/
+             */
             Statement st = c_conectar.conexion();
-            String query = "select p.fecha, p.hora, ts.id_trabajador, ts.colaborador, p.cantidad "
+            String query = "select p.fecha, p.hora, c.idcolaborador, c.apellidos, c.nombres, p.cantidad "
                     + "from pesaje as p "
-                    + "inner join trabajadores_sucursal as ts on ts.id_cliente = p.id_cliente and ts.id_sucursal = p.id_sucursal and ts.id_trabajador = p.id_trabajador "
-                    + "where p.fecha = '" + fecha + "' and p.id_sucursal = '" + id_sucursal + "' and p.id_cliente = '" + id_cliente + "' "
-                    + "and p.id_tipo_trabajo = '" + id_tipo_trabajo + "' "
+                    + "inner join colaboradores as c on c.idcolaborador = p.idcolaborador "
+                    + "where p.fecha = '" + fecha + "' "
+                    + "and p.idservicio = '" + idservicio + "' "
                     + "order by p.hora asc";
-           // System.out.println(query);
+            // System.out.println(query);
             ResultSet rs = c_conectar.consulta(st, query);
-/*
+            /*
             modelo.addColumn("Fecha");
             modelo.addColumn("Hora");
             modelo.addColumn("Id.");
             modelo.addColumn("Colaborador");
             modelo.addColumn("Cantidad");
-*/
+             */
             while (rs.next()) {
                 Object[] fila = new Object[5];
                 fila[0] = rs.getString("fecha");
                 fila[1] = rs.getString("hora");
-                fila[2] = rs.getString("id_trabajador");
-                fila[3] = rs.getString("colaborador");
+                fila[2] = rs.getString("idcolaborador");
+                fila[3] = rs.getString("apellidos") + " " + rs.getString("nombres");
                 fila[4] = c_varios.formato_numero(rs.getDouble("cantidad"));
 
                 modelo.addRow(fila);
@@ -188,7 +186,7 @@ public class cl_pesaje_trabajador {
             c_conectar.cerrar(st);
             c_conectar.cerrar(rs);
 
-         /*   tabla.setModel(modelo);
+            /*   tabla.setModel(modelo);
             tabla.getColumnModel().getColumn(0).setPreferredWidth(80);
             tabla.getColumnModel().getColumn(1).setPreferredWidth(80);
             tabla.getColumnModel().getColumn(2).setPreferredWidth(40);
@@ -198,14 +196,13 @@ public class cl_pesaje_trabajador {
             c_varios.centrar_celda(tabla, 1);
             c_varios.centrar_celda(tabla, 2);
             c_varios.derecha_celda(tabla, 4);
-*/
-
+             */
         } catch (SQLException e) {
             System.out.print(e);
         }
     }
-    
-    public void ver_detalle_trabajador (JTable tabla) {
+
+    public void ver_detalle_trabajador(JTable tabla) {
         DefaultTableModel modelo;
         try {
             modelo = new DefaultTableModel() {
@@ -218,10 +215,10 @@ public class cl_pesaje_trabajador {
             Statement st = c_conectar.conexion();
             String query = "select p.fecha, p.hora, p.cantidad "
                     + "from pesaje as p "
-                    + "where p.fecha = '" + fecha + "' and p.id_sucursal = '" + id_sucursal + "' and p.id_cliente = '" + id_cliente + "' "
-                    + "and p.id_tipo_trabajo = '" + id_tipo_trabajo + "' and p.id_trabajador = '"+id_trabajador+"' "
+                    + "where p.fecha = '" + fecha + "' "
+                    + "and p.idservicio = '" + idservicio + "' and p.idcolaborador = '" + idcolaborador + "' "
                     + "order by p.hora asc";
-           // System.out.println(query);
+            // System.out.println(query);
             ResultSet rs = c_conectar.consulta(st, query);
 
             modelo.addColumn("Fecha");
@@ -258,9 +255,9 @@ public class cl_pesaje_trabajador {
             Statement st = c_conectar.conexion();
             String query = "select sum(pt.cantidad) as total_cantidad, max(pt.cantidad) as maximo, min(pt.cantidad) as minimo, avg(pt.cantidad) as promedio "
                     + "from pesaje as pt "
-                    + "where pt.id_sucursal = '" + id_sucursal + "' and pt.id_cliente = '" + id_cliente + "' and strftime('%Y', pt.fecha) =  strftime('%Y', current_date)"
-                    + "group by pt.id_tipo_trabajo";
-           // System.out.println(query);
+                    + "where strftime('%Y%m', pt.fecha) =  strftime('%Y%m', current_date)"
+                    + "group by pt.idservicio";
+            // System.out.println(query);
             ResultSet rs = c_conectar.consulta(st, query);
 
             if (rs.next()) {
@@ -288,11 +285,11 @@ public class cl_pesaje_trabajador {
         String numero[] = new String[4];
         try {
             Statement st = c_conectar.conexion();
-            String query = "select sum(pt.cantidad) as total_produce, avg(pt.cantidad) as promedio_produce, count(distinct(pt.fecha)) as dias_produce, ts.colaborador "
+            String query = "select sum(pt.cantidad) as total_produce, avg(pt.cantidad) as promedio_produce, count(distinct(pt.fecha)) as dias_produce, ts.apellidos, ts.nombres "
                     + "from pesaje as pt "
-                    + "inner join trabajadores_sucursal as ts on ts.id_trabajador = pt.id_trabajador and ts.id_sucursal = pt.id_sucursal and ts.id_cliente = pt.id_cliente "
-                    + "where pt.id_sucursal = '" + id_sucursal + "' and pt.id_cliente = '" + id_cliente + "' and strftime('%Y', pt.fecha) =  strftime('%Y', current_date) "
-                    + "group by pt.id_trabajador "
+                    + "inner join trabajadores_sucursal as ts on ts.idcolaborador = pt.idcolaborador "
+                    + "where strftime('%Y', pt.fecha) =  strftime('%Y', current_date) "
+                    + "group by pt.idcolaborador "
                     + "order by sum(pt.cantidad) desc "
                     + "limit 1";
             ResultSet rs = c_conectar.consulta(st, query);
@@ -317,16 +314,16 @@ public class cl_pesaje_trabajador {
 
         return numero;
     }
-    
+
     public String[] mostrar_menos_produce() {
         String numero[] = new String[4];
         try {
             Statement st = c_conectar.conexion();
-            String query = "select sum(pt.cantidad) as total_produce, avg(pt.cantidad) as promedio_produce, count(distinct(pt.fecha)) as dias_produce, ts.colaborador "
+            String query = "select sum(pt.cantidad) as total_produce, avg(pt.cantidad) as promedio_produce, count(distinct(pt.fecha)) as dias_produce, ts.apellidos, ts.nombres "
                     + "from pesaje as pt "
-                    + "inner join trabajadores_sucursal as ts on ts.id_trabajador = pt.id_trabajador and ts.id_sucursal = pt.id_sucursal and ts.id_cliente = pt.id_cliente "
-                    + "where pt.id_sucursal = '" + id_sucursal + "' and pt.id_cliente = '" + id_cliente + "' and strftime('%Y', pt.fecha) =  strftime('%Y', current_date) "
-                    + "group by pt.id_trabajador "
+                    + "inner join colaboradores as ts on ts.idcolaborador = pt.idcolaborador "
+                    + "where strftime('%Y%m', pt.fecha) =  strftime('%Y%m', current_date) "
+                    + "group by pt.idcolaborador "
                     + "order by sum(pt.cantidad) asc "
                     + "limit 1";
             ResultSet rs = c_conectar.consulta(st, query);
@@ -351,7 +348,7 @@ public class cl_pesaje_trabajador {
 
         return numero;
     }
-    
+
     public Integer[] pesaje_mensual() {
         int total_mes = cl_varios.diasDelMes(c_varios.obtener_mes(), c_varios.obtener_anio());
         Integer[] valor_x = new Integer[total_mes];
@@ -361,8 +358,8 @@ public class cl_pesaje_trabajador {
             Statement st = c_conectar.conexion();
             String query = "select sum(pt.cantidad) as total_dia, strftime('%d', pt.fecha) as dia "
                     + "from pesaje as pt "
-                    + "where pt.id_sucursal = '"+id_sucursal+"' and pt.id_cliente = '"+id_cliente+"' and strftime('%Y', pt.fecha) =  strftime('%Y', current_date) and strftime('%m', pt.fecha) =  strftime('%m', current_date) "
-                    + "group by pt.id_tipo_trabajo, pt.fecha "
+                    + "where strftime('%Y', pt.fecha) =  strftime('%Y', current_date) and strftime('%m', pt.fecha) =  strftime('%m', current_date) "
+                    + "group by pt.idservicio, pt.fecha "
                     + "order by pt.fecha asc";
             //  System.out.println(query);
             ResultSet rs = c_conectar.consulta(st, query);
@@ -378,5 +375,5 @@ public class cl_pesaje_trabajador {
 
         return valor_x;
     }
-    
+
 }

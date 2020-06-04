@@ -7,7 +7,6 @@ package vistas;
 
 import clases.cl_usuarios;
 import clases.cl_varios;
-import formularios.frm_reg_usuario;
 import java.awt.event.KeyEvent;
 
 /**
@@ -151,28 +150,21 @@ public class frm_ver_usuarios extends javax.swing.JInternalFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(cbx_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(26, 26, 26)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_nuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nuevoActionPerformed
-        frm_reg_usuario.registrar = true; //true
-        frm_reg_usuario reg_usuario = new frm_reg_usuario();
-        c_varios.llamar_ventana(reg_usuario);
-        this.dispose();
+
 
     }//GEN-LAST:event_btn_nuevoActionPerformed
 
     private void btn_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificarActionPerformed
-        frm_reg_usuario.c_usuario.setId_usuario(c_usuarios.getId_usuario());
-        frm_reg_usuario.registrar = false;
-        frm_reg_usuario reg_usuario = new frm_reg_usuario();
-        c_varios.llamar_ventana(reg_usuario);
-        this.dispose();
+     
 
     }//GEN-LAST:event_btn_modificarActionPerformed
 

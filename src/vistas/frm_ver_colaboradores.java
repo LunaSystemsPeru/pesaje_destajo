@@ -5,25 +5,25 @@
  */
 package vistas;
 
-import clases.cl_trabajadores_sucursal;
+import clases.cl_colaborador;
 import clases.cl_varios;
-import formularios.frm_reg_colaborador;
+import formularios.frm_colaborador;
+import java.awt.Frame;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import pesaje_trabajos.frm_principal;
-
 /**
  *
  * @author luis
  */
 public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
 
-    cl_trabajadores_sucursal c_colaborador = new cl_trabajadores_sucursal();
+    cl_colaborador c_colaborador = new cl_colaborador();
     cl_varios c_varios = new cl_varios();
     int fila_seleccionada;
-    int id_sucursal = frm_principal.c_sucursales.getId_sucursal();
-    int id_cliente = frm_principal.c_sucursales.getId_cliente();
+    String query;
 
     /**
      * Creates new form frm_ver_colaboradores
@@ -33,10 +33,9 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
 
         txt_fecha_reporte.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
 
-        String query = "select * "
-                + "from trabajadores_sucursal "
-                + "where id_cliente='" + id_cliente + "'  and id_sucursal='" + id_sucursal + "' "
-                + "order by colaborador asc";
+        query = "select * "
+                + "from colaboradores "
+                + "order by apellidos asc, nombres asc";
 
         c_colaborador.mostrar(t_colaboradores, query);
     }
@@ -234,7 +233,7 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/magnifier.png"))); // NOI18N
         jLabel1.setText("Buscar por:");
 
-        cbx_colaborador.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CODIGO", "NOMBRE" }));
+        cbx_colaborador.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "NOMBRE", "CODIGO" }));
         cbx_colaborador.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbx_colaboradorActionPerformed(evt);
@@ -304,7 +303,7 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
             //capture el nro de fla
             fila_seleccionada = t_colaboradores.getSelectedRow();
             //capturar id colaborador
-            c_colaborador.setId_trabajador(Integer.parseInt(t_colaboradores.getValueAt(fila_seleccionada, 0).toString()));
+            c_colaborador.setIdcolaborador(Integer.parseInt(t_colaboradores.getValueAt(fila_seleccionada, 7).toString()));
             btn_modificar.setEnabled(true);
             btn_d_baja.setEnabled(true);
             btn_reporte.setEnabled(true);
@@ -313,32 +312,22 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_t_colaboradoresMouseClicked
 
     private void btn_nuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nuevoActionPerformed
-        frm_reg_colaborador.registrar = true;
-        frm_reg_colaborador reg_colaborador = new frm_reg_colaborador();
-        c_varios.llamar_ventana_normal(reg_colaborador);
-        this.dispose();
+        Frame f = JOptionPane.getRootFrame();
+        frm_colaborador dialog = new frm_colaborador(f, true);
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
     }//GEN-LAST:event_btn_nuevoActionPerformed
 
     private void btn_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificarActionPerformed
-        frm_reg_colaborador.c_colaborador.setId_trabajador(c_colaborador.getId_trabajador());
-        frm_reg_colaborador.registrar = false;
-        frm_reg_colaborador reg_colaborador = new frm_reg_colaborador();
-        c_varios.llamar_ventana(reg_colaborador);
-        this.dispose();
+        
     }//GEN-LAST:event_btn_modificarActionPerformed
 
     private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
         int confirmado = JOptionPane.showConfirmDialog(null, "¿Esta Seguro de Eliminar el Colaborador?");
         if (JOptionPane.OK_OPTION == confirmado) {
-            int id_trabajador = Integer.parseInt(t_colaboradores.getValueAt(fila_seleccionada, 0).toString());
-            c_colaborador.setId_trabajador(id_trabajador);
-            c_colaborador.setId_sucursal(id_sucursal);
-            c_colaborador.setId_cliente(id_cliente);
+            int id_trabajador = Integer.parseInt(t_colaboradores.getValueAt(fila_seleccionada, 7).toString());
+            c_colaborador.setIdcolaborador(id_trabajador);
             c_colaborador.eliminar();
-            String query = "select * "
-                    + "from trabajadores_sucursal "
-                    + "where id_cliente='" + id_cliente + "'  and id_sucursal='" + id_sucursal + "' "
-                    + "order by colaborador asc";
             c_colaborador.mostrar(t_colaboradores, query);
         }
     }//GEN-LAST:event_btn_eliminarActionPerformed
@@ -348,21 +337,20 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txt_colaboradorKeyPressed
 
     private void txt_colaboradorKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_colaboradorKeyReleased
-        String query = "";
         String text = txt_colaborador.getText();
         int tipo_busqueda = cbx_colaborador.getSelectedIndex();
-        if (tipo_busqueda == 0) {
-            query = "select * "
-                    + "from trabajadores_sucursal "
-                    + "where id_trabajador='" + text + "' and id_sucursal='" + id_sucursal + "' and id_cliente='" + id_cliente + "' "
-                    + "order by colaborador asc";
-
-        }
         if (tipo_busqueda == 1) {
             query = "select * "
-                    + "from trabajadores_sucursal "
-                    + "where colaborador like  '%" + text + "%' and id_sucursal='" + id_sucursal + "' and id_cliente='" + id_cliente + "' "
-                    + "order by colaborador asc";
+                    + "from colaboradores "
+                    + "where codigo ='" + text + "' "
+                    + "order by apellidos, nombres asc";
+
+        }
+        if (tipo_busqueda == 0) {
+            query = "select * "
+                    + "from colaboradores "
+                    + "where concat(apellidos, ' ', nombres) like  '%" + text + "%' "
+                    + "order by apellidos, nombres asc";
         }
         c_colaborador.mostrar(t_colaboradores, query);
     }//GEN-LAST:event_txt_colaboradorKeyReleased
@@ -372,17 +360,11 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txt_colaboradorActionPerformed
 
     private void btn_d_bajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_d_bajaActionPerformed
-        int confirmado = JOptionPane.showConfirmDialog(null, "¿Esta Seguro de Anular el Colaborador?");
+        int confirmado = JOptionPane.showConfirmDialog(null, "¿Esta Seguro de dar de Baja al Colaborador?");
         if (JOptionPane.OK_OPTION == confirmado) {
-            int id_trabajador = Integer.parseInt(t_colaboradores.getValueAt(fila_seleccionada, 0).toString());
-            c_colaborador.setId_trabajador(id_trabajador);
-            c_colaborador.setId_sucursal(id_sucursal);
-            c_colaborador.setId_cliente(id_cliente);
-            c_colaborador.elimbaja();
-            String query = "select * "
-                    + "from trabajadores_sucursal "
-                    + "where id_cliente='" + id_cliente + "'  and id_sucursal='" + id_sucursal + "' "
-                    + "order by colaborador asc";
+            int id_trabajador = Integer.parseInt(t_colaboradores.getValueAt(fila_seleccionada, 7).toString());
+            c_colaborador.setIdcolaborador(id_trabajador);
+            c_colaborador.darbaja();
             c_colaborador.mostrar(t_colaboradores, query);
         }
     }//GEN-LAST:event_btn_d_bajaActionPerformed
@@ -392,9 +374,7 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
 
         Map<String, Object> parametros = new HashMap<>();
         parametros.put("f_inicio", fecha_inicio);
-        parametros.put("id_trabajador", c_colaborador.getId_trabajador());
-        parametros.put("id_cliente", id_cliente);
-        parametros.put("id_sucursal", id_sucursal);
+        parametros.put("id_trabajador", c_colaborador.getIdcolaborador());
         c_varios.ver_reporte_excel("rpt_excel_pesaje_diario_trabajador", parametros, "rpt_excel_pesaje_diario_trabajador");
 
     }//GEN-LAST:event_btn_generar_reporteActionPerformed
@@ -408,8 +388,6 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Map<String, Object> parametros = new HashMap<>();
-        parametros.put("id_cliente", id_cliente);
-        parametros.put("id_sucursal", id_sucursal);
         c_varios.ver_reporte_excel("rpt_excel_trabajadores", parametros, "rpt_excel_trabajadores");
     }//GEN-LAST:event_jButton1ActionPerformed
 
