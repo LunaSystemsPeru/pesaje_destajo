@@ -6,14 +6,9 @@
 package formularios;
 
 import clases.cl_colaborador;
-import clases.cl_json_entidad;
 import clases.cl_varios;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
-import models.m_combobox;
-import objects.o_combobox;
-import org.json.simple.parser.ParseException;
-import pesaje_trabajos.frm_principal;
 import vistas.frm_ver_colaboradores;
 
 /**
@@ -31,8 +26,19 @@ public class frm_colaborador extends javax.swing.JDialog {
     public frm_colaborador(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        c_colaborador.obtener_codigovisible();
-        txt_codigo.setText(c_colaborador.getCodigo() + "");
+        if (c_colaborador.getIdcolaborador() > 0) {
+            c_colaborador.obtener_datos();
+            txt_codigo.setText(c_colaborador.getCodigo() + "");
+            txt_apellidos.setText(c_colaborador.getApellidos());
+            txt_nombres.setText(c_colaborador.getNombres());
+            txt_documento.setText(c_colaborador.getDocumento());
+            txt_nrocuenta.setText(c_colaborador.getNrocuenta());
+            btn_modificar.setEnabled(true);
+        } else {
+            c_colaborador.obtener_codigovisible();
+            txt_codigo.setText(c_colaborador.getCodigo() + "");
+            btn_guardar.setEnabled(true);
+        }
     }
 
     /**
@@ -58,7 +64,7 @@ public class frm_colaborador extends javax.swing.JDialog {
         jToolBar1 = new javax.swing.JToolBar();
         btn_guardar = new javax.swing.JButton();
         btn_modificar = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btn_salir = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
         txt_nombres = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -112,6 +118,12 @@ public class frm_colaborador extends javax.swing.JDialog {
 
         jLabel4.setText("Nacionalidad");
 
+        txt_codigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_codigoKeyPressed(evt);
+            }
+        });
+
         jToolBar1.setFloatable(false);
 
         btn_guardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/accept.png"))); // NOI18N
@@ -140,17 +152,17 @@ public class frm_colaborador extends javax.swing.JDialog {
         });
         jToolBar1.add(btn_modificar);
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/delete.png"))); // NOI18N
-        jButton2.setText("Salir");
-        jButton2.setFocusable(false);
-        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btn_salir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/delete.png"))); // NOI18N
+        btn_salir.setText("Salir");
+        btn_salir.setFocusable(false);
+        btn_salir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btn_salir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btn_salir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btn_salirActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton2);
+        jToolBar1.add(btn_salir);
 
         jLabel11.setText("Nombres");
 
@@ -240,21 +252,21 @@ public class frm_colaborador extends javax.swing.JDialog {
     private void txt_apellidosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_apellidosKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             if (txt_apellidos.getText().length() > 0) {
-
+                txt_nombres.requestFocus();
             }
         }
     }//GEN-LAST:event_txt_apellidosKeyPressed
 
     private void cbx_nacionalidadKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cbx_nacionalidadKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-
+            txt_documento.requestFocus();
         }
     }//GEN-LAST:event_cbx_nacionalidadKeyPressed
 
     private void txt_nrocuentaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_nrocuentaKeyPressed
         // TODO add your handling code here:sss
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-
+            btn_guardar.setEnabled(true);
         }
     }//GEN-LAST:event_txt_nrocuentaKeyPressed
 
@@ -265,34 +277,65 @@ public class frm_colaborador extends javax.swing.JDialog {
 
     private void llenar_datos() {
         c_colaborador.setCodigo(Integer.parseInt(txt_codigo.getText().trim()));
+        c_colaborador.setApellidos(txt_apellidos.getText().trim().toUpperCase());
+        c_colaborador.setNombres(txt_nombres.getText().trim().toUpperCase());
+        c_colaborador.setIdnacionalidad(cbx_nacionalidad.getSelectedIndex() + 1);
+        c_colaborador.setDocumento(txt_documento.getText().trim());
+        c_colaborador.setNrocuenta(txt_nrocuenta.getText().trim());
     }
     private void btn_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_guardarActionPerformed
         llenar_datos();
-        c_colaborador.obtener_codigo();
+        if (!"".equals(c_colaborador.getApellidos()) & !"".equals(c_colaborador.getNombres())) {
+            if (c_colaborador.getCodigo() != 0) {
+                c_colaborador.obtener_codigovisible();
+            }
+            c_colaborador.obtener_codigo();
 
-        boolean registrado = c_colaborador.registrar();
+            boolean registrado = c_colaborador.registrar();
 
-        if (registrado) {
-            this.dispose();
+            if (registrado) {
+                btn_salir.doClick();
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "NO HA INGRESADO DATOS");
+            txt_apellidos.requestFocus();
         }
+
     }//GEN-LAST:event_btn_guardarActionPerformed
 
     private void btn_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificarActionPerformed
         llenar_datos();
-        boolean actualizado = c_colaborador.actualizar();
+        if (!"".equals(c_colaborador.getApellidos()) & !"".equals(c_colaborador.getNombres())) {
+            boolean actualizado = c_colaborador.actualizar();
 
-        if (actualizado) {
-            this.dispose();
+            if (actualizado) {
+                btn_salir.doClick();
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "NO HA INGRESADO DATOS");
+            txt_apellidos.requestFocus();
         }
+
     }//GEN-LAST:event_btn_modificarActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btn_salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_salirActionPerformed
         this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+        frm_ver_colaboradores.btn_actualizar.doClick();
+    }//GEN-LAST:event_btn_salirActionPerformed
 
     private void txt_nombresKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_nombresKeyPressed
-        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (txt_nombres.getText().length() > 0) {
+                cbx_nacionalidad.requestFocus();
+            }
+        }
     }//GEN-LAST:event_txt_nombresKeyPressed
+
+    private void txt_codigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_codigoKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            txt_apellidos.requestFocus();
+        }
+    }//GEN-LAST:event_txt_codigoKeyPressed
 
     /**
      * @param args the command line arguments
@@ -337,10 +380,10 @@ public class frm_colaborador extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_guardar;
+    public static javax.swing.JButton btn_guardar;
     private javax.swing.JButton btn_modificar;
+    private javax.swing.JButton btn_salir;
     private javax.swing.JComboBox<String> cbx_nacionalidad;
-    private javax.swing.JButton jButton2;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

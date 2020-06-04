@@ -16,14 +16,14 @@ public class m_trabajo {
         cbx.removeAllItems();
         try {
             Statement st = c_conectar.conexion();
-            String query = "select iddetalle, nombre, valor "
+            String query = "select iddetalles, nombre, valor "
                     + "from parametros_detalles "
-                    + "where idparametros= '4' "
+                    + "where idparametros = '4' "
                     + "order by nombre asc";
             ResultSet rs = c_conectar.consulta(st, query);
 
             while (rs.next()) {
-                cbx.addItem(new o_trabajo(rs.getInt("iddetalle"), rs.getString("nombre")));
+                cbx.addItem(new o_trabajo(rs.getInt("iddetalles"), rs.getString("nombre")));
             }
         } catch (SQLException ex) {
             System.out.println(ex);

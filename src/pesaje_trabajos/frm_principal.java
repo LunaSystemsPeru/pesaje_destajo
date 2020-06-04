@@ -20,7 +20,7 @@ import javax.swing.JFrame;
 import net.sf.jasperreports.engine.JRParameter;
 import vistas.frm_ver_colaboradores;
 import vistas.frm_ver_usuarios;
-import pesaje_trabajos.frm_login;
+import vistas.frm_ver_parametros;
 
 /**
  *
@@ -47,10 +47,14 @@ public class frm_principal extends javax.swing.JFrame {
 
         txt_fecha_inicio.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
         txt_fecha_fin.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
+
+        cargar_mas_produce();
+        cargar_menos_produce();
+        cargar_resumen_anual();
     }
 
     private void cargar_login() {
-        JDialog dialogo = new frm_login(this,true);
+        JDialog dialogo = new frm_login(this, true);
         dialogo.setLocationRelativeTo(null);
         dialogo.setVisible(true);
     }
@@ -623,11 +627,12 @@ public class frm_principal extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         frm_ver_usuarios formulario = new frm_ver_usuarios();
-        c_varios.llamar_ventana(formulario);
+        c_varios.llamar_ventana_normal(formulario);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-
+        frm_ver_parametros formulario = new frm_ver_parametros();
+        c_varios.llamar_ventana_normal(formulario);
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void btn_exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_exitActionPerformed

@@ -68,13 +68,13 @@ public class cl_parametro_detalle {
             Statement st = c_conectar.conexion();
             String query = "select * "
                     + "from parametros_detalles "
-                    + "where iddetalle = '" + iddetalle + "'";
+                    + "where iddetalles = '" + iddetalle + "'";
             //System.out.println(query);
             ResultSet rs = c_conectar.consulta(st, query);
 
             while (rs.next()) {
                 existe = true;
-                idparametro = rs.getInt("idparametro");
+                idparametro = rs.getInt("idparametros");
                 nombre = rs.getString("nombre");
                 valor = rs.getString("valor");
             }
@@ -87,7 +87,7 @@ public class cl_parametro_detalle {
         return existe;
     }
 
-    public void mostrar(JTable tabla, String query) {
+    public void mostrar(JTable tabla) {
         DefaultTableModel modelo;
         try {
             modelo = new DefaultTableModel() {
@@ -97,6 +97,9 @@ public class cl_parametro_detalle {
                 }
             };
 
+            String query = "select * from parametros_detalles "
+                    + "where idparametros = '" + this.idparametro + "' "
+                    + "order by nombre asc";
             Statement st = c_conectar.conexion();
             ResultSet rs = c_conectar.consulta(st, query);
 
@@ -106,7 +109,7 @@ public class cl_parametro_detalle {
 
             while (rs.next()) {
                 Object[] fila = new Object[3];
-                fila[0] = rs.getInt("iddetalle");
+                fila[0] = rs.getInt("iddetalles");
                 fila[1] = rs.getString("nombre");
                 fila[2] = rs.getString("valor");
                 modelo.addRow(fila);
@@ -115,9 +118,9 @@ public class cl_parametro_detalle {
             c_conectar.cerrar(rs);
 
             tabla.setModel(modelo);
-            tabla.getColumnModel().getColumn(0).setPreferredWidth(80);
+            tabla.getColumnModel().getColumn(0).setPreferredWidth(50);
             tabla.getColumnModel().getColumn(1).setPreferredWidth(100);
-            tabla.getColumnModel().getColumn(2).setPreferredWidth(100);
+            tabla.getColumnModel().getColumn(2).setPreferredWidth(200);
 
         } catch (SQLException e) {
             System.out.print(e);
@@ -161,7 +164,7 @@ public class cl_parametro_detalle {
         Statement st = c_conectar.conexion();
         String query = "update parametros_detalles "
                 + "set nombre ='" + nombre + "', valor='" + valor + "' "
-                + "where iddetalle='" + iddetalle + "' ";
+                + "where iddetalles='" + iddetalle + "' ";
         System.out.println(query);
         int resultado = c_conectar.actualiza(st, query);
         if (resultado > -1) {

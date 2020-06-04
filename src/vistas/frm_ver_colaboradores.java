@@ -11,15 +11,14 @@ import formularios.frm_colaborador;
 import java.awt.Frame;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import pesaje_trabajos.frm_principal;
+
 /**
  *
  * @author luis
  */
 public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
-
+    
     cl_colaborador c_colaborador = new cl_colaborador();
     cl_varios c_varios = new cl_varios();
     int fila_seleccionada;
@@ -30,14 +29,28 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
      */
     public frm_ver_colaboradores() {
         initComponents();
-
+        
         txt_fecha_reporte.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
-
+        
         query = "select * "
                 + "from colaboradores "
                 + "order by apellidos asc, nombres asc";
-
+        
         c_colaborador.mostrar(t_colaboradores, query);
+    }
+    
+    private void activar_botones() {
+        btn_modificar.setEnabled(true);
+        btn_d_baja.setEnabled(true);
+        btn_reporte.setEnabled(true);
+        btn_eliminar.setEnabled(true);
+    }
+    
+    private void desactivar_botones() {
+        btn_modificar.setEnabled(false);
+        btn_d_baja.setEnabled(false);
+        btn_reporte.setEnabled(false);
+        btn_eliminar.setEnabled(false);
     }
 
     /**
@@ -59,6 +72,7 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
         btn_d_baja = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
         btn_eliminar = new javax.swing.JButton();
+        btn_actualizar = new javax.swing.JButton();
         btn_reporte = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
@@ -173,6 +187,18 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
         });
         jToolBar1.add(btn_eliminar);
 
+        btn_actualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/clipboard_text.png"))); // NOI18N
+        btn_actualizar.setText("Actualizar");
+        btn_actualizar.setFocusable(false);
+        btn_actualizar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btn_actualizar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btn_actualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_actualizarActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btn_actualizar);
+
         btn_reporte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/clipboard_text.png"))); // NOI18N
         btn_reporte.setText("Rpt. Pesaje");
         btn_reporte.setEnabled(false);
@@ -223,6 +249,8 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
             }
         ));
         t_colaboradores.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        t_colaboradores.setRowHeight(20);
+        t_colaboradores.setShowHorizontalLines(false);
         t_colaboradores.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 t_colaboradoresMouseClicked(evt);
@@ -298,31 +326,35 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cbx_colaboradorActionPerformed
 
     private void t_colaboradoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_t_colaboradoresMouseClicked
-
+        
         if (evt.getClickCount() == 2) {
             //capture el nro de fla
             fila_seleccionada = t_colaboradores.getSelectedRow();
             //capturar id colaborador
             c_colaborador.setIdcolaborador(Integer.parseInt(t_colaboradores.getValueAt(fila_seleccionada, 7).toString()));
-            btn_modificar.setEnabled(true);
-            btn_d_baja.setEnabled(true);
-            btn_reporte.setEnabled(true);
-            btn_eliminar.setEnabled(true);
+            activar_botones();
         }
     }//GEN-LAST:event_t_colaboradoresMouseClicked
 
     private void btn_nuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nuevoActionPerformed
         Frame f = JOptionPane.getRootFrame();
+        frm_colaborador.c_colaborador.setIdcolaborador(0);
         frm_colaborador dialog = new frm_colaborador(f, true);
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
     }//GEN-LAST:event_btn_nuevoActionPerformed
 
     private void btn_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificarActionPerformed
-        
+        desactivar_botones();
+        Frame f = JOptionPane.getRootFrame();
+        frm_colaborador.c_colaborador.setIdcolaborador(this.c_colaborador.getIdcolaborador());
+        frm_colaborador dialog = new frm_colaborador(f, true);
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
     }//GEN-LAST:event_btn_modificarActionPerformed
 
     private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
+        desactivar_botones();
         int confirmado = JOptionPane.showConfirmDialog(null, "¿Esta Seguro de Eliminar el Colaborador?");
         if (JOptionPane.OK_OPTION == confirmado) {
             int id_trabajador = Integer.parseInt(t_colaboradores.getValueAt(fila_seleccionada, 7).toString());
@@ -344,7 +376,7 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
                     + "from colaboradores "
                     + "where codigo ='" + text + "' "
                     + "order by apellidos, nombres asc";
-
+            
         }
         if (tipo_busqueda == 0) {
             query = "select * "
@@ -360,6 +392,7 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txt_colaboradorActionPerformed
 
     private void btn_d_bajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_d_bajaActionPerformed
+        desactivar_botones();
         int confirmado = JOptionPane.showConfirmDialog(null, "¿Esta Seguro de dar de Baja al Colaborador?");
         if (JOptionPane.OK_OPTION == confirmado) {
             int id_trabajador = Integer.parseInt(t_colaboradores.getValueAt(fila_seleccionada, 7).toString());
@@ -371,7 +404,7 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
 
     private void btn_generar_reporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generar_reporteActionPerformed
         String fecha_inicio = c_varios.fecha_myql(txt_fecha_reporte.getText());
-
+        
         Map<String, Object> parametros = new HashMap<>();
         parametros.put("f_inicio", fecha_inicio);
         parametros.put("id_trabajador", c_colaborador.getIdcolaborador());
@@ -380,6 +413,7 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btn_generar_reporteActionPerformed
 
     private void btn_reporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_reporteActionPerformed
+        desactivar_botones();
         jd_fecha.setModal(true);
         jd_fecha.setSize(400, 134);
         jd_fecha.setLocationRelativeTo(null);
@@ -391,8 +425,13 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
         c_varios.ver_reporte_excel("rpt_excel_trabajadores", parametros, "rpt_excel_trabajadores");
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void btn_actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_actualizarActionPerformed
+        c_colaborador.mostrar(t_colaboradores, query);
+    }//GEN-LAST:event_btn_actualizarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public static javax.swing.JButton btn_actualizar;
     private javax.swing.JButton btn_cerrar;
     private javax.swing.JButton btn_d_baja;
     private javax.swing.JButton btn_eliminar;

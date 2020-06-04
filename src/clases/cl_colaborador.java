@@ -188,14 +188,37 @@ public class cl_colaborador {
             modelo.addColumn("");
 
             while (rs.next()) {
+                int idnacion = rs.getInt("idnacionalidad");
+                int idestado = rs.getInt("estado");
+                String nacionalidad = "";
+                String sestado = "";
+                if (idnacion == 1) {
+                    nacionalidad = "PERUANO";
+                }
+                if (idnacion == 2) {
+                    nacionalidad = "VENEZOLANO";
+                }
+                if (idnacion == 2) {
+                    nacionalidad = "COLOMBIANO";
+                }
+                if (idnacion == 4) {
+                    nacionalidad = "OTRO";
+                }
+                
+                if (idestado == 0) {
+                    sestado = "ACTIVO";
+                }
+                if (idestado == 1) {
+                    sestado = "DESCANSO";
+                }
                 Object[] fila = new Object[8];
                 fila[0] = rs.getInt("codigo");
-                fila[1] = rs.getString("idnacionalidad");
+                fila[1] = nacionalidad;
                 fila[2] = rs.getString("documento");
                 fila[3] = rs.getString("apellidos") + " " + rs.getString("nombres");
                 fila[4] = rs.getString("nrocuenta");
-                fila[5] = rs.getString("nro_llamdas");
-                fila[6] = rs.getString("estado");
+                fila[5] = rs.getString("nro_llamadas");
+                fila[6] = sestado;
                 fila[7] = rs.getString("idcolaborador");
 
                 modelo.addRow(fila);
@@ -205,11 +228,17 @@ public class cl_colaborador {
             c_conectar.cerrar(rs);
 
             tabla.setModel(modelo);
-            tabla.getColumnModel().getColumn(0).setPreferredWidth(80);
-            tabla.getColumnModel().getColumn(1).setPreferredWidth(80);
-            tabla.getColumnModel().getColumn(2).setPreferredWidth(350);
-            tabla.getColumnModel().getColumn(3).setPreferredWidth(80);
-            tabla.getColumnModel().getColumn(4).setPreferredWidth(80);
+            tabla.getColumnModel().getColumn(0).setPreferredWidth(50);
+            tabla.getColumnModel().getColumn(1).setPreferredWidth(100);
+            tabla.getColumnModel().getColumn(2).setPreferredWidth(100);
+            tabla.getColumnModel().getColumn(3).setPreferredWidth(400);
+            tabla.getColumnModel().getColumn(4).setPreferredWidth(150);
+            tabla.getColumnModel().getColumn(5).setPreferredWidth(80);
+            tabla.getColumnModel().getColumn(6).setPreferredWidth(100);
+            tabla.getColumnModel().getColumn(7).setPreferredWidth(1);
+            tabla.getColumnModel().getColumn(7).setMaxWidth(0);
+            tabla.getColumnModel().getColumn(7).setMinWidth(0);
+            
 
         } catch (SQLException e) {
             System.out.print(e);

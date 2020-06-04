@@ -88,6 +88,25 @@ public class cl_pesaje_trabajador {
         this.idusuario = idusuario;
     }
 
+    //para guardar cuando hay problemas de llave primaria
+    public void obtener_codigo() {
+        try {
+            Statement st = c_conectar.conexion();
+            String query = "select ifnull(max(idpesaje) + 1, 1) as codigo "
+                    + "from pesaje ";
+            ResultSet rs = c_conectar.consulta(st, query);
+
+            while (rs.next()) {
+                idpesaje = rs.getInt("codigo");
+            }
+            c_conectar.cerrar(rs);
+            c_conectar.cerrar(st);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
+        }
+
+    }
+    
     public boolean registrar() {
         boolean registrado = false;
         Statement st = c_conectar.conexion();
@@ -287,7 +306,7 @@ public class cl_pesaje_trabajador {
             Statement st = c_conectar.conexion();
             String query = "select sum(pt.cantidad) as total_produce, avg(pt.cantidad) as promedio_produce, count(distinct(pt.fecha)) as dias_produce, ts.apellidos, ts.nombres "
                     + "from pesaje as pt "
-                    + "inner join trabajadores_sucursal as ts on ts.idcolaborador = pt.idcolaborador "
+                    + "inner join colaboradores as ts on ts.idcolaborador = pt.idcolaborador "
                     + "where strftime('%Y', pt.fecha) =  strftime('%Y', current_date) "
                     + "group by pt.idcolaborador "
                     + "order by sum(pt.cantidad) desc "
@@ -298,7 +317,7 @@ public class cl_pesaje_trabajador {
                 numero[0] = c_varios.formato_totales(rs.getDouble("total_produce"));
                 numero[1] = c_varios.formato_totales(rs.getDouble("promedio_produce"));
                 numero[2] = c_varios.formato_totales(rs.getDouble("dias_produce"));
-                numero[3] = rs.getString("colaborador");
+                numero[3] = rs.getString("apellidos") + " " + rs.getString("nombres");
             } else {
                 numero[0] = "0.00";
                 numero[1] = "0.00";
@@ -332,7 +351,7 @@ public class cl_pesaje_trabajador {
                 numero[0] = c_varios.formato_totales(rs.getDouble("total_produce"));
                 numero[1] = c_varios.formato_totales(rs.getDouble("promedio_produce"));
                 numero[2] = c_varios.formato_totales(rs.getDouble("dias_produce"));
-                numero[3] = rs.getString("colaborador");
+                numero[3] = rs.getString("apellidos") + " " + rs.getString("nombres");
             } else {
                 numero[0] = "0.00";
                 numero[1] = "0.00";
