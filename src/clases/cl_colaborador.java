@@ -5,6 +5,10 @@
  */
 package clases;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -105,7 +109,7 @@ public class cl_colaborador {
     public void setNro_llamadas(int nro_llamadas) {
         this.nro_llamadas = nro_llamadas;
     }
-    
+
     public String getDatos() {
         return apellidos + " " + nombres;
     }
@@ -140,7 +144,7 @@ public class cl_colaborador {
 
         return existe;
     }
-    
+
     public boolean obtener_datos_codigo() {
         boolean existe = false;
 
@@ -163,6 +167,63 @@ public class cl_colaborador {
         }
 
         return existe;
+    }
+
+    public void llenar_text() {
+        String query = "select * from colaboradores order by codigo asc";
+        try {
+
+            Statement st = c_conectar.conexion();
+            ResultSet rs = c_conectar.consulta(st, query);
+
+            String linea = "";
+            FileWriter fichero = null;
+            PrintWriter pw = null;
+            try {
+                File dir;
+                dir = new File("");
+                System.out.println(dir.getAbsolutePath() + File.separator + "excel.csv");
+
+                fichero = new FileWriter(dir.getAbsolutePath() + File.separator + "excel.csv");
+                pw = new PrintWriter(fichero);
+
+                while (rs.next()) {
+                    linea
+                            += rs.getString("idcolaborador") + ","
+                            + rs.getString("codigo") + ","
+                            + rs.getString("documento") + ","
+                            + rs.getString("idnacionalidad") + ","
+                            + rs.getString("apellidos") + ","
+                            + rs.getString("nombres") + ","
+                            + rs.getString("nrocuenta") + ","
+                            + rs.getString("estado") + ","
+                            + rs.getString("nro_llamadas") + "\n";
+                    System.out.println(linea);
+
+                    pw.println(linea);
+
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    // Nuevamente aprovechamos el finally para 
+                    // asegurarnos que se cierra el fichero.
+                    if (null != fichero) {
+                        fichero.close();
+                    }
+                } catch (Exception e2) {
+                    e2.printStackTrace();
+                }
+            }
+
+            c_conectar.cerrar(st);
+            c_conectar.cerrar(rs);
+        } catch (SQLException e) {
+            System.out.print(e);
+        }
+
     }
 
     public void mostrar(JTable tabla, String query) {
@@ -204,7 +265,7 @@ public class cl_colaborador {
                 if (idnacion == 4) {
                     nacionalidad = "OTRO";
                 }
-                
+
                 if (idestado == 0) {
                     sestado = "ACTIVO";
                 }
@@ -238,7 +299,6 @@ public class cl_colaborador {
             tabla.getColumnModel().getColumn(7).setPreferredWidth(1);
             tabla.getColumnModel().getColumn(7).setMaxWidth(0);
             tabla.getColumnModel().getColumn(7).setMinWidth(0);
-            
 
         } catch (SQLException e) {
             System.out.print(e);
@@ -276,7 +336,7 @@ public class cl_colaborador {
         }
 
     }
-    
+
     public void obtener_codigovisible() {
         try {
             Statement st = c_conectar.conexion();
@@ -309,7 +369,7 @@ public class cl_colaborador {
         c_conectar.cerrar(st);
         return actualizado;
     }
-    
+
     public boolean darbaja() {
         boolean actualizado = false;
         Statement st = c_conectar.conexion();
@@ -324,12 +384,25 @@ public class cl_colaborador {
         c_conectar.cerrar(st);
         return actualizado;
     }
-    
-     public boolean eliminar() {
+
+    public boolean eliminar() {
         boolean actualizado = false;
         Statement st = c_conectar.conexion();
         String query = "delete from colaboradores "
                 + "where idcolaborador ='" + idcolaborador + "' ";
+        System.out.println(query);
+        int resultado = c_conectar.actualiza(st, query);
+        if (resultado > -1) {
+            actualizado = true;
+        }
+        c_conectar.cerrar(st);
+        return actualizado;
+    }
+    
+    public boolean eliminar_todo() {
+        boolean actualizado = false;
+        Statement st = c_conectar.conexion();
+        String query = "delete from colaboradores ";
         System.out.println(query);
         int resultado = c_conectar.actualiza(st, query);
         if (resultado > -1) {

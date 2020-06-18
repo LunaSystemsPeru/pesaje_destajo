@@ -18,7 +18,7 @@
                       <Group type="102" attributes="0">
                           <Component id="jLabel10" min="-2" pref="100" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jComboBox1" max="32767" attributes="0"/>
+                          <Component id="jTextField3" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel11" min="-2" pref="100" max="-2" attributes="0"/>
@@ -78,7 +78,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel10" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                      <Component id="jComboBox1" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="jTextField3" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -140,6 +140,8 @@
             <Property name="horizontalAlignment" type="int" value="0"/>
           </Properties>
         </Component>
+        <Component class="javax.swing.JTextField" name="jTextField3">
+        </Component>
         <Component class="javax.swing.JLabel" name="jLabel11">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="4"/>
@@ -157,9 +159,6 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jTextField7">
-          <Events>
-            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField7KeyPressed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jButton10">
           <Properties>
@@ -179,21 +178,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Obtener Pesajes"/>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JComboBox" name="jComboBox1">
-          <Properties>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="4">
-                <StringItem index="0" value="Item 1"/>
-                <StringItem index="1" value="Item 2"/>
-                <StringItem index="2" value="Item 3"/>
-                <StringItem index="3" value="Item 4"/>
-              </StringArray>
-            </Property>
-          </Properties>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-          </AuxValues>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton11ActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -397,7 +384,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel2" min="-2" pref="100" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="ftffecha" min="-2" pref="122" max="-2" attributes="0"/>
+                          <Component id="ftffecha" min="-2" pref="147" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel1" min="-2" pref="100" max="-2" attributes="0"/>
@@ -427,28 +414,19 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel2" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                              <Component id="ftffecha" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel1" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                              <Component id="cbx_trabajo" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                          </Group>
+                      <Component id="jLabel2" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="ftffecha" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                          <Component id="jLabel15" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                          <Component id="jLabel16" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel15" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel16" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="txt_tope" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                              <Component id="jLabel5" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="2" attributes="0">
+                      <Component id="txt_tope" alignment="2" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="jLabel5" alignment="2" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="cbx_trabajo" alignment="2" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="jLabel1" alignment="2" min="-2" pref="30" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -460,17 +438,6 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Tipo de Trabajo:"/>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JFormattedTextField" name="ftffecha">
-          <Properties>
-            <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
-              <Format format="##/##/####" subtype="-1" type="5"/>
-            </Property>
-            <Property name="horizontalAlignment" type="int" value="0"/>
-          </Properties>
-          <Events>
-            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="ftffechaKeyPressed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
@@ -519,6 +486,11 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="jLabel16"/>
           </Properties>
+        </Component>
+        <Component class="com.toedter.calendar.JDateChooser" name="ftffecha">
+          <Events>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="ftffechaKeyPressed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

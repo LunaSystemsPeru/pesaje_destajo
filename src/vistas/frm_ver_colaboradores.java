@@ -8,6 +8,7 @@ package vistas;
 import clases.cl_colaborador;
 import clases.cl_varios;
 import formularios.frm_colaborador;
+import formularios.frm_load_colaborador;
 import java.awt.Frame;
 import java.util.HashMap;
 import java.util.Map;
@@ -75,6 +76,7 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
         btn_actualizar = new javax.swing.JButton();
         btn_reporte = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
         btn_cerrar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -223,6 +225,18 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
             }
         });
         jToolBar1.add(jButton1);
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/excel.png"))); // NOI18N
+        jButton2.setText("Importar");
+        jButton2.setFocusable(false);
+        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButton2);
         jToolBar1.add(jSeparator2);
 
         btn_cerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/cross.png"))); // NOI18N
@@ -429,6 +443,13 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
         c_colaborador.mostrar(t_colaboradores, query);
     }//GEN-LAST:event_btn_actualizarActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        Frame f = JOptionPane.getRootFrame();
+        frm_load_colaborador dialog = new frm_load_colaborador(f, true);
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JButton btn_actualizar;
@@ -441,6 +462,7 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
     private javax.swing.JButton btn_reporte;
     private javax.swing.JComboBox<String> cbx_colaborador;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;

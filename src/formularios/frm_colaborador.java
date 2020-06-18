@@ -286,7 +286,7 @@ public class frm_colaborador extends javax.swing.JDialog {
     private void btn_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_guardarActionPerformed
         llenar_datos();
         if (!"".equals(c_colaborador.getApellidos()) & !"".equals(c_colaborador.getNombres())) {
-            if (c_colaborador.getCodigo() != 0) {
+            if (c_colaborador.getCodigo() == 0) {
                 c_colaborador.obtener_codigovisible();
             }
             c_colaborador.obtener_codigo();
@@ -333,6 +333,11 @@ public class frm_colaborador extends javax.swing.JDialog {
 
     private void txt_codigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_codigoKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            c_colaborador.setCodigo(Integer.parseInt(txt_codigo.getText()));
+            if (c_colaborador.obtener_datos()) {
+                txt_apellidos.setText(c_colaborador.getApellidos());
+                txt_nombres.setText(c_colaborador.getNombres());
+            }
             txt_apellidos.requestFocus();
         }
     }//GEN-LAST:event_txt_codigoKeyPressed

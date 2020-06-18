@@ -10,6 +10,7 @@ import clases.cl_parametro_detalle;
 import clases.cl_pesaje_trabajador;
 import clases.cl_varios;
 import java.awt.event.KeyEvent;
+import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import models.m_trabajo;
@@ -32,6 +33,8 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
     double dneto;
     double tope_maximo = 0;
 
+    String fecha;
+
     DefaultTableModel modelo;
 
     /**
@@ -39,7 +42,8 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
      */
     public frm_reg_pesaje() {
         initComponents();
-        ftffecha.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
+        //ftffecha.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
+
         m_trabajo.cbx_trabajo(cbx_trabajo);
         modelotabla();
 
@@ -127,13 +131,13 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         t_detalle_trabajador = new javax.swing.JTable();
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
+        jTextField3 = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
         jTextField7 = new javax.swing.JTextField();
         jButton10 = new javax.swing.JButton();
         jButton11 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
         jd_memorandum = new javax.swing.JDialog();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
@@ -146,13 +150,13 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         jButton4 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        ftffecha = new javax.swing.JFormattedTextField();
         jLabel2 = new javax.swing.JLabel();
         cbx_trabajo = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         txt_tope = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
+        ftffecha = new com.toedter.calendar.JDateChooser();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         txt_colaborador = new javax.swing.JTextField();
@@ -213,12 +217,6 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
 
         jLabel17.setText("Ingrese Codigo:");
 
-        jTextField7.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jTextField7KeyPressed(evt);
-            }
-        });
-
         jButton10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/find.png"))); // NOI18N
         jButton10.setText("Buscar");
         jButton10.addActionListener(new java.awt.event.ActionListener() {
@@ -229,8 +227,11 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
 
         jButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/clipboard_text.png"))); // NOI18N
         jButton11.setText("Obtener Pesajes");
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton11ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jd_detalle_trabajadorLayout = new javax.swing.GroupLayout(jd_detalle_trabajador.getContentPane());
         jd_detalle_trabajador.getContentPane().setLayout(jd_detalle_trabajadorLayout);
@@ -243,7 +244,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
                     .addGroup(jd_detalle_trabajadorLayout.createSequentialGroup()
                         .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jTextField3))
                     .addGroup(jd_detalle_trabajadorLayout.createSequentialGroup()
                         .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -288,7 +289,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jd_detalle_trabajadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jd_detalle_trabajadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -381,18 +382,6 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Tipo de Trabajo:");
 
-        try {
-            ftffecha.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-        ftffecha.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        ftffecha.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                ftffechaKeyPressed(evt);
-            }
-        });
-
         jLabel2.setText("Fecha");
 
         cbx_trabajo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PESAJE", "DESTAJO", "CORTE Y FILETE" }));
@@ -426,6 +415,12 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
 
         jLabel16.setText("jLabel16");
 
+        ftffecha.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                ftffechaKeyPressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -436,7 +431,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ftffecha, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(ftffecha, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -458,22 +453,17 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ftffecha, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbx_trabajo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel15)
-                            .addComponent(jLabel16))
-                        .addGap(22, 22, 22)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txt_tope, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ftffecha, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(txt_tope, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbx_trabajo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -782,7 +772,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
             txt_cantidad.requestFocus();
         } else {
             Object fila[] = new Object[5];
-            fila[0] = c_varios.fecha_myql(ftffecha.getText());
+            fila[0] = c_varios.fecha_myql(fecha);
             fila[1] = c_varios.getHoraActual();
             fila[2] = txt_colaborador.getText();
             fila[3] = txt_nombrecolaborador.getText();
@@ -793,7 +783,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
             c_pesaje_trabajador.setHora(c_varios.getHoraActual());
             c_pesaje_trabajador.setIdcolaborador(c_colaborador.getIdcolaborador());
             c_pesaje_trabajador.setCantidad(dneto);
-            c_pesaje_trabajador.setFecha(c_varios.fecha_myql(ftffecha.getText()));
+            c_pesaje_trabajador.setFecha(c_varios.fecha_myql(fecha));
             c_pesaje_trabajador.setIdservicio(c_detalle.getIddetalle());
             c_pesaje_trabajador.obtener_codigo();
             c_pesaje_trabajador.registrar();
@@ -814,6 +804,9 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
 
     private void cbx_trabajoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cbx_trabajoKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            fecha = sdf.format(ftffecha.getDate());
+
             // btn_iniciar.requestFocus();
             o_trabajo o_trabajo = (o_trabajo) cbx_trabajo.getSelectedItem();
 
@@ -826,7 +819,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
             //mostrar datos grabados 
             modelotabla();
 
-            c_pesaje_trabajador.setFecha(c_varios.fecha_myql(ftffecha.getText()));
+            c_pesaje_trabajador.setFecha(c_varios.fecha_myql(fecha));
             c_pesaje_trabajador.setIdservicio(o_trabajo.getId_tipo_trabajo());
             c_pesaje_trabajador.ver_pesaje_fecha(modelo);
             t_listrabaj.setModel(modelo);
@@ -842,6 +835,9 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
 
     private void txt_colaboradorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_colaboradorKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            fecha = sdf.format(ftffecha.getDate());
+            
             if (txt_colaborador.getText().length() > 0) {
                 int colaborador = Integer.parseInt(txt_colaborador.getText());
                 c_colaborador.setCodigo(colaborador);
@@ -913,14 +909,6 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         c_varios.limitar_caracteres(evt, txt_colaborador, 3);
     }//GEN-LAST:event_txt_colaboradorKeyTyped
 
-    private void ftffechaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ftffechaKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            if (ftffecha.getText().length() == 10) {
-                cbx_trabajo.requestFocus();
-            }
-        }
-    }//GEN-LAST:event_ftffechaKeyPressed
-
     private void txt_topeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_topeKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String texto = txt_tope.getText();
@@ -944,7 +932,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txt_tara_balanzaKeyTyped
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        c_pesaje_trabajador.setFecha(c_varios.fecha_myql(ftffecha.getText()));
+        c_pesaje_trabajador.setFecha(c_varios.fecha_myql(fecha));
         double total = c_pesaje_trabajador.obtener_total_fecha();
 
         JOptionPane.showMessageDialog(null, "<html>El pesaje total del dia es: <h2>" + c_varios.formato_numero(total) + "</h2></html>");
@@ -966,21 +954,6 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         jd_detalle_trabajador.setModal(true);
         jd_detalle_trabajador.setSize(436, 474);
-
-        c_pesaje_trabajador.setIdcolaborador(c_colaborador.getIdcolaborador());
-        c_pesaje_trabajador.ver_detalle_trabajador(t_detalle_trabajador);
-
-        jTextField1.setText(txt_nombrecolaborador.getText());
-        jTextField2.setText(ftffecha.getText());
-        //jTextField3.setText(c_tipo.getDescripcion());
-
-        double total = 0;
-        for (int i = 0; i < t_detalle_trabajador.getRowCount(); i++) {
-            total += Double.parseDouble(t_detalle_trabajador.getValueAt(i, 2).toString());
-        }
-
-        jTextField4.setText(c_varios.formato_totales(total));
-
         jd_detalle_trabajador.setLocationRelativeTo(null);
         jd_detalle_trabajador.setVisible(true);
     }//GEN-LAST:event_jButton5ActionPerformed
@@ -996,29 +969,48 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         jd_memorandum.setSize(578, 440);
 
         jTextField5.setText(txt_nombrecolaborador.getText());
-        jTextField6.setText(ftffecha.getText());
+        jTextField6.setText(fecha);
         jTextArea1.requestFocus();
 
         jd_memorandum.setLocationRelativeTo(null);
         jd_memorandum.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jTextField7KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField7KeyPressed
-        jButton10.doClick();
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        c_pesaje_trabajador.setIdcolaborador(c_colaborador.getIdcolaborador());
+        c_pesaje_trabajador.ver_detalle_trabajador(t_detalle_trabajador);
 
-    }//GEN-LAST:event_jTextField7KeyPressed
+        jTextField2.setText(fecha);
+        //jTextField3.setText(c_tipo.getDescripcion());
+
+        double total = 0;
+        for (int i = 0; i < t_detalle_trabajador.getRowCount(); i++) {
+            total += Double.parseDouble(t_detalle_trabajador.getValueAt(i, 2).toString());
+        }
+
+        jTextField4.setText(c_varios.formato_totales(total));
+    }//GEN-LAST:event_jButton11ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        c_colaborador.setCodigo(Integer.parseInt(jTextField7.getText().trim()));
-        c_colaborador.obtener_datos_codigo();
-        c_colaborador.obtener_datos();
+        c_colaborador.setCodigo(Integer.parseInt(jTextField7.getText()));
+
+        if (c_colaborador.obtener_datos_codigo()) {
+            c_colaborador.obtener_datos();
+            txt_nombrecolaborador.setText(c_colaborador.getDatos());
+        }
+
     }//GEN-LAST:event_jButton10ActionPerformed
+
+    private void ftffechaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ftffechaKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+        }
+    }//GEN-LAST:event_ftffechaKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_agregar;
     private javax.swing.JComboBox<String> cbx_trabajo;
-    private javax.swing.JFormattedTextField ftffecha;
+    private com.toedter.calendar.JDateChooser ftffecha;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
@@ -1030,7 +1022,6 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1058,6 +1049,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
