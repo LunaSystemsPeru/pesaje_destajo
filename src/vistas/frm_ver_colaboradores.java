@@ -419,10 +419,6 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
     private void btn_generar_reporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generar_reporteActionPerformed
         String fecha_inicio = c_varios.fecha_myql(txt_fecha_reporte.getText());
         
-        Map<String, Object> parametros = new HashMap<>();
-        parametros.put("f_inicio", fecha_inicio);
-        parametros.put("id_trabajador", c_colaborador.getIdcolaborador());
-        c_varios.ver_reporte_excel("rpt_excel_pesaje_diario_trabajador", parametros, "rpt_excel_pesaje_diario_trabajador");
 
     }//GEN-LAST:event_btn_generar_reporteActionPerformed
 
@@ -435,8 +431,7 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btn_reporteActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Map<String, Object> parametros = new HashMap<>();
-        c_varios.ver_reporte_excel("rpt_excel_trabajadores", parametros, "rpt_excel_trabajadores");
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btn_actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_actualizarActionPerformed

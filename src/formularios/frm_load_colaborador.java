@@ -79,7 +79,7 @@ public class frm_load_colaborador extends javax.swing.JDialog {
         jLabel2.setText("Separador:");
 
         jTextField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField2.setText(",");
+        jTextField2.setText(";");
 
         jLabel3.setText("Carga de Archivo:");
 
@@ -185,24 +185,27 @@ public class frm_load_colaborador extends javax.swing.JDialog {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         String aux = "";
-        String texto = "";
         try {
             if (abre != null) {
+                barraProgreso.setValue(0);
                 JOptionPane.showMessageDialog(null, "ELIMINAREMOS TODA LA INFORMACION");
                 c_colaborador.eliminar_todo();
+                barraProgreso.setValue(2); // Al 33%
                 FileReader archivos = new FileReader(abre);
                 BufferedReader lee = new BufferedReader(archivos);
                 int codigo = 1;
+                
+                barraProgreso.setValue(10); // Al 33%
                 while ((aux = lee.readLine()) != null) {
-                    texto += aux + "\n";
 
-                    String[] values = aux.split(",");    //your seperator
+                    String[] values = aux.split(";");    //your seperator
+                  //  System.out.println("longitud" + values.length);
                     c_colaborador.setIdcolaborador(codigo);
                     c_colaborador.setCodigo(Integer.parseInt(values[1]));
                     c_colaborador.setDocumento(values[2]);
                     c_colaborador.setIdnacionalidad(Integer.parseInt(values[3]));
                     c_colaborador.setApellidos(values[4]);
-                    c_colaborador.setNombres(values[5]);
+                    c_colaborador.setNombres(values[5].trim());
                     c_colaborador.setNrocuenta(values[6]);
                     c_colaborador.setEstado(0);
                     c_colaborador.setNro_llamadas(0);
@@ -219,9 +222,6 @@ public class frm_load_colaborador extends javax.swing.JDialog {
             
             try
             {
-               barraProgreso.setValue(0);
-               barraProgreso.setValue(33); // Al 33%
-               barraProgreso.setValue(66); // Al 66%
                barraProgreso.setValue(100); // Al 100%
                JOptionPane.showMessageDialog(null, "CARGA FINALIZADA");
                 frm_ver_colaboradores.btn_actualizar.doClick();

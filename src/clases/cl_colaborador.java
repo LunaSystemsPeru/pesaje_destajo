@@ -150,7 +150,7 @@ public class cl_colaborador {
 
         try {
             Statement st = c_conectar.conexion();
-            String query = "select * "
+            String query = "select idcolaborador "
                     + "from colaboradores "
                     + "where codigo = '" + codigo + "'";
             //System.out.println(query);
@@ -198,7 +198,7 @@ public class cl_colaborador {
                             + rs.getString("nrocuenta") + ","
                             + rs.getString("estado") + ","
                             + rs.getString("nro_llamadas") + "\n";
-                    System.out.println(linea);
+                //    System.out.println(linea);
 
                     pw.println(linea);
 
@@ -361,7 +361,7 @@ public class cl_colaborador {
         String query = "update colaboradores "
                 + "set apellidos ='" + apellidos + "', nombres ='" + nombres + "', documento ='" + documento + "', idnacionalidad='" + idnacionalidad + "',nrocuenta= '" + nrocuenta + "',estado= '" + estado + "' "
                 + "where idcolaborador ='" + idcolaborador + "' ";
-        System.out.println(query);
+       // System.out.println(query);
         int resultado = c_conectar.actualiza(st, query);
         if (resultado > -1) {
             actualizado = true;
@@ -376,7 +376,7 @@ public class cl_colaborador {
         String query = "update colaboradores "
                 + "set estado = 0 "
                 + "where idcolaborador ='" + idcolaborador + "' ";
-        System.out.println(query);
+     //   System.out.println(query);
         int resultado = c_conectar.actualiza(st, query);
         if (resultado > -1) {
             actualizado = true;
@@ -390,7 +390,7 @@ public class cl_colaborador {
         Statement st = c_conectar.conexion();
         String query = "delete from colaboradores "
                 + "where idcolaborador ='" + idcolaborador + "' ";
-        System.out.println(query);
+      //  System.out.println(query);
         int resultado = c_conectar.actualiza(st, query);
         if (resultado > -1) {
             actualizado = true;
@@ -403,7 +403,7 @@ public class cl_colaborador {
         boolean actualizado = false;
         Statement st = c_conectar.conexion();
         String query = "delete from colaboradores ";
-        System.out.println(query);
+      //  System.out.println(query);
         int resultado = c_conectar.actualiza(st, query);
         if (resultado > -1) {
             actualizado = true;

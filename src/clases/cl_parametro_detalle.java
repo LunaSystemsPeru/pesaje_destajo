@@ -165,7 +165,7 @@ public class cl_parametro_detalle {
         String query = "update parametros_detalles "
                 + "set nombre ='" + nombre + "', valor='" + valor + "' "
                 + "where iddetalles='" + iddetalle + "' ";
-        System.out.println(query);
+        //System.out.println(query);
         int resultado = c_conectar.actualiza(st, query);
         if (resultado > -1) {
             actualizado = true;

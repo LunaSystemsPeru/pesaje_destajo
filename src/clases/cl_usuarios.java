@@ -215,7 +215,7 @@ public class cl_usuarios {
         String query = "update usuarios "
                 + "set username='" + username + "', contrasena='" + contrasena + "', datos='" + datos + "', estado='" + estado + "',email= '" + email + "' "
                 + "where idusuario ='" + id_usuario + "' ";
-        System.out.println(query);
+       // System.out.println(query);
         int resultado = c_conectar.actualiza(st, query);
         if (resultado > -1) {
             actualizado = true;

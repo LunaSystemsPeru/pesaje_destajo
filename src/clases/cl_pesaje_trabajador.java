@@ -151,6 +151,7 @@ public class cl_pesaje_trabajador {
                     + "from pesaje "
                     + "where fecha = '" + fecha + "' "
                     + "and idservicio = '" + idservicio + "' and idcolaborador = '" + idcolaborador + "'";
+          // System.out.println(query);
             ResultSet rs = c_conectar.consulta(st, query);
 
             while (rs.next()) {
@@ -176,7 +177,7 @@ public class cl_pesaje_trabajador {
             };
              */
             Statement st = c_conectar.conexion();
-            String query = "select p.fecha, p.hora, c.idcolaborador, c.apellidos, c.nombres, p.cantidad "
+            String query = "select p.fecha, p.hora, c.codigo, c.idcolaborador, c.apellidos, c.nombres, p.cantidad "
                     + "from pesaje as p "
                     + "inner join colaboradores as c on c.idcolaborador = p.idcolaborador "
                     + "where p.fecha = '" + fecha + "' "
@@ -195,7 +196,7 @@ public class cl_pesaje_trabajador {
                 Object[] fila = new Object[5];
                 fila[0] = rs.getString("fecha");
                 fila[1] = rs.getString("hora");
-                fila[2] = rs.getString("idcolaborador");
+                fila[2] = rs.getString("codigo");
                 fila[3] = rs.getString("apellidos") + " " + rs.getString("nombres");
                 fila[4] = c_varios.formato_numero(rs.getDouble("cantidad"));
 

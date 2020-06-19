@@ -31,16 +31,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRExporterParameter;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperPrintManager;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.export.JRXlsExporter;
-import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 
 /**
  *
@@ -215,7 +205,7 @@ public class cl_varios {
             calendar.setTime(date); // Configuramos la fecha que se recibe
             calendar.add(Calendar.DAY_OF_YEAR, dias);  // numero de días a añadir, o restar en caso de días<0
         } catch (ParseException ex) {
-            Logger.getLogger(cl_varios.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(ex.getLocalizedMessage());
         }
         return calendar.getTime(); // Devuelve el objeto Date con los nuevos días añadidos
     }
@@ -230,101 +220,6 @@ public class cl_varios {
         DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
         tcr.setHorizontalAlignment(SwingConstants.RIGHT);
         table.getColumnModel().getColumn(col).setCellRenderer(tcr);
-    }
-
-    public void ver_reporte(String filename, Map<String, Object> parametros) {
-        Connection st = con.conx();
-
-        try {
-            JasperReport jasperReport;
-            JasperPrint jasperPrint;
-            jasperReport = JasperCompileManager.compileReport("reports//" + filename + ".jrxml");
-            jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, st);
-            JasperExportManager.exportReportToPdfFile(
-                    jasperPrint, "temp/" + filename + ".pdf");
-
-            try {
-                File file = new File("temp/" + filename + ".pdf");
-                Desktop.getDesktop().open(file);
-            } catch (IOException e) {
-                System.out.print(e + " -- error io");
-                JOptionPane.showMessageDialog(null, "Error al Generar el PDF -- " + e);
-            }
-
-        } catch (JRException ex) {
-            System.out.print(ex + " -- error jre");
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error con el Reporte -- " + ex);
-        }
-    }
-
-    public void ver_reporte_excel(String filename, Map<String, Object> parametros, String salida) {
-        Connection st = con.conx();
-
-        String sourceFileName = "reports//" + filename + ".jasper";
-        String printFileName = null;
-
-        try {
-            printFileName = JasperFillManager.fillReportToFile(sourceFileName,
-                    parametros, st);
-            if (printFileName != null) {
-                /**
-                 * 3- export to Excel sheet
-                 */
-
-                Date ahora = new Date();
-                SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-                String fecha_com = formateador.format(ahora);
-
-                JRXlsExporter exporter = new JRXlsExporter();
-
-                exporter.setParameter(JRExporterParameter.INPUT_FILE_NAME,
-                        printFileName);
-                exporter.setParameter(JRXlsExporterParameter.IS_IGNORE_CELL_BORDER, false);
-                exporter.setParameter(JRXlsExporterParameter.IS_WHITE_PAGE_BACKGROUND, false);
-                exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
-                        "temp//" + salida + fecha_com + ".xls");
-
-                exporter.exportReport();
-                File midir = new File(".");
-                String direccion = "";
-                try {
-                    direccion = midir.getCanonicalPath();
-                } catch (IOException ex) {
-                    System.out.println(ex);
-                }
-
-                JOptionPane.showMessageDialog(null, "REPORTE GENERADO, REVISE EN LA CARPETA DEL SISTEMA " + direccion + "/TEMP");
-
-                try {
-                    File file = new File("temp//" + salida + fecha_com + ".xls");
-                    Desktop.getDesktop().open(file);
-                } catch (IOException e) {
-                    System.out.print(e + " -- error io");
-                    JOptionPane.showMessageDialog(null, "Error al Generar el EXCEL -- " + e);
-                }
-            }
-        } catch (JRException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
-        }
-    }
-
-    public void imp_reporte(String filename, Map<String, Object> parametros) {
-        Connection st = con.conx();
-
-        try {
-            JasperReport jasperReport;
-            JasperPrint jasperPrint;
-            jasperReport = JasperCompileManager.compileReport("reports//" + filename + ".jrxml");
-            jasperPrint = JasperFillManager.fillReport(
-                    jasperReport, parametros, st);
-            JasperPrintManager.printReport(jasperPrint, false);
-        } catch (JRException ex) {
-            System.out.print(ex);
-            JOptionPane.showMessageDialog(null, ex);
-
-        }
     }
 
     public String leer_archivo(String nom_arc) {

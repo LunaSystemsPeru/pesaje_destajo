@@ -7,17 +7,14 @@ package pesaje_trabajos;
 
 import clases.cl_conectar;
 import clases.cl_pesaje_trabajador;
+import clases.cl_reporte;
 import clases.cl_usuarios;
 import clases.cl_varios;
 import formularios.frm_reg_pesaje;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import net.sf.jasperreports.engine.JRParameter;
 import vistas.frm_ver_colaboradores;
 import vistas.frm_ver_usuarios;
 import vistas.frm_ver_parametros;
@@ -46,7 +43,6 @@ public class frm_principal extends javax.swing.JFrame {
         cargar_login();
 
         txt_fecha_inicio.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
-        txt_fecha_fin.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
 
         cargar_mas_produce();
         cargar_menos_produce();
@@ -98,8 +94,8 @@ public class frm_principal extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         txt_fecha_inicio = new javax.swing.JFormattedTextField();
         jLabel8 = new javax.swing.JLabel();
-        txt_fecha_fin = new javax.swing.JFormattedTextField();
         btn_generar_excel = new javax.swing.JButton();
+        jSpinner1 = new javax.swing.JSpinner();
         jToolBar1 = new javax.swing.JToolBar();
         jButton2 = new javax.swing.JButton();
         jSeparator4 = new javax.swing.JToolBar.Separator();
@@ -167,24 +163,10 @@ public class frm_principal extends javax.swing.JFrame {
             }
         });
 
-        jLabel8.setText("Fecha Fin");
-
-        try {
-            txt_fecha_fin.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-        txt_fecha_fin.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txt_fecha_fin.setEnabled(false);
-        txt_fecha_fin.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txt_fecha_finKeyPressed(evt);
-            }
-        });
+        jLabel8.setText("Nro Dias:");
 
         btn_generar_excel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/clipboard_text.png"))); // NOI18N
         btn_generar_excel.setText("Generar");
-        btn_generar_excel.setEnabled(false);
         btn_generar_excel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btn_generar_excel.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btn_generar_excel.addActionListener(new java.awt.event.ActionListener() {
@@ -192,6 +174,8 @@ public class frm_principal extends javax.swing.JFrame {
                 btn_generar_excelActionPerformed(evt);
             }
         });
+
+        jSpinner1.setValue(7);
 
         javax.swing.GroupLayout jd_menu_reportesLayout = new javax.swing.GroupLayout(jd_menu_reportes.getContentPane());
         jd_menu_reportes.getContentPane().setLayout(jd_menu_reportesLayout);
@@ -205,14 +189,14 @@ public class frm_principal extends javax.swing.JFrame {
                         .addGroup(jd_menu_reportesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6)
                             .addGroup(jd_menu_reportesLayout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addGap(96, 96, 96)
-                                .addComponent(jLabel8))
-                            .addGroup(jd_menu_reportesLayout.createSequentialGroup()
-                                .addComponent(txt_fecha_inicio, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(97, 97, 97)
-                                .addComponent(txt_fecha_fin, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                                .addGroup(jd_menu_reportesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel7)
+                                    .addComponent(txt_fecha_inicio, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(65, 65, 65)
+                                .addGroup(jd_menu_reportesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel8)
+                                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
                         .addComponent(btn_generar_excel)))
                 .addContainerGap())
         );
@@ -230,9 +214,9 @@ public class frm_principal extends javax.swing.JFrame {
                             .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jd_menu_reportesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(jd_menu_reportesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txt_fecha_inicio, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_fecha_fin, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jd_menu_reportesLayout.createSequentialGroup()
                         .addComponent(btn_generar_excel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(3, 3, 3)))
@@ -654,34 +638,11 @@ public class frm_principal extends javax.swing.JFrame {
                 if (cbx_reporte.getSelectedIndex() == 0) {
                     btn_generar_excel.setEnabled(true);
                     btn_generar_excel.requestFocus();
-                }
-                if (cbx_reporte.getSelectedIndex() == 1) {
-                    txt_fecha_fin.setEnabled(true);
-                    txt_fecha_fin.requestFocus();
-                }
-
-                if (cbx_reporte.getSelectedIndex() == 2) {
-                    txt_fecha_fin.setEnabled(true);
-                    txt_fecha_fin.requestFocus();
+                    jSpinner1.setEnabled(true);
                 }
             }
         }
     }//GEN-LAST:event_txt_fecha_inicioKeyPressed
-
-    private void txt_fecha_finKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_fecha_finKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            if (txt_fecha_fin.getText().length() == 10) {
-                if (cbx_reporte.getSelectedIndex() == 1) {
-                    btn_generar_excel.setEnabled(true);
-                    btn_generar_excel.requestFocus();
-                }
-                if (cbx_reporte.getSelectedIndex() == 2) {
-                    btn_generar_excel.setEnabled(true);
-                    btn_generar_excel.requestFocus();
-                }
-            }
-        }
-    }//GEN-LAST:event_txt_fecha_finKeyPressed
 
     private void cbx_reporteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbx_reporteItemStateChanged
         txt_fecha_inicio.setEnabled(true);
@@ -689,29 +650,10 @@ public class frm_principal extends javax.swing.JFrame {
     }//GEN-LAST:event_cbx_reporteItemStateChanged
 
     private void btn_generar_excelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generar_excelActionPerformed
-        String fecha_inicio = c_varios.fecha_myql(txt_fecha_inicio.getText());
-
-        Map<String, Object> parametros = new HashMap<>();
-        parametros.put("f_inicio", fecha_inicio);
-        parametros.put(JRParameter.REPORT_LOCALE, Locale.US);
-        if (cbx_reporte.getSelectedIndex() == 0) {
-            //c_varios.ver_reporte("rpt_excel_pesaje_diario_resumen", parametros);
-            c_varios.ver_reporte_excel("rpt_excel_pesaje_diario_resumen", parametros, "rpt_excel_pesaje_diario_resumen");
-        }
-
-        if (cbx_reporte.getSelectedIndex() == 1) {
-            String fecha_fin = c_varios.fecha_myql(txt_fecha_fin.getText());
-            parametros.put("f_fin", fecha_fin);
-            c_varios.ver_reporte_excel("rpt_excel_pesaje_periodo", parametros, "rpt_excel_pesaje_periodo");
-        }
-
-        if (cbx_reporte.getSelectedIndex() == 2) {
-            String fecha_fin = c_varios.fecha_myql(txt_fecha_fin.getText());
-            parametros.put("f_fin", fecha_fin);
-            c_varios.ver_reporte_excel("rpt_excel_pesaje_periodo_detalle", parametros, "rpt_excel_pesaje_periodo_detalle");
-        }
-
-
+        cl_reporte c_reporte = new cl_reporte();
+        c_reporte.setFecha_inicio(c_varios.fecha_myql(txt_fecha_inicio.getText()));
+        c_reporte.setDias(Integer.parseInt(jSpinner1.getValue().toString()));
+        c_reporte.generar_excel();
     }//GEN-LAST:event_btn_generar_excelActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
@@ -794,6 +736,7 @@ public class frm_principal extends javax.swing.JFrame {
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JToolBar.Separator jSeparator4;
+    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JDialog jd_menu_reportes;
     private javax.swing.JPanel jp_lineas;
@@ -809,7 +752,6 @@ public class frm_principal extends javax.swing.JFrame {
     private javax.swing.JTextField lbl_tpesaje_menos;
     private javax.swing.JLabel lbl_trabajador_mas;
     private javax.swing.JLabel lbl_trabajador_menos;
-    private javax.swing.JFormattedTextField txt_fecha_fin;
     private javax.swing.JFormattedTextField txt_fecha_inicio;
     // End of variables declaration//GEN-END:variables
 }

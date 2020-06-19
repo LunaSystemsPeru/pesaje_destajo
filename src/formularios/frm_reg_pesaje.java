@@ -6,6 +6,7 @@
 package formularios;
 
 import clases.cl_colaborador;
+import clases.cl_llamadas;
 import clases.cl_parametro_detalle;
 import clases.cl_pesaje_trabajador;
 import clases.cl_varios;
@@ -23,9 +24,12 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
     cl_varios c_varios = new cl_varios();
     m_trabajo m_trabajo = new m_trabajo();
     cl_colaborador c_colaborador = new cl_colaborador();
+    cl_colaborador c_busqueda_colaborador = new cl_colaborador();
+    cl_pesaje_trabajador c_busqueda_pesaje = new cl_pesaje_trabajador();
     cl_pesaje_trabajador c_pesaje_trabajador = new cl_pesaje_trabajador();
 
     cl_parametro_detalle c_detalle = new cl_parametro_detalle();
+    cl_llamadas c_llamada = new cl_llamadas();
 
     int id_usuario = frm_principal.c_usuario.getId_usuario();
     double tope = 0;
@@ -45,6 +49,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         //ftffecha.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
 
         m_trabajo.cbx_trabajo(cbx_trabajo);
+        m_trabajo.cbx_trabajo(jComboBox1);
         modelotabla();
 
         c_detalle.setIddetalle(1);
@@ -83,7 +88,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         txt_nombrecolaborador.setText("");
         txt_cantidad.setText("");
         txt_colaborador.requestFocus();
-        desactivar_botones_trabajador();
+        //desactivar_botones_trabajador();
     }
 
     private void activar_botones_trabajador() {
@@ -145,9 +150,25 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
         jToolBar1 = new javax.swing.JToolBar();
         jButton4 = new javax.swing.JButton();
+        jLabel18 = new javax.swing.JLabel();
+        txt_cod_memorandum = new javax.swing.JTextField();
+        jButton12 = new javax.swing.JButton();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jd_total_trabajador = new javax.swing.JDialog();
+        jTextField6 = new javax.swing.JTextField();
+        jLabel19 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        txt_cod_memorandum1 = new javax.swing.JTextField();
+        jButton13 = new javax.swing.JButton();
+        jLabel21 = new javax.swing.JLabel();
+        jTextField8 = new javax.swing.JTextField();
+        jLabel22 = new javax.swing.JLabel();
+        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        jButton14 = new javax.swing.JButton();
+        jLabel23 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -317,8 +338,6 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
 
         jTextField5.setEditable(false);
 
-        jTextField6.setEditable(false);
-
         jToolBar1.setFloatable(false);
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/accept.png"))); // NOI18N
@@ -333,6 +352,16 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         });
         jToolBar1.add(jButton4);
 
+        jLabel18.setText("Codigo:");
+
+        jButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/find.png"))); // NOI18N
+        jButton12.setText("Busca");
+        jButton12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton12ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jd_memorandumLayout = new javax.swing.GroupLayout(jd_memorandum.getContentPane());
         jd_memorandum.getContentPane().setLayout(jd_memorandumLayout);
         jd_memorandumLayout.setHorizontalGroup(
@@ -342,37 +371,144 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
                 .addGroup(jd_memorandumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3)
                     .addGroup(jd_memorandumLayout.createSequentialGroup()
+                        .addGroup(jd_memorandumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel18)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jd_memorandumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField5)
+                            .addGroup(jd_memorandumLayout.createSequentialGroup()
+                                .addComponent(txt_cod_memorandum, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton12)
+                                .addGap(0, 281, Short.MAX_VALUE))))
+                    .addGroup(jd_memorandumLayout.createSequentialGroup()
                         .addGroup(jd_memorandumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jd_memorandumLayout.createSequentialGroup()
                                 .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 311, Short.MAX_VALUE))
-                    .addGroup(jd_memorandumLayout.createSequentialGroup()
-                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField5)))
+                                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jd_memorandumLayout.setVerticalGroup(
             jd_memorandumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jd_memorandumLayout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jd_memorandumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jd_memorandumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jd_memorandumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jd_memorandumLayout.createSequentialGroup()
+                        .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jd_memorandumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_cod_memorandum, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jd_memorandumLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
                 .addContainerGap())
+        );
+
+        jd_total_trabajador.setTitle("Obtener Peso x Dia");
+
+        jTextField6.setEditable(false);
+
+        jLabel19.setText("Codigo:");
+
+        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel20.setText("Trabajador:");
+
+        jButton13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/find.png"))); // NOI18N
+        jButton13.setText("Busca");
+        jButton13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton13ActionPerformed(evt);
+            }
+        });
+
+        jLabel21.setText("Total Kgs:");
+
+        jTextField8.setEditable(false);
+
+        jLabel22.setText("Fecha:");
+
+        jButton14.setText("Obtener Peso");
+        jButton14.setEnabled(false);
+        jButton14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton14ActionPerformed(evt);
+            }
+        });
+
+        jLabel23.setText("Tipo Servicio:");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        javax.swing.GroupLayout jd_total_trabajadorLayout = new javax.swing.GroupLayout(jd_total_trabajador.getContentPane());
+        jd_total_trabajador.getContentPane().setLayout(jd_total_trabajadorLayout);
+        jd_total_trabajadorLayout.setHorizontalGroup(
+            jd_total_trabajadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jd_total_trabajadorLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jd_total_trabajadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel23)
+                    .addComponent(jLabel22)
+                    .addComponent(jLabel21)
+                    .addComponent(jLabel19)
+                    .addComponent(jLabel20))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jd_total_trabajadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jd_total_trabajadorLayout.createSequentialGroup()
+                        .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                        .addComponent(jButton14))
+                    .addComponent(jTextField6)
+                    .addGroup(jd_total_trabajadorLayout.createSequentialGroup()
+                        .addGroup(jd_total_trabajadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jd_total_trabajadorLayout.createSequentialGroup()
+                                .addComponent(txt_cod_memorandum1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton13))
+                            .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jd_total_trabajadorLayout.setVerticalGroup(
+            jd_total_trabajadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jd_total_trabajadorLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jd_total_trabajadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_cod_memorandum1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jd_total_trabajadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jd_total_trabajadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel23)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jd_total_trabajadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton14, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jd_total_trabajadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel21)
+                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         setClosable(true);
@@ -655,6 +791,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/chart_bar.png"))); // NOI18N
         jButton1.setText("ver Total Kg.");
+        jButton1.setEnabled(false);
         jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -664,8 +801,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         });
 
         jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/user_thief_baldie.png"))); // NOI18N
-        jButton7.setText("<html><center>ver Total Trabajador.</center></html>");
-        jButton7.setEnabled(false);
+        jButton7.setText("<html><center>ver Total Kgs Trabajador.</center></html>");
         jButton7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton7.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jButton7.addActionListener(new java.awt.event.ActionListener() {
@@ -676,7 +812,6 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/error.png"))); // NOI18N
         jButton3.setText("<html><center>Llamada Atencion</center></html>");
-        jButton3.setEnabled(false);
         jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -687,13 +822,11 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
 
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/pagos.png"))); // NOI18N
         jButton6.setText("Descuento");
-        jButton6.setEnabled(false);
         jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/clipboard_text.png"))); // NOI18N
         jButton5.setText("<html><center>ver pesajes del Trabajador</center></html>");
-        jButton5.setEnabled(false);
         jButton5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -728,8 +861,8 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(357, Short.MAX_VALUE))
+                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(358, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -804,7 +937,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
 
     private void cbx_trabajoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cbx_trabajoKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             fecha = sdf.format(ftffecha.getDate());
 
             // btn_iniciar.requestFocus();
@@ -825,6 +958,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
             t_listrabaj.setModel(modelo);
 
             txt_colaborador.setEnabled(true);
+            jButton1.setEnabled(true);
             txt_colaborador.requestFocus();
         }
     }//GEN-LAST:event_cbx_trabajoKeyPressed
@@ -835,9 +969,9 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
 
     private void txt_colaboradorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_colaboradorKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             fecha = sdf.format(ftffecha.getDate());
-            
+
             if (txt_colaborador.getText().length() > 0) {
                 int colaborador = Integer.parseInt(txt_colaborador.getText());
                 c_colaborador.setCodigo(colaborador);
@@ -939,12 +1073,10 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        if (validar_trabajador()) {
-            c_pesaje_trabajador.setIdcolaborador(c_colaborador.getIdcolaborador());
-            double total = c_pesaje_trabajador.obtener_total_trabajador_fecha();
-
-            JOptionPane.showMessageDialog(null, "<html>El pesaje total del trabajador es: <h2>" + c_varios.formato_numero(total) + "</h2></html>");
-        }
+        jd_total_trabajador.setModal(true);
+        jd_total_trabajador.setSize(400, 264);
+        jd_total_trabajador.setLocationRelativeTo(null);
+        jd_total_trabajador.setVisible(true);
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -960,7 +1092,17 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         if (jTextArea1.getText().length() > 0) {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            String ffecha2 = sdf.format(jDateChooser1.getDate());
 
+            c_llamada.setFecha(c_varios.fecha_myql(ffecha2));
+            c_llamada.setIdcolaborador(c_busqueda_colaborador.getIdcolaborador());
+            c_llamada.setIdusuario(id_usuario);
+            c_llamada.setTexto(jTextArea1.getText().toUpperCase());
+            c_llamada.obtener_codigo();
+            c_llamada.registrar();
+
+            jd_memorandum.dispose();
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -969,7 +1111,6 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         jd_memorandum.setSize(578, 440);
 
         jTextField5.setText(txt_nombrecolaborador.getText());
-        jTextField6.setText(fecha);
         jTextArea1.requestFocus();
 
         jd_memorandum.setLocationRelativeTo(null);
@@ -1006,6 +1147,41 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_ftffechaKeyPressed
 
+    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
+        if (txt_cod_memorandum.getText().length() > 0) {
+            c_busqueda_colaborador.setCodigo(Integer.parseInt(txt_cod_memorandum.getText()));
+
+            if (c_busqueda_colaborador.obtener_datos_codigo()) {
+                c_busqueda_colaborador.obtener_datos();
+                jTextField5.setText(c_busqueda_colaborador.getDatos());
+            }
+        }
+    }//GEN-LAST:event_jButton12ActionPerformed
+
+    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+        if (txt_cod_memorandum1.getText().length() > 0) {
+            c_busqueda_colaborador.setCodigo(Integer.parseInt(txt_cod_memorandum1.getText()));
+
+            if (c_busqueda_colaborador.obtener_datos_codigo()) {
+                c_busqueda_colaborador.obtener_datos();
+                jTextField6.setText(c_busqueda_colaborador.getDatos());
+                jButton14.setEnabled(true);
+                jButton14.requestFocus();
+            }
+        }
+    }//GEN-LAST:event_jButton13ActionPerformed
+
+    private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String ffecha2 = sdf.format(jDateChooser2.getDate());
+
+        c_busqueda_pesaje.setIdcolaborador(c_busqueda_colaborador.getIdcolaborador());
+        c_busqueda_pesaje.setFecha(c_varios.fecha_myql(ffecha2));
+        c_busqueda_pesaje.setIdservicio(c_pesaje_trabajador.getIdservicio());
+        double total = c_busqueda_pesaje.obtener_total_trabajador_fecha();
+        jTextField8.setText(c_varios.formato_totales(total));
+    }//GEN-LAST:event_jButton14ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_agregar;
@@ -1014,6 +1190,9 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
+    private javax.swing.JButton jButton12;
+    private javax.swing.JButton jButton13;
+    private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -1022,6 +1201,9 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1031,7 +1213,13 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1054,12 +1242,16 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
+    private javax.swing.JTextField jTextField8;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JDialog jd_detalle_trabajador;
     private javax.swing.JDialog jd_memorandum;
+    private javax.swing.JDialog jd_total_trabajador;
     private javax.swing.JTable t_detalle_trabajador;
     private javax.swing.JTable t_listrabaj;
     private javax.swing.JTextField txt_cantidad;
+    private javax.swing.JTextField txt_cod_memorandum;
+    private javax.swing.JTextField txt_cod_memorandum1;
     private javax.swing.JTextField txt_colaborador;
     private javax.swing.JTextField txt_neto;
     private javax.swing.JTextField txt_nombrecolaborador;

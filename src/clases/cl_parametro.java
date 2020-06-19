@@ -41,8 +41,8 @@ public class cl_parametro {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
-      public void mostrar(JTable tabla) {
+
+    public void mostrar(JTable tabla) {
         DefaultTableModel modelo;
         try {
             modelo = new DefaultTableModel() {
@@ -58,7 +58,7 @@ public class cl_parametro {
 
             modelo.addColumn("Item");
             modelo.addColumn("Nombre");
-            
+
             while (rs.next()) {
                 Object[] fila = new Object[2];
                 fila[0] = rs.getInt("idparametros");
