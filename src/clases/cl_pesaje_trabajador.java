@@ -8,6 +8,8 @@ package clases;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -106,13 +108,27 @@ public class cl_pesaje_trabajador {
         }
 
     }
-    
+
     public boolean registrar() {
         boolean registrado = false;
         Statement st = c_conectar.conexion();
         String query = "insert into pesaje "
                 + "Values ('" + idpesaje + "','" + fecha + "','" + hora + "', '" + idcolaborador + "', '" + idusuario + "','" + cantidad + "','" + idservicio + "' )";
         //System.out.println(query);
+        int resultado = c_conectar.actualiza(st, query);
+        if (resultado > -1) {
+            registrado = true;
+        }
+        c_conectar.cerrar(st);
+        return registrado;
+    }
+
+    public boolean eliminar() {
+        boolean registrado = false;
+        Statement st = c_conectar.conexion();
+        String query = "delete from pesaje "
+                + " where idpesaje = '" + idpesaje + "' ";
+        System.out.println(query);
         int resultado = c_conectar.actualiza(st, query);
         if (resultado > -1) {
             registrado = true;
@@ -151,7 +167,7 @@ public class cl_pesaje_trabajador {
                     + "from pesaje "
                     + "where fecha = '" + fecha + "' "
                     + "and idservicio = '" + idservicio + "' and idcolaborador = '" + idcolaborador + "'";
-          // System.out.println(query);
+            // System.out.println(query);
             ResultSet rs = c_conectar.consulta(st, query);
 
             while (rs.next()) {
@@ -177,7 +193,7 @@ public class cl_pesaje_trabajador {
             };
              */
             Statement st = c_conectar.conexion();
-            String query = "select p.fecha, p.hora, c.codigo, c.idcolaborador, c.apellidos, c.nombres, p.cantidad "
+            String query = "select p.fecha, p.hora, c.codigo, c.idcolaborador, c.apellidos, c.nombres, p.cantidad, p.idpesaje "
                     + "from pesaje as p "
                     + "inner join colaboradores as c on c.idcolaborador = p.idcolaborador "
                     + "where p.fecha = '" + fecha + "' "
@@ -193,12 +209,13 @@ public class cl_pesaje_trabajador {
             modelo.addColumn("Cantidad");
              */
             while (rs.next()) {
-                Object[] fila = new Object[5];
+                Object[] fila = new Object[6];
                 fila[0] = rs.getString("fecha");
                 fila[1] = rs.getString("hora");
                 fila[2] = rs.getString("codigo");
                 fila[3] = rs.getString("apellidos") + " " + rs.getString("nombres");
                 fila[4] = c_varios.formato_numero(rs.getDouble("cantidad"));
+                fila[5] = rs.getString("idpesaje");
 
                 modelo.addRow(fila);
 
@@ -308,7 +325,7 @@ public class cl_pesaje_trabajador {
             String query = "select sum(pt.cantidad) as total_produce, avg(pt.cantidad) as promedio_produce, count(distinct(pt.fecha)) as dias_produce, ts.apellidos, ts.nombres "
                     + "from pesaje as pt "
                     + "inner join colaboradores as ts on ts.idcolaborador = pt.idcolaborador "
-                    + "where strftime('%Y', pt.fecha) =  strftime('%Y', current_date) "
+                    + "where strftime('%Y%m', pt.fecha) =  strftime('%Y%m', current_date) "
                     + "group by pt.idcolaborador "
                     + "order by sum(pt.cantidad) desc "
                     + "limit 1";
@@ -394,6 +411,50 @@ public class cl_pesaje_trabajador {
         }
 
         return valor_x;
+    }
+
+    public void pesaje_horas_hoy(JTable tabla) {
+        String fecha_hoy = c_varios.getFechaActual();
+        Date fecha_ayer = c_varios.suma_dia(fecha_hoy, -1);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String fecha_ayercito = sdf.format(fecha_ayer);
+
+        DefaultTableModel modelo;
+        try {
+            modelo = new DefaultTableModel() {
+                @Override
+                public boolean isCellEditable(int fila, int columna) {
+                    return false;
+                }
+            };
+            String sql = "select strftime('%d', p.fecha) as dia, strftime('%H', p.hora) as hora, sum(p.cantidad) as cant_hora "
+                    + "from pesaje as p "
+                    + "where p.fecha between '" + c_varios.fecha_myql(fecha_ayercito) + "'  and CURRENT_DATE "
+                    + "GROUP by strftime('%H', p.hora) "
+                    + "order by strftime('%d', p.fecha) desc , strftime('%H', p.hora) desc";
+
+            Statement st = c_conectar.conexion();
+            ResultSet rs = c_conectar.consulta(st, sql);
+
+            modelo.addColumn("Dia");
+            modelo.addColumn("Hora");
+            modelo.addColumn("Cantidad");
+
+            while (rs.next()) {
+                Object[] fila = new Object[3];
+                fila[0] = rs.getString("dia");
+                fila[1] = rs.getString("hora");
+                fila[2] = rs.getString("cant_hora");
+                modelo.addRow(fila);
+
+            }
+            c_conectar.cerrar(st);
+            c_conectar.cerrar(rs);
+
+            tabla.setModel(modelo);
+        } catch (SQLException e) {
+            System.out.print(e);
+        }
     }
 
 }
