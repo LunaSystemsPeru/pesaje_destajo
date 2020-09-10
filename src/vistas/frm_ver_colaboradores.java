@@ -395,7 +395,7 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
         if (tipo_busqueda == 0) {
             query = "select * "
                     + "from colaboradores "
-                    + "where concat(apellidos, ' ', nombres) like  '%" + text + "%' "
+                    + "where apellidos || ' ' || nombres like  '%" + text + "%' "
                     + "order by apellidos, nombres asc";
         }
         c_colaborador.mostrar(t_colaboradores, query);
