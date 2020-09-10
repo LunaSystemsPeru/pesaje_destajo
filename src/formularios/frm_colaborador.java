@@ -9,6 +9,7 @@ import clases.cl_colaborador;
 import clases.cl_varios;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
+import nicon.notify.core.Notification;
 import vistas.frm_ver_colaboradores;
 
 /**
@@ -334,9 +335,14 @@ public class frm_colaborador extends javax.swing.JDialog {
     private void txt_codigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_codigoKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             c_colaborador.setCodigo(Integer.parseInt(txt_codigo.getText()));
-            if (c_colaborador.obtener_datos()) {
+            if (c_colaborador.obtener_datos_codigo()) {
+                Notification.show("Busqueda Colaborador", "El codigo ingresado ya existe");
+                c_colaborador.obtener_datos();
                 txt_apellidos.setText(c_colaborador.getApellidos());
                 txt_nombres.setText(c_colaborador.getNombres());
+                btn_guardar.setEnabled(false);
+            }  else {
+                btn_guardar.setEnabled(true);
             }
             txt_apellidos.requestFocus();
         }
