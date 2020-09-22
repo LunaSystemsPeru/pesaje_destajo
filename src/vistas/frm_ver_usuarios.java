@@ -114,6 +114,8 @@ public class frm_ver_usuarios extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        t_usuario.setRowHeight(20);
+        t_usuario.setShowHorizontalLines(false);
         t_usuario.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 t_usuarioMouseClicked(evt);

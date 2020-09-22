@@ -132,7 +132,7 @@ public class frm_ver_pesajes extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         frm_reg_pesaje formulario = new frm_reg_pesaje();
-        c_varios.llamar_ventana(formulario);
+        c_varios.llamar_ventana(formulario, 0);
     }//GEN-LAST:event_jButton1ActionPerformed
 
 

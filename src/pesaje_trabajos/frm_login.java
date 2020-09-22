@@ -74,7 +74,11 @@ public class frm_login extends javax.swing.JDialog {
             }
         });
 
-        txt_contrasena.setEnabled(false);
+        txt_contrasena.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txt_contrasenaMouseClicked(evt);
+            }
+        });
         txt_contrasena.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_contrasenaActionPerformed(evt);
@@ -89,6 +93,11 @@ public class frm_login extends javax.swing.JDialog {
         btn_entrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/accept.png"))); // NOI18N
         btn_entrar.setText("acceder");
         btn_entrar.setEnabled(false);
+        btn_entrar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_entrarMouseClicked(evt);
+            }
+        });
         btn_entrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_entrarActionPerformed(evt);
@@ -221,6 +230,32 @@ public class frm_login extends javax.swing.JDialog {
         dialogo.setLocationRelativeTo(null);
         dialogo.setVisible(true);
     }//GEN-LAST:event_jLabel3MouseClicked
+
+    private void txt_contrasenaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_contrasenaMouseClicked
+        c_usuario.setUsername(txt_usuario.getText().trim());
+        boolean existe = c_usuario.comprobar_usuario_nick();
+        if (existe) {
+            c_usuario.obtener_datos();
+            txt_contrasena.setEnabled(true);
+            txt_contrasena.requestFocus();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL USUARIO INGRESADO NO EXISTE!");
+            txt_usuario.selectAll();
+            txt_usuario.requestFocus();
+        }
+    }//GEN-LAST:event_txt_contrasenaMouseClicked
+
+    private void btn_entrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_entrarMouseClicked
+            String password = txt_contrasena.getText();
+            if (password.equals(c_usuario.getContrasena())) {
+                btn_entrar.setEnabled(true);
+                btn_entrar.requestFocus();
+            } else {
+                JOptionPane.showMessageDialog(null, "Contraseña Incorrecta");
+                txt_contrasena.setText("");
+                txt_contrasena.requestFocus();
+            }
+    }//GEN-LAST:event_btn_entrarMouseClicked
 
     /**
      * @param args the command line arguments
