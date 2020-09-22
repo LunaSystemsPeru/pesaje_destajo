@@ -167,7 +167,7 @@ public class cl_pesaje_trabajador {
                     + "from pesaje "
                     + "where fecha = '" + fecha + "' "
                     + "and idservicio = '" + idservicio + "' and idcolaborador = '" + idcolaborador + "'";
-            // System.out.println(query);
+             System.out.println(query);
             ResultSet rs = c_conectar.consulta(st, query);
 
             while (rs.next()) {
@@ -210,11 +210,11 @@ public class cl_pesaje_trabajador {
              */
             while (rs.next()) {
                 Object[] fila = new Object[6];
-                fila[0] = rs.getString("fecha");
-                fila[1] = rs.getString("hora");
-                fila[2] = rs.getString("codigo");
-                fila[3] = rs.getString("apellidos") + " " + rs.getString("nombres");
-                fila[4] = c_varios.formato_numero(rs.getDouble("cantidad"));
+                fila[0] = rs.getString("codigo");
+                fila[1] = rs.getString("apellidos") + " " + rs.getString("nombres");
+                fila[2] = c_varios.formato_numero(rs.getDouble("cantidad"));
+                fila[3] = rs.getString("hora");
+                fila[4] = rs.getString("fecha");
                 fila[5] = rs.getString("idpesaje");
 
                 modelo.addRow(fila);
@@ -441,9 +441,18 @@ public class cl_pesaje_trabajador {
             modelo.addColumn("Cantidad");
 
             while (rs.next()) {
+                int hora = rs.getInt("hora");
+                String horacio = "";
+                if (hora > 12) {
+                    hora  = hora - 12;
+                    horacio = hora + " pm";
+                } else {
+                    horacio = hora + " am";
+                }
+                
                 Object[] fila = new Object[3];
                 fila[0] = rs.getString("dia");
-                fila[1] = rs.getString("hora");
+                fila[1] = horacio;
                 fila[2] = rs.getString("cant_hora");
                 modelo.addRow(fila);
 

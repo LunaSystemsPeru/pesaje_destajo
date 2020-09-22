@@ -5,8 +5,6 @@
  */
 package clases;
 
-import java.awt.BorderLayout;
-import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
@@ -14,7 +12,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.Socket;
-import java.sql.Connection;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -23,13 +20,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -41,11 +34,11 @@ import pesaje_trabajos.frm_principal;
  * @author Administrador
  */
 public class cl_varios {
-    
+
     cl_conectar con = new cl_conectar();
     DecimalFormatSymbols simbolo = new DecimalFormatSymbols();
     DecimalFormat formato = null;
-    
+
     public String formato_numero(Double number) {
         simbolo.setDecimalSeparator('.');
         formato = new DecimalFormat("######0.00", simbolo);
@@ -53,7 +46,7 @@ public class cl_varios {
         numero = formato.format(number);
         return numero;
     }
-    
+
     public String formato_tc(Double number) {
         simbolo.setDecimalSeparator('.');
         formato = new DecimalFormat("######0.000", simbolo);
@@ -73,7 +66,7 @@ public class cl_varios {
         numero = formato.format(number);
         return numero;
     }
-    
+
     public void llamar_ventana(JInternalFrame ventana, int tamano) {
         /* if (mostrar(ventana)) {
             pesaje_trabajos.frm_principal.jDesktopPane1.add(ventana);
@@ -90,76 +83,71 @@ public class cl_varios {
 
         }
          */
-        
+
         JButton btnClose = new JButton("x");
-        JPanel panel = new JPanel();
-        
-        Dimension desktopSize = pesaje_trabajos.frm_principal.jDesktopPane1.getSize();
-        //frm_principal.jTabbedPane1.setSize(frm_principal.jDesktopPane1.getMaximumSize());
+
+        Dimension desktopSize = frm_principal.jDesktopPane1.getSize();
+        frm_principal.jTabbedPane1.setSize(frm_principal.jDesktopPane1.getSize());
         Dimension jInternalFrameSize = ventana.getSize();
-        int ancho = (int) (desktopSize.getWidth() / 1.05);
+       /* int ancho = (int) (desktopSize.getWidth() / 1.05);
         int alto = (int) (desktopSize.getHeight() / 1.05);
         if (tamano == 0) {
             ventana.setSize(ancho, alto);
-        }        
-        
-        panel.add(ventana);
-        panel.setSize(ventana.getSize());
-        panel.revalidate();
-        panel.repaint();
+        }
+*/
 
-        // ventana.setLocation((desktopSize.width - jInternalFrameSize.width) / 2,
-        //        (desktopSize.height - jInternalFrameSize.height) / 2);
+        ventana.setLocation((desktopSize.width - jInternalFrameSize.width) / 2,
+                (desktopSize.height - jInternalFrameSize.height) / 2);
         frm_principal.jTabbedPane1.add(ventana);
         int contar = frm_principal.jTabbedPane1.getComponentCount() - 2;
         if (contar < 0) {
             contar = 0;
         }
-        
+
         frm_principal.jTabbedPane1.setTitleAt(contar, ventana.getTitle());
         frm_principal.jTabbedPane1.setTabComponentAt(contar, new Cross(frm_principal.jTabbedPane1.getTitleAt(contar))); //agrega titulo y boton X.
         frm_principal.jTabbedPane1.requestFocus();
         frm_principal.jTabbedPane1.setSelectedIndex(contar);
-        
+
     }
-    
+
     public void llamar_ventana_normal(JInternalFrame ventana) {
         if (mostrar(ventana)) {
             pesaje_trabajos.frm_principal.jDesktopPane1.add(ventana);
             ventana.show();
             Dimension desktopSize = pesaje_trabajos.frm_principal.jDesktopPane1.getSize();
-            
+
             int ancho = (int) (desktopSize.getWidth() / 1.05);
             int alto = (int) (desktopSize.getHeight() / 1.05);
             // ventana.setSize(ancho, alto);
             Dimension jInternalFrameSize = ventana.getSize();
-            
+
             ventana.setLocation((desktopSize.width - jInternalFrameSize.width) / 2,
                     (desktopSize.height - jInternalFrameSize.height) / 2);
-            
+
         }
     }
-    
+
     public void solo_numeros(KeyEvent evt) {
         char car = evt.getKeyChar();
         if ((car < '0' || car > '9')) {
             evt.consume();
         }
     }
-    
+
     public void solo_precio(KeyEvent evt) {
         char car = evt.getKeyChar();
         if ((car < '0' || car > '9') && car != '.') {
             evt.consume();
         }
     }
-    
+
     public void limitar_caracteres(KeyEvent evt, JTextField txt, int longitud) {
         if (txt.getText().length() == longitud) {
             evt.consume();
         }
     }
-    
+
     public static boolean mostrar(JInternalFrame ventana) {
         boolean mostrar = true;
         for (int a = 0; a < pesaje_trabajos.frm_principal.jDesktopPane1.getComponentCount(); a++) {     // verificar si es instancia de algun componente que ya este en el jdesktoppane
@@ -173,39 +161,39 @@ public class cl_varios {
         }
         return mostrar;
     }
-    
+
     public String getFechaActual() {
         Date ahora = new Date();
         SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd");
         return formateador.format(ahora);
     }
-    
+
     public String getFechaActual_sfs() {
         Date ahora = new Date();
         SimpleDateFormat formateador = new SimpleDateFormat("yyyyMMdd");
         return formateador.format(ahora);
     }
-    
+
     public String getFechaHora() {
         Date date = new Date();
         DateFormat hourdateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         return hourdateFormat.format(date);
-        
+
     }
-    
+
     public String getHoraActual() {
         Calendar calendario = new GregorianCalendar();
         int hora, minutos, segundos;
-        
+
         hora = calendario.get(Calendar.HOUR_OF_DAY);
         minutos = calendario.get(Calendar.MINUTE);
         segundos = calendario.get(Calendar.SECOND);
-        
+
         String hora_exacta = ceros_izquieda_numero(2, hora) + ":" + ceros_izquieda_numero(2, minutos) + ":" + ceros_izquieda_numero(2, segundos);
-        
+
         return hora_exacta;
     }
-    
+
     public String fecha_usuario(String fecha) {
         String m_fecha = null;
         try {
@@ -218,7 +206,7 @@ public class cl_varios {
         }
         return m_fecha;
     }
-    
+
     public String fecha_myql(String fecha) {
         String m_fecha = null;
         try {
@@ -245,19 +233,19 @@ public class cl_varios {
         }
         return calendar.getTime(); // Devuelve el objeto Date con los nuevos días añadidos
     }
-    
+
     public void centrar_celda(JTable table, int col) {
         DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
         tcr.setHorizontalAlignment(SwingConstants.CENTER);
         table.getColumnModel().getColumn(col).setCellRenderer(tcr);
     }
-    
+
     public void derecha_celda(JTable table, int col) {
         DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
         tcr.setHorizontalAlignment(SwingConstants.RIGHT);
         table.getColumnModel().getColumn(col).setCellRenderer(tcr);
     }
-    
+
     public String leer_archivo(String nom_arc) {
         String linea = null;
         try {
@@ -284,40 +272,40 @@ public class cl_varios {
         }
         return linea;
     }
-    
+
     public String obtener_periodo() {
         String periodo;
         Calendar now = Calendar.getInstance();
         periodo = now.get(Calendar.YEAR) + ceros_izquieda_numero(2, now.get(Calendar.MONTH) + 1);
         return periodo;
     }
-    
+
     public int obtener_mes() {
         int periodo;
         Calendar now = Calendar.getInstance();
         periodo = now.get(Calendar.MONTH);
         return periodo;
     }
-    
+
     public int obtener_anio() {
         int periodo;
         Calendar now = Calendar.getInstance();
         periodo = now.get(Calendar.YEAR);
         return periodo;
     }
-    
+
     public String ceros_izquieda_numero(int cantidad, int numero) {
         return String.format("%0" + cantidad + "d", numero);
-        
+
     }
-    
+
     public String ceros_izquieda_letras(int cantidad, String numero) {
         while (numero.length() < cantidad) {
             numero = "0" + numero;
         }
         return numero;
     }
-    
+
     public boolean esEntero(String numero) {
         try {
             Integer.parseInt(numero);
@@ -326,7 +314,7 @@ public class cl_varios {
             return false;
         }
     }
-    
+
     public boolean esDecimal(String numero) {
         try {
             Double.parseDouble(numero);
@@ -335,7 +323,7 @@ public class cl_varios {
             return false;
         }
     }
-    
+
     public Boolean validar_RUC(String ruc) {
         Boolean validado = false;
         int dig[] = new int[10];
@@ -373,7 +361,7 @@ public class cl_varios {
 //        System.out.println(validado);
         return validado;
     }
-    
+
     public String obtenerDireccionCarpeta() {
         File midireccion = new File(".");
         String path = null;
@@ -384,11 +372,11 @@ public class cl_varios {
         }
         return path;
     }
-    
+
     public void registrar() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     public boolean verificar_conexion() {
         boolean conectado = false;
         String dirWeb = "www.lunasystemsperu.com";
@@ -405,7 +393,7 @@ public class cl_varios {
         }
         return conectado;
     }
-    
+
     public static int diasDelMes(int mes, int año) {
         switch (mes) {
             case 0:  // Enero
