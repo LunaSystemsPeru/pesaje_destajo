@@ -11,10 +11,17 @@ import clases.cl_reporte;
 import clases.cl_usuarios;
 import clases.cl_varios;
 import formularios.frm_reg_pesaje;
+import java.awt.Desktop;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import nicon.notify.core.Notification;
 import vistas.frm_ver_colaboradores;
 import vistas.frm_ver_usuarios;
 import vistas.frm_ver_parametros;
@@ -105,6 +112,7 @@ public class frm_principal extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
         btn_exit = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
         btn_exit1 = new javax.swing.JButton();
         jDesktopPane1 = new javax.swing.JDesktopPane();
@@ -140,7 +148,7 @@ public class frm_principal extends javax.swing.JFrame {
 
         jLabel6.setText("Seleccionar Reporte");
 
-        cbx_reporte.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Rpt. Pesaje Diario", "Rpt. Pesaje - calculo de pagos", "Rpt. Pesaje Detalle dias trabajados" }));
+        cbx_reporte.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Rpt. Pesaje dias planilla", "Rpt. Pesaje del Dia x Trabajador", "Rpt. Resumen del Trabajador", " " }));
         cbx_reporte.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cbx_reporteItemStateChanged(evt);
@@ -290,6 +298,18 @@ public class frm_principal extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(btn_exit);
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/P-1-26-512.png"))); // NOI18N
+        jButton1.setText("Abrir Carpeta");
+        jButton1.setFocusable(false);
+        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButton1);
         jToolBar1.add(jSeparator1);
 
         btn_exit1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/close_delete-512.png"))); // NOI18N
@@ -624,6 +644,17 @@ public class frm_principal extends javax.swing.JFrame {
         cargar_menos_produce();
     }//GEN-LAST:event_jButton9ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            File dir = new File("");
+            String carpeta_reportes = dir.getAbsolutePath() + File.separator + "reportes";
+            Desktop.getDesktop().open(new File(carpeta_reportes));
+            Notification.show("Abrir Carpeta", "Se abrio la carpeta de reportes " + carpeta_reportes);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -664,6 +695,7 @@ public class frm_principal extends javax.swing.JFrame {
     private javax.swing.JButton btn_exit1;
     private javax.swing.JButton btn_generar_excel;
     private javax.swing.JComboBox<String> cbx_reporte;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;

@@ -76,10 +76,11 @@
         <Component class="javax.swing.JComboBox" name="cbx_reporte">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="3">
-                <StringItem index="0" value="Rpt. Pesaje Diario"/>
-                <StringItem index="1" value="Rpt. Pesaje - calculo de pagos"/>
-                <StringItem index="2" value="Rpt. Pesaje Detalle dias trabajados"/>
+              <StringArray count="4">
+                <StringItem index="0" value="Rpt. Pesaje dias planilla"/>
+                <StringItem index="1" value="Rpt. Pesaje del Dia x Trabajador"/>
+                <StringItem index="2" value="Rpt. Resumen del Trabajador"/>
+                <StringItem index="3" value=" "/>
               </StringArray>
             </Property>
           </Properties>
@@ -258,6 +259,20 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_exitActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButton1">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/iconos/P-1-26-512.png"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Abrir Carpeta"/>
+            <Property name="focusable" type="boolean" value="false"/>
+            <Property name="horizontalTextPosition" type="int" value="0"/>
+            <Property name="verticalTextPosition" type="int" value="3"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JToolBar$Separator" name="jSeparator1">

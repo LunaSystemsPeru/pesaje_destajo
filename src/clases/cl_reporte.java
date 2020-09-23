@@ -5,6 +5,7 @@
  */
 package clases;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,7 +21,6 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
 
 /**
  *
@@ -107,13 +107,25 @@ public class cl_reporte {
 
         System.out.println(sql);
         File dir = new File("");
+        
+         String carpeta_reportes = dir.getAbsolutePath() + File.separator + "reportes";
+         
+        
+        File directorio = new File(carpeta_reportes);
+        if (!directorio.exists()) {
+            if (directorio.mkdirs()) {
+                System.out.println("Directorio creado");
+            } else {
+                System.out.println("Error al crear directorio");
+            }
+        }
 
         // Creamos el archivo donde almacenaremos la hoja
         // de calculo, recuerde usar la extension correcta,
         // en este caso .xlsx
-        File archivo = new File(dir.getAbsolutePath() + File.separator + "pesaje_" + fecha_inicio + ".xls");
+        File archivo = new File(dir.getAbsolutePath() + File.separator + "reportes" + File.separator + "pesaje_" + fecha_inicio + ".xls");
 
-        System.out.println(dir.getAbsolutePath() + File.separator + "pesaje_" + fecha_inicio + ".xls");
+        System.out.println(dir.getAbsolutePath() + File.separator + "reportes" + File.separator + "pesaje_" + fecha_inicio + ".xls");
 
         // Creamos el libro de trabajo de Excel formato OOXML
         HSSFWorkbook workbook = new HSSFWorkbook();
@@ -144,19 +156,18 @@ public class cl_reporte {
         int filanro = 1;
         try {
             while (rs.next()) {
-               
+
                 // Ahora creamos una fila en la posicion 1
                 fila = pagina.createRow(filanro);
                 // Y colocamos los datos en esa fila
-                
+
                 for (int i = 0; i < dias + 3; i++) {
                     // Creamos una celda en esa fila, en la
                     // posicion indicada por el contador del ciclo
                     HSSFCell celda = fila.createCell(i);
                     //System.out.println(rs.getString(i));
-                    celda.setCellValue(rs.getString(i+1));
+                    celda.setCellValue(rs.getString(i + 1));
                 }
-                
 
                 filanro++;
             }
@@ -174,6 +185,8 @@ public class cl_reporte {
 
             System.out.println("Archivo creado existosamente en " + archivo.getAbsolutePath());
             Notification.show("Creado", "Archivo creado existosamente en " + archivo.getAbsolutePath());
+            
+             Desktop.getDesktop().open(new File(archivo.getAbsolutePath()));
         } catch (FileNotFoundException ex) {
             System.out.println(ex.getLocalizedMessage());
             System.out.println("Archivo no localizable en sistema de archivos");
