@@ -128,7 +128,7 @@ public class cl_pesaje_trabajador {
         Statement st = c_conectar.conexion();
         String query = "delete from pesaje "
                 + " where idpesaje = '" + idpesaje + "' ";
-        System.out.println(query);
+       // System.out.println(query);
         int resultado = c_conectar.actualiza(st, query);
         if (resultado > -1) {
             registrado = true;
@@ -167,7 +167,7 @@ public class cl_pesaje_trabajador {
                     + "from pesaje "
                     + "where fecha = '" + fecha + "' "
                     + "and idservicio = '" + idservicio + "' and idcolaborador = '" + idcolaborador + "'";
-             System.out.println(query);
+           //  System.out.println(query);
             ResultSet rs = c_conectar.consulta(st, query);
 
             while (rs.next()) {
@@ -398,7 +398,7 @@ public class cl_pesaje_trabajador {
                     + "where strftime('%Y', pt.fecha) =  strftime('%Y', current_date) and strftime('%m', pt.fecha) =  strftime('%m', current_date) "
                     + "group by pt.idservicio, pt.fecha "
                     + "order by pt.fecha asc";
-            //  System.out.println(query);
+              //System.out.println(query);
             ResultSet rs = c_conectar.consulta(st, query);
 
             while (rs.next()) {
@@ -412,8 +412,8 @@ public class cl_pesaje_trabajador {
 
         return valor_x;
     }
-
-    public void pesaje_horas_hoy(JTable tabla) {
+    
+   public void pesaje_horas_hoy(JTable tabla) {
         String fecha_hoy = c_varios.getFechaActual();
         Date fecha_ayer = c_varios.suma_dia(fecha_hoy, -1);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");

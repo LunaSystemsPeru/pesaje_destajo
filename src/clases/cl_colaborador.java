@@ -5,7 +5,10 @@
  */
 package clases;
 
+import java.awt.Desktop;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,6 +18,11 @@ import java.sql.Statement;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import nicon.notify.core.Notification;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 /**
  *
@@ -169,6 +177,211 @@ public class cl_colaborador {
         return existe;
     }
 
+    public void mostrarHistorico() {
+        String sql = "select c.codigo,  c.apellidos || ' ' || c.nombres  as empleado, p.fecha, sum(p.cantidad) as peso "
+                + "from pesaje as p "
+                + "inner join colaboradores as c on c.idcolaborador = p.idcolaborador "
+                + "where c.codigo = '" + this.codigo + "' "
+                + "group by p.fecha "
+                + "order by p.fecha asc";
+        Statement st = c_conectar.conexion();
+        ResultSet rs = c_conectar.consulta(st, sql);
+
+        String[] titulos = new String[4];
+        titulos[0] = "Codigo";
+        titulos[1] = "Empleado";
+        titulos[2] = "Fecha";
+        titulos[3] = "Pesaje";
+
+        File dir = new File("");
+
+        String carpeta_reportes = dir.getAbsolutePath() + File.separator + "reportes";
+
+        File directorio = new File(carpeta_reportes);
+        if (!directorio.exists()) {
+            if (directorio.mkdirs()) {
+                System.out.println("Directorio creado");
+            } else {
+                System.out.println("Error al crear directorio");
+            }
+        }
+
+        // Creamos el archivo donde almacenaremos la hoja
+        // de calculo, recuerde usar la extension correcta,
+        // en este caso .xlsx
+        File archivo = new File(dir.getAbsolutePath() + File.separator + "reportes" + File.separator + "historico_empleado_" + codigo + ".xls");
+
+        System.out.println(dir.getAbsolutePath() + File.separator + "reportes" + File.separator + "historico_empleado_" + codigo + ".xls");
+
+        // Creamos el libro de trabajo de Excel formato OOXML
+        HSSFWorkbook workbook = new HSSFWorkbook();
+
+        // La hoja donde pondremos los datos
+        HSSFSheet pagina = workbook.createSheet("Historico");
+
+        // Creamos una fila en la hoja en la posicion 0
+        HSSFRow fila = pagina.createRow(0);
+        System.out.println(titulos.length + " total columnas");
+
+        // Creamos el encabezado
+        for (int i = 0; i < titulos.length; i++) {
+            // Creamos una celda en esa fila, en la posicion 
+            // indicada por el contador del ciclo
+            HSSFCell celda = fila.createCell(i);
+
+            // Indicamos el estilo que deseamos 
+            // usar en la celda, en este caso el unico 
+            // que hemos creado
+            celda.setCellValue(titulos[i]);
+        }
+
+        //se hace el recorrido de la base de datos para cargar lo vaores en las celdas
+        int filanro = 1;
+        try {
+            while (rs.next()) {
+
+                // Ahora creamos una fila en la posicion 1
+                fila = pagina.createRow(filanro);
+                // Y colocamos los datos en esa fila
+
+                for (int i = 0; i < 4; i++) {
+                    // Creamos una celda en esa fila, en la
+                    // posicion indicada por el contador del ciclo
+                    HSSFCell celda = fila.createCell(i);
+                    //System.out.println(rs.getString(i));
+                    celda.setCellValue(rs.getString(i + 1));
+                }
+
+                filanro++;
+            }
+        } catch (SQLException ex) {
+            System.out.println(" problema sql " + ex.getLocalizedMessage());
+        }
+        c_conectar.cerrar(rs);
+        c_conectar.cerrar(st);
+
+        // Ahora guardaremos el archivo
+        try {
+            FileOutputStream salida = new FileOutputStream(archivo);
+            workbook.write(salida);
+            salida.close();
+
+            System.out.println("Archivo creado existosamente en " + archivo.getAbsolutePath());
+            Notification.show("Creado", "Archivo creado existosamente en " + archivo.getAbsolutePath());
+
+            Desktop.getDesktop().open(new File(archivo.getAbsolutePath()));
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex.getLocalizedMessage());
+            System.out.println("Archivo no localizable en sistema de archivos");
+        } catch (IOException ex) {
+            System.out.println(ex.getLocalizedMessage());
+            System.out.println("Error de entrada/salida");
+        }
+    }
+
+    public void mostrarPesajexFecha(String fecha) {
+        String sql = "select c.codigo,  c.apellidos || ' ' || c.nombres  as empleado, p.fecha, p.hora, sum(p.cantidad) as peso "
+                + "from pesaje as p "
+                + "inner join colaboradores as c on c.idcolaborador = p.idcolaborador "
+                + "where c.codigo = 355 and p.fecha = '" + fecha + "' "
+                + "group by p.hora "
+                + "order by p.hora asc";
+        Statement st = c_conectar.conexion();
+        ResultSet rs = c_conectar.consulta(st, sql);
+
+        String[] titulos = new String[5];
+        titulos[0] = "Codigo";
+        titulos[1] = "Empleado";
+        titulos[2] = "Fecha";
+        titulos[3] = "Hora";
+        titulos[4] = "Pesaje";
+
+        File dir = new File("");
+
+        String carpeta_reportes = dir.getAbsolutePath() + File.separator + "reportes";
+
+        File directorio = new File(carpeta_reportes);
+        if (!directorio.exists()) {
+            if (directorio.mkdirs()) {
+                System.out.println("Directorio creado");
+            } else {
+                System.out.println("Error al crear directorio");
+            }
+        }
+
+        // Creamos el archivo donde almacenaremos la hoja
+        // de calculo, recuerde usar la extension correcta,
+        // en este caso .xlsx
+        File archivo = new File(dir.getAbsolutePath() + File.separator + "reportes" + File.separator + "rpt_empleado_horas_" + codigo + ".xls");
+
+        System.out.println(dir.getAbsolutePath() + File.separator + "reportes" + File.separator + "rpt_empleado_horas_" + codigo + ".xls");
+
+        // Creamos el libro de trabajo de Excel formato OOXML
+        HSSFWorkbook workbook = new HSSFWorkbook();
+
+        // La hoja donde pondremos los datos
+        HSSFSheet pagina = workbook.createSheet("Historico");
+
+        // Creamos una fila en la hoja en la posicion 0
+        HSSFRow fila = pagina.createRow(0);
+        System.out.println(titulos.length + " total columnas");
+
+        // Creamos el encabezado
+        for (int i = 0; i < titulos.length; i++) {
+            // Creamos una celda en esa fila, en la posicion 
+            // indicada por el contador del ciclo
+            HSSFCell celda = fila.createCell(i);
+
+            // Indicamos el estilo que deseamos 
+            // usar en la celda, en este caso el unico 
+            // que hemos creado
+            celda.setCellValue(titulos[i]);
+        }
+
+        //se hace el recorrido de la base de datos para cargar lo vaores en las celdas
+        int filanro = 1;
+        try {
+            while (rs.next()) {
+
+                // Ahora creamos una fila en la posicion 1
+                fila = pagina.createRow(filanro);
+                // Y colocamos los datos en esa fila
+
+                for (int i = 0; i < 5; i++) {
+                    // Creamos una celda en esa fila, en la
+                    // posicion indicada por el contador del ciclo
+                    HSSFCell celda = fila.createCell(i);
+                    //System.out.println(rs.getString(i));
+                    celda.setCellValue(rs.getString(i + 1));
+                }
+
+                filanro++;
+            }
+        } catch (SQLException ex) {
+            System.out.println(" problema sql " + ex.getLocalizedMessage());
+        }
+        c_conectar.cerrar(rs);
+        c_conectar.cerrar(st);
+
+        // Ahora guardaremos el archivo
+        try {
+            FileOutputStream salida = new FileOutputStream(archivo);
+            workbook.write(salida);
+            salida.close();
+
+            System.out.println("Archivo creado existosamente en " + archivo.getAbsolutePath());
+            Notification.show("Creado", "Archivo creado existosamente en " + archivo.getAbsolutePath());
+
+            Desktop.getDesktop().open(new File(archivo.getAbsolutePath()));
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex.getLocalizedMessage());
+            System.out.println("Archivo no localizable en sistema de archivos");
+        } catch (IOException ex) {
+            System.out.println(ex.getLocalizedMessage());
+            System.out.println("Error de entrada/salida");
+        }
+    }
+
     public void llenar_text() {
         String query = "select * from colaboradores order by codigo asc";
         try {
@@ -182,7 +395,7 @@ public class cl_colaborador {
             try {
                 File dir;
                 dir = new File("");
-                System.out.println(dir.getAbsolutePath() + File.separator + "excel.csv");
+                //System.out.println(dir.getAbsolutePath() + File.separator + "excel.csv");
 
                 fichero = new FileWriter(dir.getAbsolutePath() + File.separator + "excel.csv");
                 pw = new PrintWriter(fichero);

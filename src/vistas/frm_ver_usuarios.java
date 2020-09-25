@@ -114,6 +114,7 @@ public class frm_ver_usuarios extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        t_usuario.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         t_usuario.setRowHeight(20);
         t_usuario.setShowHorizontalLines(false);
         t_usuario.addMouseListener(new java.awt.event.MouseAdapter() {
