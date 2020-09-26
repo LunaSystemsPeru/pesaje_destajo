@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
  * @author luis
  */
 public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
-    
+
     cl_colaborador c_colaborador = new cl_colaborador();
     cl_varios c_varios = new cl_varios();
     int fila_seleccionada;
@@ -30,23 +30,23 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
      */
     public frm_ver_colaboradores() {
         initComponents();
-        
+
         txt_fecha_reporte.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
-        
+
         query = "select * "
                 + "from colaboradores "
                 + "order by apellidos asc, nombres asc";
-        
+
         c_colaborador.mostrar(t_colaboradores, query);
     }
-    
+
     private void activar_botones() {
         btn_modificar.setEnabled(true);
         btn_d_baja.setEnabled(true);
         btn_reporte.setEnabled(true);
         btn_eliminar.setEnabled(true);
     }
-    
+
     private void desactivar_botones() {
         btn_modificar.setEnabled(false);
         btn_d_baja.setEnabled(false);
@@ -340,7 +340,7 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cbx_colaboradorActionPerformed
 
     private void t_colaboradoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_t_colaboradoresMouseClicked
-        
+
         if (evt.getClickCount() == 2) {
             //capture el nro de fla
             fila_seleccionada = t_colaboradores.getSelectedRow();
@@ -390,7 +390,7 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
                     + "from colaboradores "
                     + "where codigo ='" + text + "' "
                     + "order by apellidos, nombres asc";
-            
+
         }
         if (tipo_busqueda == 0) {
             query = "select * "
@@ -418,7 +418,7 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
 
     private void btn_generar_reporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generar_reporteActionPerformed
         String fecha_inicio = c_varios.fecha_myql(txt_fecha_reporte.getText());
-        
+
 
     }//GEN-LAST:event_btn_generar_reporteActionPerformed
 
@@ -431,7 +431,7 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btn_reporteActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
+        c_colaborador.generarExcelTrabajadores();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btn_actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_actualizarActionPerformed

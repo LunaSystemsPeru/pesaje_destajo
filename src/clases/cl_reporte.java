@@ -172,26 +172,28 @@ public class cl_reporte {
 
         String subquery = "";
 
-        String[] titulos = new String[dias + 3];
+        String[] titulos = new String[dias + 5];
         titulos[0] = "Codigo";
         titulos[1] = "Empleado";
+        titulos[2] = "Documento";
+        titulos[3] = "Nro Cuenta";
 
         for (int i = 0; i < dias; i++) {
             Date fecha_temp = c_varios.suma_dia(fecha_inicial, i);
             String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(fecha_temp);
             subquery += "sum(case when fecha= '" + date + "' then cantidad else 0 end) as '" + date + "', ";
-            titulos[2 + i] = date;
+            titulos[4 + i] = date;
         }
-        titulos[dias + 2] = "Total Kgs";
+        titulos[dias + 4] = "Total Kgs";
 
-        String sql = "select c.codigo, c.apellidos || ' ' || c.nombres as empleado, "
+        String sql = "select c.codigo, c.apellidos || ' ' || c.nombres as empleado, c.documento, c.nrocuenta, "
                 + subquery
                 + "sum(cantidad) as total "
                 + " from pesaje as p "
                 + "inner join colaboradores as c on c.idcolaborador = p.idcolaborador "
                 + "where p.fecha BETWEEN '" + fecha_inicial + "' and '" + date_final + "' "
                 + "group by p.idcolaborador "
-                + "order by c.codigo asc";
+                + "order by c.apellidos || ' ' || c.nombres asc";
 
       //  System.out.println(sql);
         File dir = new File("");
@@ -248,11 +250,11 @@ public class cl_reporte {
                 fila = pagina.createRow(filanro);
                 // Y colocamos los datos en esa fila
 
-                for (int i = 0; i < dias + 3; i++) {
+                for (int i = 0; i < dias + 5; i++) {
                     // Creamos una celda en esa fila, en la
                     // posicion indicada por el contador del ciclo
                     HSSFCell celda = fila.createCell(i);
-                    //System.out.println(rs.getString(i));
+                   // System.out.println(rs.getString(i+1));
                     celda.setCellValue(rs.getString(i + 1));
                 }
 
