@@ -16,13 +16,13 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import nicon.notify.core.Notification;
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -64,7 +64,7 @@ public class cl_reporte {
                 + "where p.fecha = '" + fecha + "' "
                 + concatsql
                 + "limit 10";
-      //  System.out.println(sql);
+        //  System.out.println(sql);
 
         Statement st = c_conectar.conexion();
         ResultSet rs = c_conectar.consulta(st, sql);
@@ -146,7 +146,7 @@ public class cl_reporte {
                 + "group by p.idcolaborador "
                 + "order by c.codigo asc";
 
-       // System.out.println(sql);
+        // System.out.println(sql);
     }
 
     public String getFecha_inicio() {
@@ -195,7 +195,7 @@ public class cl_reporte {
                 + "group by p.idcolaborador "
                 + "order by c.apellidos || ' ' || c.nombres asc";
 
-      //  System.out.println(sql);
+        //  System.out.println(sql);
         File dir = new File("");
 
         String carpeta_reportes = dir.getAbsolutePath() + File.separator + "reportes";
@@ -254,8 +254,20 @@ public class cl_reporte {
                     // Creamos una celda en esa fila, en la
                     // posicion indicada por el contador del ciclo
                     HSSFCell celda = fila.createCell(i);
-                   // System.out.println(rs.getString(i+1));
-                    celda.setCellValue(rs.getString(i + 1));
+                    // System.out.println(rs.getString(i+1));
+                    
+                    if (i < 4) {
+                        celda.setCellValue(rs.getString(i + 1));
+                    }
+
+                    if (i > 3) {
+                        celda.setCellValue(rs.getDouble(i + 1));
+                        HSSFCellStyle style = workbook.createCellStyle();
+                        style.setDataFormat(HSSFDataFormat.getBuiltinFormat("###0.00"));
+                        celda.setCellStyle(style);
+                        celda.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+                    }
+
                 }
 
                 filanro++;
