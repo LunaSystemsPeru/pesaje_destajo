@@ -167,8 +167,9 @@ public class cl_reporte {
 
     public void generar_excel() {
         String fecha_inicial = fecha_inicio;
-        Date fecha_final = c_varios.suma_dia(fecha_inicial, dias);
+        Date fecha_final = c_varios.suma_dia(fecha_inicial, dias - 1);
         String date_final = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(fecha_final);
+      //  System.out.println("fecha final" + date_final);
 
         String subquery = "";
 
@@ -178,7 +179,8 @@ public class cl_reporte {
         titulos[2] = "Documento";
         titulos[3] = "Nro Cuenta";
 
-        for (int i = 0; i < dias; i++) {
+        
+        for (int i = 0; i < dias  ; i++) {
             Date fecha_temp = c_varios.suma_dia(fecha_inicial, i);
             String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(fecha_temp);
             subquery += "sum(case when fecha= '" + date + "' then cantidad else 0 end) as '" + date + "', ";
@@ -195,7 +197,7 @@ public class cl_reporte {
                 + "group by p.idcolaborador "
                 + "order by c.apellidos || ' ' || c.nombres asc";
 
-        //  System.out.println(sql);
+         // System.out.println(sql);
         File dir = new File("");
 
         String carpeta_reportes = dir.getAbsolutePath() + File.separator + "reportes";
@@ -224,7 +226,11 @@ public class cl_reporte {
 
         // Creamos una fila en la hoja en la posicion 0
         HSSFRow fila = pagina.createRow(0);
-        System.out.println(titulos.length + " total columnas");
+        //System.out.println(titulos.length + " total columnas");
+        
+        pagina.setColumnWidth(0, 1550);
+        pagina.setColumnWidth(1, 15000);
+        pagina.setColumnWidth(3, 4200);
 
         // Creamos el encabezado
         for (int i = 0; i < titulos.length; i++) {

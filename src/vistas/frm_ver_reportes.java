@@ -390,6 +390,7 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
             }
         });
 
+        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
         jSpinner1.setValue(7);
 
         jLabel6.setText("Seleccionar Tipo Servicio");
