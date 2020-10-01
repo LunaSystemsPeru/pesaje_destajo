@@ -137,25 +137,27 @@ public class cl_pesaje_trabajador {
         return registrado;
     }
 
-    public double obtener_total_fecha() {
-        double total_cantidad = 0;
+    public String[] obtener_total_fecha() {
+        String[] datos = new String[2];
         try {
             Statement st = c_conectar.conexion();
-            String query = "select sum(cantidad) as total "
+            String query = "select sum(cantidad) as total, count(DISTINCT (idcolaborador)) as cantidad "
                     + "from pesaje "
                     + "where fecha = '" + fecha + "' "
                     + "and idservicio = '" + idservicio + "' ";
+            System.out.println(query);
             ResultSet rs = c_conectar.consulta(st, query);
 
             while (rs.next()) {
-                total_cantidad = rs.getDouble("total");
+                datos[0] = rs.getString("total");
+                datos[1] = rs.getString("cantidad");
             }
             c_conectar.cerrar(rs);
             c_conectar.cerrar(st);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
         }
-        return total_cantidad;
+        return datos;
 
     }
 
@@ -399,6 +401,33 @@ public class cl_pesaje_trabajador {
                     + "group by pt.idservicio, pt.fecha "
                     + "order by pt.fecha asc";
               //System.out.println(query);
+            ResultSet rs = c_conectar.consulta(st, query);
+
+            while (rs.next()) {
+                valor_x[rs.getInt("dia")] = rs.getInt("total_dia");
+            }
+            c_conectar.cerrar(rs);
+            c_conectar.cerrar(st);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
+        }
+
+        return valor_x;
+    }
+    
+    public Integer[] cortadoresMensual() {
+        int total_mes = cl_varios.diasDelMes(c_varios.obtener_mes(), c_varios.obtener_anio());
+        Integer[] valor_x = new Integer[total_mes];
+        // System.out.println("total dias de este mes = " + total_mes);
+
+        try {
+            Statement st = c_conectar.conexion();
+            String query = "select count(DISTINCT(pt.idcolaborador)) as total_dia, strftime('%d', pt.fecha) as dia "
+                    + "from pesaje as pt "
+                    + "where strftime('%Y', pt.fecha) =  strftime('%Y', current_date) and strftime('%m', pt.fecha) =  strftime('%m', current_date) "
+                    + "group by pt.idservicio, pt.fecha "
+                    + "order by pt.fecha asc";
+              System.out.println(query);
             ResultSet rs = c_conectar.consulta(st, query);
 
             while (rs.next()) {

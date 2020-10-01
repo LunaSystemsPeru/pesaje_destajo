@@ -65,8 +65,8 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         setearFecha(fecha);
 
     }
-    
-    private void setearFecha (String date) {
+
+    private void setearFecha(String date) {
         try {
             java.util.Date date2;
             date2 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
@@ -1153,9 +1153,10 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         c_pesaje_trabajador.setFecha(c_varios.fecha_myql(fecha));
-        double total = c_pesaje_trabajador.obtener_total_fecha();
-
-        JOptionPane.showMessageDialog(null, "<html>El pesaje total del dia es: <h2>" + c_varios.formato_numero(total) + "</h2></html>");
+        String[] data = c_pesaje_trabajador.obtener_total_fecha();
+        double total = Double.parseDouble(data[0]);
+        int cantidad = Integer.parseInt(data[1]);
+        JOptionPane.showMessageDialog(null, "<html>El pesaje total del dia es: <h2>" + c_varios.formato_numero(total) + "</h2><br>Nro de Cortadores: <h2>" + cantidad + "</h2></html>");
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed

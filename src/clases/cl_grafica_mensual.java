@@ -61,6 +61,43 @@ public class cl_grafica_mensual {
         chartPanel.setBounds(0, 0, 419, 309);
         panel.add(chartPanel);
     }
+    
+    public void SeriesCortadoresDia(JPanel panel) {
+
+        XYSeries series = new XYSeries("Nro");
+        Integer[] valor_x = c_pesaje.cortadoresMensual();
+        // System.out.println("canidad_items" + valor_x.length);
+
+        for (int i = 1; i < valor_x.length; i++) {
+            int valor = 0;
+            if (valor_x[i] != null) {
+                valor = valor_x[i];
+            }
+            series.add(i, valor);
+            //System.out.println(i + " valor " + valor);
+        }
+
+// Add the series to your data set
+        XYSeriesCollection dataset = new XYSeriesCollection();
+        dataset.addSeries(series);
+
+// Generate the graph
+        JFreeChart chart = ChartFactory.createXYLineChart(
+                "Pesaje del mes actual", // Title
+                "dias", // x-axis Label
+                "pesaje(kg)", // y-axis Label
+                dataset, // Dataset
+                PlotOrientation.VERTICAL, // Plot Orientation
+                true, // Show Legend
+                true, // Use tooltips
+                false // Configure chart to generate URLs?
+        );
+
+        ChartPanel chartPanel = new ChartPanel((JFreeChart) null);
+        chartPanel.setChart(chart);
+        chartPanel.setBounds(0, 0, 419, 309);
+        panel.add(chartPanel);
+    }
 
     public void llenar_horas(JPanel panel, String fecha) {
 
