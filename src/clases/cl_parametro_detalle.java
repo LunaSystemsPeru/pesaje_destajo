@@ -144,7 +144,7 @@ public class cl_parametro_detalle {
     public void obtener_codigo() {
         try {
             Statement st = c_conectar.conexion();
-            String query = "select ifnull(max(iddetalle) + 1, 1) as codigo "
+            String query = "select ifnull(max(iddetalles) + 1, 1) as codigo "
                     + "from parametros_detalles ";
             ResultSet rs = c_conectar.consulta(st, query);
 

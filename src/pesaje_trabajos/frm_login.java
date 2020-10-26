@@ -209,6 +209,7 @@ public class frm_login extends javax.swing.JDialog {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String password = txt_contrasena.getText();
             if (password.equals(c_usuario.getContrasena())) {
+                frm_principal.c_usuario.setId_usuario(c_usuario.getId_usuario());
                 btn_entrar.setEnabled(true);
                 btn_entrar.requestFocus();
             } else {

@@ -13,6 +13,7 @@ import clases.cl_varios;
 import java.awt.event.KeyEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import models.m_trabajo;
@@ -886,6 +887,11 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         jButton6.setText("Descuento");
         jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/clipboard_text.png"))); // NOI18N
         jButton5.setText("<html><center>ver Kgs Detallados del Trabajador</center></html>");
@@ -1334,6 +1340,12 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         c_pesaje_trabajador.eliminar();
         modelo.removeRow(fila_seleccionada);
     }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        JDialog dialogo = new frm_descuento(null, true);
+        dialogo.setLocationRelativeTo(null);
+        dialogo.setVisible(true);
+    }//GEN-LAST:event_jButton6ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

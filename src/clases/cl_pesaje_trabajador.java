@@ -427,7 +427,7 @@ public class cl_pesaje_trabajador {
                     + "where strftime('%Y', pt.fecha) =  strftime('%Y', current_date) and strftime('%m', pt.fecha) =  strftime('%m', current_date) "
                     + "group by pt.idservicio, pt.fecha "
                     + "order by pt.fecha asc";
-              System.out.println(query);
+             // System.out.println(query);
             ResultSet rs = c_conectar.consulta(st, query);
 
             while (rs.next()) {
