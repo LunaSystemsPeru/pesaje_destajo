@@ -21,15 +21,18 @@ import pesaje_trabajos.frm_principal;
  * @author Mariela
  */
 public class frm_descuento extends javax.swing.JDialog {
-
+    
     cl_varios c_varios = new cl_varios();
-
+    
     cl_colaborador c_colaborador = new cl_colaborador();
     cl_parametro_detalle c_items = new cl_parametro_detalle();
     cl_descuento c_descuento = new cl_descuento();
-
-    String fecha;
+    
+    //String fecha;
     double suma;
+    int fila_seleccionada;
+    public static String fecha;
+    
 
     /**
      * Creates new form frm_descuento
@@ -37,12 +40,12 @@ public class frm_descuento extends javax.swing.JDialog {
     public frm_descuento(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-
-        fecha = c_varios.getFechaActual();
+        
+       // fecha = c_varios.getFechaActual();
         setearFecha(fecha);
         desactivar_botones();
     }
-
+    
     private void setearFecha(String date) {
         try {
             java.util.Date date2;
@@ -52,23 +55,23 @@ public class frm_descuento extends javax.swing.JDialog {
             System.out.println(ex.getLocalizedMessage());
         }
     }
-
+    
     private void desactivar_botones() {
         jch_5.setEnabled(false);
         jch_4.setEnabled(false);
         jch_10.setEnabled(false);
         jch_3.setEnabled(false);
         jch_11.setEnabled(false);
-
+        
     }
-
+    
     private void activar_botones() {
         jch_5.setEnabled(true);
         jch_4.setEnabled(true);
         jch_10.setEnabled(true);
         jch_3.setEnabled(true);
         jch_11.setEnabled(true);
-
+        
     }
 
     /**
@@ -318,11 +321,21 @@ public class frm_descuento extends javax.swing.JDialog {
             }
         ));
         jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/trash_16.png"))); // NOI18N
         jButton1.setText("Eliminar");
         jButton1.setEnabled(false);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -386,10 +399,11 @@ public class frm_descuento extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2)
-                            .addComponent(txt_codigo, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_codigo, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -422,11 +436,11 @@ public class frm_descuento extends javax.swing.JDialog {
         //id tijera = 5
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         String fechaseleccionada = sdf.format(jDateChooser1.getDate());
-
+        
         c_descuento.setIdcolaborador(c_colaborador.getIdcolaborador());
         c_descuento.setIdusuario(frm_principal.c_usuario.getId_usuario());
         c_descuento.setFecha(c_varios.fecha_myql(fechaseleccionada));
-
+        
         if (jch_5.isSelected()) {
             c_items.setIddetalle(5);
             c_items.obtener_datos();
@@ -467,7 +481,7 @@ public class frm_descuento extends javax.swing.JDialog {
             c_descuento.setMonto(Double.parseDouble(c_items.getValor()));
             c_descuento.registrar();
         }
-
+        
         c_descuento.mostrar(jTable1);
         limpiar();
 
@@ -476,7 +490,7 @@ public class frm_descuento extends javax.swing.JDialog {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
-
+    
     private void limpiar() {
         jch_10.setSelected(false);
         jch_11.setSelected(false);
@@ -507,11 +521,11 @@ public class frm_descuento extends javax.swing.JDialog {
                 int colaborador = Integer.parseInt(txt_codigo.getText());
                 c_colaborador.setCodigo(colaborador);
                 txt_colaborador.setText("");
-
+                
                 if (c_colaborador.obtener_datos_codigo()) {
                     c_colaborador.obtener_datos();
                     txt_colaborador.setText(c_colaborador.getDatos());
-
+                    
                     c_descuento.setIdcolaborador(c_colaborador.getIdcolaborador());
                     c_descuento.mostrar(jTable1);
                     //activar botones trabajador
@@ -525,13 +539,13 @@ public class frm_descuento extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_txt_codigoKeyPressed
-
+    
     private void obtenerIDItem(JCheckBox check) {
         String nombre = check.getName();
         String id = nombre.substring(4, nombre.length());
         System.out.println(nombre);
     }
-
+    
     private void sumarCheckes() {
         suma = 0;
         if (jch_5.isSelected()) {
@@ -585,6 +599,24 @@ public class frm_descuento extends javax.swing.JDialog {
     private void jch_3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jch_3ItemStateChanged
         sumarCheckes();
     }//GEN-LAST:event_jch_3ItemStateChanged
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        jButton1.setEnabled(true);
+        fila_seleccionada = jTable1.getSelectedRow();
+
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if (fila_seleccionada > -1) {
+            String campo = jTable1.getValueAt(fila_seleccionada, 4).toString();
+            c_descuento.setIddescuento(Integer.parseInt(campo));
+            c_descuento.eliminar();
+            c_descuento.mostrar(jTable1);
+            jButton1.setEnabled(false);
+        }
+        
+
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

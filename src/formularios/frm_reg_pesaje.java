@@ -1342,6 +1342,10 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        fecha = sdf.format(ftffecha.getDate());
+        System.out.println(fecha);
+        frm_descuento.fecha = fecha;
         JDialog dialogo = new frm_descuento(null, true);
         dialogo.setLocationRelativeTo(null);
         dialogo.setVisible(true);
