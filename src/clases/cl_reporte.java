@@ -188,7 +188,7 @@ public class cl_reporte {
         }
         titulos[dias + 4] = "Total Kgs";
         titulos[dias + 5] = "S/ Pesaje";
-        titulos[dias + 6] = "Desc. Juan";
+        titulos[dias + 6] = "Desc. TG";
         titulos[dias + 7] = "Desc. Empresa";
         titulos[dias + 8] = "a Pagar";
 

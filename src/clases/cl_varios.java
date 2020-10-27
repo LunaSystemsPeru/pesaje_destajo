@@ -89,12 +89,12 @@ public class cl_varios {
         Dimension desktopSize = frm_principal.jDesktopPane1.getSize();
         frm_principal.jTabbedPane1.setSize(frm_principal.jDesktopPane1.getSize());
         Dimension jInternalFrameSize = ventana.getSize();
-       /* int ancho = (int) (desktopSize.getWidth() / 1.05);
+        /* int ancho = (int) (desktopSize.getWidth() / 1.05);
         int alto = (int) (desktopSize.getHeight() / 1.05);
         if (tamano == 0) {
             ventana.setSize(ancho, alto);
         }
-*/
+         */
 
         ventana.setLocation((desktopSize.width - jInternalFrameSize.width) / 2,
                 (desktopSize.height - jInternalFrameSize.height) / 2);

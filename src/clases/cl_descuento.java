@@ -94,7 +94,7 @@ public class cl_descuento {
                     + "from descuentos as d "
                     + "inner join parametros_detalles as pd on pd.iddetalles = d.idarticulo "
                     + "inner join usuarios as u on u.idusuario = d.idusuario "
-                    + "where d.idcolaborador = '" + this.idcolaborador + "' "
+                    + "where d.idcolaborador = '" + this.idcolaborador + "' and fecha = '"+fecha+"' "
                     + "order by d.fecha asc "
                     + "limit 30";
             ResultSet rs = c_conectar.consulta(st, query);

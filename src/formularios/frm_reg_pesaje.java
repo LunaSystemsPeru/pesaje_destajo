@@ -1071,6 +1071,29 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
                     c_colaborador.obtener_datos();
                     txt_nombrecolaborador.setText(c_colaborador.getDatos());
 
+                    //obtener primer pesaje
+                    //obtener la hora de ese pesaje
+                    c_pesaje_trabajador.setFecha(c_varios.fecha_myql(fecha));
+                    String horaprimera = c_pesaje_trabajador.obtenerPrimerPesaje();
+                    //obtener primer pesaje del trabajador
+                    c_pesaje_trabajador.setIdcolaborador(c_colaborador.getIdcolaborador());
+                    String horapeso1 = c_pesaje_trabajador.obtenerPrimerPesajeTrabajador();
+
+                    String horaactual = c_varios.getHoraActual();
+                    horaactual = horaactual.substring(0, 2);
+
+                    int hora1 = Integer.parseInt(horaprimera);
+                    int horapeso = Integer.parseInt(horaactual);
+
+                    //comparar si no hay ootro pesaje
+                    if (Integer.parseInt(horapeso1) == 0) {
+
+                        //comparar hora con la hora actual si es mayor a 6 de diferencia mostrar alaerta
+                        if (horapeso - hora1 > 2) {
+                            JOptionPane.showMessageDialog(null, "<html><h2>ALERTA</h2> <h4>no registra pesaje en las ultimas 03 horas</h4></html>");
+                        }
+                    }
+
                     //activar botones trabajador
                     activar_botones_trabajador();
 

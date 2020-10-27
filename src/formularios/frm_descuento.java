@@ -527,6 +527,7 @@ public class frm_descuento extends javax.swing.JDialog {
                     txt_colaborador.setText(c_colaborador.getDatos());
                     
                     c_descuento.setIdcolaborador(c_colaborador.getIdcolaborador());
+                    c_descuento.setFecha(fecha);
                     c_descuento.mostrar(jTable1);
                     //activar botones trabajador
                     activar_botones();
