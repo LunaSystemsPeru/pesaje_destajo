@@ -9,6 +9,7 @@ import clases.cl_conectar;
 import clases.cl_reporte;
 import clases.cl_usuarios;
 import clases.cl_varios;
+import formularios.frm_actualizar;
 import formularios.frm_reg_pesaje;
 import java.awt.Desktop;
 import java.awt.Toolkit;
@@ -72,6 +73,7 @@ public class frm_principal extends javax.swing.JFrame {
         btn_exit = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
+        jButton5 = new javax.swing.JButton();
         btn_exit1 = new javax.swing.JButton();
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jTabbedPane1 = new javax.swing.JTabbedPane();
@@ -159,6 +161,18 @@ public class frm_principal extends javax.swing.JFrame {
         jToolBar1.add(jButton1);
         jToolBar1.add(jSeparator1);
 
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/locked-30.png"))); // NOI18N
+        jButton5.setText("Actualizar DB");
+        jButton5.setFocusable(false);
+        jButton5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButton5);
+
         btn_exit1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/close_delete-512.png"))); // NOI18N
         btn_exit1.setText("Exit");
         btn_exit1.setFocusable(false);
@@ -243,6 +257,12 @@ public class frm_principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        JDialog dialogo = new frm_actualizar(this, true);
+        dialogo.setLocationRelativeTo(null);
+        dialogo.setVisible(true);
+    }//GEN-LAST:event_jButton5ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -285,6 +305,7 @@ public class frm_principal extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     public static javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JToolBar.Separator jSeparator1;

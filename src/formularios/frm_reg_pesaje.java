@@ -22,26 +22,27 @@ import pesaje_trabajos.frm_principal;
 //rpt_excel_pesaje_diario_trabajador
 
 public class frm_reg_pesaje extends javax.swing.JInternalFrame {
-    
+
     cl_varios c_varios = new cl_varios();
     m_trabajo m_trabajo = new m_trabajo();
     cl_colaborador c_colaborador = new cl_colaborador();
     cl_colaborador c_busqueda_colaborador = new cl_colaborador();
     cl_pesaje_trabajador c_busqueda_pesaje = new cl_pesaje_trabajador();
     cl_pesaje_trabajador c_pesaje_trabajador = new cl_pesaje_trabajador();
-    
+
     cl_parametro_detalle c_detalle = new cl_parametro_detalle();
     cl_llamadas c_llamada = new cl_llamadas();
-    
+
     int id_usuario = frm_principal.c_usuario.getId_usuario();
     double tope = 0;
     int fila_seleccionada = -1;
-    
+
     double dneto;
     double tope_maximo = 0;
-    
+    int idtiposervicio;
+
     String fecha;
-    
+
     DefaultTableModel modelo;
 
     /**
@@ -53,19 +54,19 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
 
         m_trabajo.cbx_trabajo(cbx_trabajo);
         modelotabla();
-        
+
         c_detalle.setIddetalle(1);
         c_detalle.obtener_datos();
         tope_maximo = Double.parseDouble(c_detalle.getValor());
         jLabel16.setText(c_varios.formato_numero(tope_maximo));
-        
+
         c_pesaje_trabajador.pesaje_horas_hoy(jTable1);
-        
+
         fecha = c_varios.getFechaActual();
         setearFecha(fecha);
-        
+
     }
-    
+
     private void setearFecha(String date) {
         try {
             java.util.Date date2;
@@ -76,7 +77,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
             System.out.println(ex.getLocalizedMessage());
         }
     }
-    
+
     private void modelotabla() {
         modelo = new DefaultTableModel() {
             @Override
@@ -104,9 +105,9 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         c_varios.centrar_celda(t_listrabaj, 0);
         c_varios.centrar_celda(t_listrabaj, 3);
         c_varios.centrar_celda(t_listrabaj, 4);
-        
+
     }
-    
+
     private void limpiar() {
         txt_colaborador.setText("");
         txt_nombrecolaborador.setText("");
@@ -115,7 +116,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         btn_agregar.setEnabled(false);
         //desactivar_botones_trabajador();
     }
-    
+
     private void activar_botones_trabajador() {
         jButton7.setEnabled(true);
         jButton2.setEnabled(true);
@@ -123,7 +124,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         jButton6.setEnabled(true);
         jButton5.setEnabled(true);
     }
-    
+
     private void desactivar_botones_trabajador() {
         jButton7.setEnabled(false);
         jButton2.setEnabled(false);
@@ -131,7 +132,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         jButton6.setEnabled(false);
         jButton5.setEnabled(false);
     }
-    
+
     private boolean validar_trabajador() {
         if (c_colaborador.getCodigo() > 0) {
             return true;
@@ -141,7 +142,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
             txt_colaborador.requestFocus();
             return false;
         }
-        
+
     }
 
     /**
@@ -184,6 +185,10 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         jButton13 = new javax.swing.JButton();
         jLabel21 = new javax.swing.JLabel();
         jTextField8 = new javax.swing.JTextField();
+        jd_parametros = new javax.swing.JDialog();
+        jLabel9 = new javax.swing.JLabel();
+        jCheckBox1 = new javax.swing.JCheckBox();
+        jButton8 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -217,6 +222,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         jButton3 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        jButton11 = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
@@ -248,6 +254,11 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
 
         jTextField7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jTextField7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField7.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField7KeyPressed(evt);
+            }
+        });
 
         jButton10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/find.png"))); // NOI18N
         jButton10.setText("Buscar");
@@ -474,6 +485,47 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
                     .addComponent(jTextField8)
                     .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jd_parametros.setTitle("Parametros Pesaje");
+
+        jLabel9.setText("Parametros para Pesaje");
+
+        jCheckBox1.setText("Activar");
+
+        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/accept.png"))); // NOI18N
+        jButton8.setText("Grabar");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jd_parametrosLayout = new javax.swing.GroupLayout(jd_parametros.getContentPane());
+        jd_parametros.getContentPane().setLayout(jd_parametrosLayout);
+        jd_parametrosLayout.setHorizontalGroup(
+            jd_parametrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jd_parametrosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jd_parametrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9)
+                    .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(75, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jd_parametrosLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton8)
+                .addContainerGap())
+        );
+        jd_parametrosLayout.setVerticalGroup(
+            jd_parametrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jd_parametrosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBox1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+                .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         setClosable(true);
@@ -834,6 +886,17 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
             }
         });
 
+        jButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/locked-30.png"))); // NOI18N
+        jButton11.setText("Parametros");
+        jButton11.setToolTipText("No Abrir!!");
+        jButton11.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton11.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton11ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -845,7 +908,8 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
                     .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE))
+                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
+                    .addComponent(jButton11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -854,6 +918,8 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton6)
@@ -861,7 +927,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
                 .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(368, Short.MAX_VALUE))
+                .addContainerGap(321, Short.MAX_VALUE))
         );
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -926,11 +992,11 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
             c_pesaje_trabajador.setIdcolaborador(c_colaborador.getIdcolaborador());
             c_pesaje_trabajador.setCantidad(dneto);
             c_pesaje_trabajador.setFecha(c_varios.fecha_myql(fecha));
-            c_pesaje_trabajador.setIdservicio(c_detalle.getIddetalle());
+            c_pesaje_trabajador.setIdservicio(idtiposervicio);
             c_pesaje_trabajador.setIdusuario(id_usuario);
             c_pesaje_trabajador.obtener_codigo();
             c_pesaje_trabajador.registrar();
-            
+
             Object fila[] = new Object[6];
             fila[0] = txt_colaborador.getText();
             fila[1] = txt_nombrecolaborador.getText();
@@ -939,13 +1005,13 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
             fila[4] = c_varios.fecha_myql(fecha);
             fila[5] = c_pesaje_trabajador.getIdpesaje();
             modelo.addRow(fila);
-            
+
             t_listrabaj.scrollRectToVisible(t_listrabaj.getCellRect(t_listrabaj.getRowCount() - 1, 0, true));
 
             //limpiar campos
             limpiar();
             c_pesaje_trabajador.pesaje_horas_hoy(jTable1);
-            
+
             btn_agregar.setEnabled(false);
             txt_colaborador.setText("");
             txt_nombrecolaborador.setText("");
@@ -965,21 +1031,21 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
 
             // btn_iniciar.requestFocus();
             o_trabajo o_trabajo = (o_trabajo) cbx_trabajo.getSelectedItem();
-            
+
             c_detalle.setIddetalle(o_trabajo.getId_tipo_trabajo());
             c_detalle.obtener_datos();
-            
+
             tope = Double.parseDouble(c_detalle.getValor());
             txt_tope.setText(c_varios.formato_numero(Double.parseDouble(c_detalle.getValor())));
 
             //mostrar datos grabados 
             modelotabla();
-            
+
             c_pesaje_trabajador.setFecha(c_varios.fecha_myql(fecha));
             c_pesaje_trabajador.setIdservicio(o_trabajo.getId_tipo_trabajo());
             c_pesaje_trabajador.ver_pesaje_fecha(modelo);
             t_listrabaj.setModel(modelo);
-            
+
             txt_colaborador.setEnabled(true);
             jButton1.setEnabled(true);
             txt_colaborador.requestFocus();
@@ -994,11 +1060,11 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             fecha = sdf.format(ftffecha.getDate());
-            
+
             if (txt_colaborador.getText().length() > 0) {
                 int colaborador = Integer.parseInt(txt_colaborador.getText());
                 c_colaborador.setCodigo(colaborador);
-                
+
                 if (c_colaborador.obtener_datos_codigo()) {
                     c_colaborador.obtener_datos();
                     txt_nombrecolaborador.setText(c_colaborador.getDatos());
@@ -1010,10 +1076,10 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
                     //obtener primer pesaje del trabajador
                     c_pesaje_trabajador.setIdcolaborador(c_colaborador.getIdcolaborador());
                     String horapeso1 = c_pesaje_trabajador.obtenerPrimerPesajeTrabajador();
-                    
+
                     String horaactual = c_varios.getHoraActual();
                     horaactual = horaactual.substring(0, 2);
-                    
+
                     int hora1 = Integer.parseInt(horaprimera);
                     int horapeso = Integer.parseInt(horaactual);
 
@@ -1028,7 +1094,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
 
                     //activar botones trabajador
                     activar_botones_trabajador();
-                    
+
                     txt_cantidad.setEnabled(true);
                     txt_cantidad.requestFocus();
                 } else {
@@ -1048,18 +1114,18 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
                 if (c_varios.esDecimal(tara)) {
                     dtara = Double.parseDouble(tara);
                 }
-                
+
                 String pesaje = txt_cantidad.getText();
                 double dcantidad;
-                
+
                 dneto = 0;
-                
+
                 if (c_varios.esDecimal(pesaje)) {
                     dcantidad = Double.parseDouble(pesaje);
-                    
+
                     dneto = dcantidad - dtara;
                     txt_neto.setText(c_varios.formato_numero(dneto));
-                    
+
                     if (dneto <= tope & dneto <= tope_maximo) {
                         btn_agregar.setEnabled(true);
                         btn_agregar.doClick();
@@ -1078,7 +1144,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
                 }
             }
         }
-        
+
         if (evt.getKeyCode() == KeyEvent.VK_ESCAPE) {
             limpiar();
         }
@@ -1121,15 +1187,15 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        
-            jd_total_trabajador.setModal(true);
-            jd_total_trabajador.setSize(400, 264);
-            jd_total_trabajador.setLocationRelativeTo(null);
-            txt_cod_memorandum1.setText("");
-            jTextField6.setText("");
-            jTextField8.setText("");
-            jd_total_trabajador.setVisible(true);
-        
+
+        jd_total_trabajador.setModal(true);
+        jd_total_trabajador.setSize(400, 264);
+        jd_total_trabajador.setLocationRelativeTo(null);
+        txt_cod_memorandum1.setText("");
+        jTextField6.setText("");
+        jTextField8.setText("");
+        jd_total_trabajador.setVisible(true);
+
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -1137,36 +1203,36 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        try {
-            jd_detalle_trabajador.setModal(true);
-            jd_detalle_trabajador.setSize(436, 474);
-            jd_detalle_trabajador.setLocationRelativeTo(null);
-            String date = c_varios.fecha_myql(fecha);
-            java.util.Date date2 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-            // jDateChooser2.setDate(date2);
-            jTextField7.setText("");
-            jTextField1.setText("");
-            jTextField4.setText("");
-            t_detalle_trabajador.removeAll();
-            
-            jd_detalle_trabajador.setVisible(true);
-        } catch (ParseException ex) {
+//        try {
+        jd_detalle_trabajador.setModal(true);
+        jd_detalle_trabajador.setSize(436, 474);
+        jd_detalle_trabajador.setLocationRelativeTo(null);
+        String date = c_varios.fecha_myql(fecha);
+        //java.util.Date date2 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+        // jDateChooser2.setDate(date2);
+        jTextField7.setText("");
+        jTextField1.setText("");
+        jTextField4.setText("");
+        t_detalle_trabajador.removeAll();
+
+        jd_detalle_trabajador.setVisible(true);
+        /*    } catch (ParseException ex) {
             System.out.println(ex.getLocalizedMessage());
-        }
+        }*/
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         if (jTextArea1.getText().length() > 0) {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             String ffecha2 = sdf.format(jDateChooser1.getDate());
-            
+
             c_llamada.setFecha(c_varios.fecha_myql(ffecha2));
             c_llamada.setIdcolaborador(c_busqueda_colaborador.getIdcolaborador());
             c_llamada.setIdusuario(id_usuario);
             c_llamada.setTexto(jTextArea1.getText().toUpperCase());
             c_llamada.obtener_codigo();
             c_llamada.registrar();
-            
+
             jd_memorandum.dispose();
         }
     }//GEN-LAST:event_jButton4ActionPerformed
@@ -1174,29 +1240,32 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         jd_memorandum.setModal(true);
         jd_memorandum.setSize(578, 440);
-        
+
         jTextField5.setText(txt_nombrecolaborador.getText());
         jTextArea1.requestFocus();
-        
+
         jd_memorandum.setLocationRelativeTo(null);
         jd_memorandum.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        c_busqueda_colaborador.setCodigo(Integer.parseInt(jTextField7.getText()));
-        
-        if (c_busqueda_colaborador.obtener_datos_codigo()) {
-            c_busqueda_colaborador.obtener_datos();
-            jTextField1.setText(c_busqueda_colaborador.getDatos());
-            
-            c_pesaje_trabajador.setIdcolaborador(c_busqueda_colaborador.getIdcolaborador());
-            c_pesaje_trabajador.ver_detalle_trabajador(t_detalle_trabajador);
-            
-            double total = 0;
-            for (int i = 0; i < t_detalle_trabajador.getRowCount(); i++) {
-                total += Double.parseDouble(t_detalle_trabajador.getValueAt(i, 2).toString());
+        if (jTextField7.getText().length() > 0) {
+
+            c_busqueda_colaborador.setCodigo(Integer.parseInt(jTextField7.getText()));
+
+            if (c_busqueda_colaborador.obtener_datos_codigo()) {
+                c_busqueda_colaborador.obtener_datos();
+                jTextField1.setText(c_busqueda_colaborador.getDatos());
+
+                c_busqueda_pesaje.setIdcolaborador(c_busqueda_colaborador.getIdcolaborador());
+                c_busqueda_pesaje.ver_detalle_trabajador(t_detalle_trabajador);
+
+                double total = 0;
+                for (int i = 0; i < t_detalle_trabajador.getRowCount(); i++) {
+                    total += Double.parseDouble(t_detalle_trabajador.getValueAt(i, 2).toString());
+                }
+                jTextField4.setText(c_varios.formato_totales(total));
             }
-            jTextField4.setText(c_varios.formato_totales(total));
         }
 
     }//GEN-LAST:event_jButton10ActionPerformed
@@ -1209,7 +1278,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
         if (txt_cod_memorandum.getText().length() > 0) {
             c_busqueda_colaborador.setCodigo(Integer.parseInt(txt_cod_memorandum.getText()));
-            
+
             if (c_busqueda_colaborador.obtener_datos_codigo()) {
                 c_busqueda_colaborador.obtener_datos();
                 jTextField5.setText(c_busqueda_colaborador.getDatos());
@@ -1220,22 +1289,37 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
         if (txt_cod_memorandum1.getText().length() > 0) {
             c_busqueda_colaborador.setCodigo(Integer.parseInt(txt_cod_memorandum1.getText()));
-            
+
             if (c_busqueda_colaborador.obtener_datos_codigo()) {
+
+                c_detalle.setIddetalle(13);
+                c_detalle.obtener_datos();
+                String activo_descuento = c_detalle.getValor();
+                //System.out.println(activo_descuento);
+                
+                c_detalle.setIddetalle(12);
+                c_detalle.obtener_datos();
+                double totalkgdescuentos = Double.parseDouble(c_detalle.getValor());
+
                 c_busqueda_colaborador.obtener_datos();
                 jTextField6.setText(c_busqueda_colaborador.getDatos());
-                
+
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                 fecha = sdf.format(ftffecha.getDate());
                 setearFecha(c_varios.fecha_myql(fecha));
 
                 // btn_iniciar.requestFocus();
                 o_trabajo o_trabajo = (o_trabajo) cbx_trabajo.getSelectedItem();
-                
-                c_pesaje_trabajador.setFecha(c_varios.fecha_myql(fecha));
-                c_pesaje_trabajador.setIdservicio(o_trabajo.getId_tipo_trabajo());
-                c_pesaje_trabajador.setIdcolaborador(c_busqueda_colaborador.getIdcolaborador());
+
+                c_busqueda_pesaje.setFecha(c_varios.fecha_myql(fecha));
+                c_busqueda_pesaje.setIdservicio(o_trabajo.getId_tipo_trabajo());
+                c_busqueda_pesaje.setIdcolaborador(c_busqueda_colaborador.getIdcolaborador());
                 double totaltrabajadores = c_pesaje_trabajador.obtener_total_trabajador_fecha();
+                if (totaltrabajadores > 2) {
+                    if (activo_descuento.equals("1")) {
+                        totaltrabajadores = totaltrabajadores - totalkgdescuentos;
+                    }
+                }
                 jTextField8.setText(c_varios.formato_totales(totaltrabajadores));
             }
         }
@@ -1248,21 +1332,22 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
 
         // btn_iniciar.requestFocus();
         o_trabajo o_trabajo = (o_trabajo) cbx_trabajo.getSelectedItem();
-        
+
         c_detalle.setIddetalle(o_trabajo.getId_tipo_trabajo());
         c_detalle.obtener_datos();
-        
+
+        idtiposervicio = c_detalle.getIddetalle();
         tope = Double.parseDouble(c_detalle.getValor());
-        txt_tope.setText(c_varios.formato_numero(Double.parseDouble(c_detalle.getValor())));
+        txt_tope.setText(c_varios.formato_numero(tope));
 
         //mostrar datos grabados 
         modelotabla();
-        
+
         c_pesaje_trabajador.setFecha(c_varios.fecha_myql(fecha));
         c_pesaje_trabajador.setIdservicio(o_trabajo.getId_tipo_trabajo());
         c_pesaje_trabajador.ver_pesaje_fecha(modelo);
         t_listrabaj.setModel(modelo);
-        
+
         txt_colaborador.setEnabled(true);
         jButton1.setEnabled(true);
         txt_colaborador.requestFocus();
@@ -1301,10 +1386,47 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void txt_cod_memorandum1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_cod_memorandum1KeyPressed
-if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-    jButton13.requestFocus();
-}
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            jButton13.requestFocus();
+        }
     }//GEN-LAST:event_txt_cod_memorandum1KeyPressed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        c_detalle.setIddetalle(13);
+        c_detalle.obtener_datos();
+        if (jCheckBox1.isSelected()) {
+            c_detalle.setValor("1");
+            c_detalle.actualizar();
+        } else {
+            c_detalle.setValor("0");
+            c_detalle.actualizar();
+        }
+        jd_parametros.dispose();
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        jd_parametros.setModal(true);
+        jd_parametros.setSize(578, 240);
+
+        c_detalle.setIddetalle(13);
+        c_detalle.obtener_datos();
+        if (c_detalle.getValor().equals("0")) {
+            jCheckBox1.setSelected(false);
+        } else {
+            jCheckBox1.setSelected(true);
+        }
+
+        jd_parametros.setLocationRelativeTo(null);
+        jd_parametros.setVisible(true);
+    }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void jTextField7KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField7KeyPressed
+        if (evt.getKeyCode()==KeyEvent.VK_ENTER) {
+            if (jTextField7.getText().length()>0) {
+                jButton10.doClick();
+            }
+        }
+    }//GEN-LAST:event_jTextField7KeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1313,6 +1435,7 @@ if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
     private com.toedter.calendar.JDateChooser ftffecha;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
+    private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton15;
@@ -1322,7 +1445,9 @@ if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
+    private javax.swing.JCheckBox jCheckBox1;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
@@ -1343,6 +1468,7 @@ if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -1362,6 +1488,7 @@ if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JDialog jd_detalle_trabajador;
     private javax.swing.JDialog jd_memorandum;
+    private javax.swing.JDialog jd_parametros;
     private javax.swing.JDialog jd_total_trabajador;
     private javax.swing.JTable t_detalle_trabajador;
     private javax.swing.JTable t_listrabaj;
