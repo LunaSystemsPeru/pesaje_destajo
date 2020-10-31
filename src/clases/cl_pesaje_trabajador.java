@@ -141,7 +141,7 @@ public class cl_pesaje_trabajador {
         String[] datos = new String[2];
         try {
             Statement st = c_conectar.conexion();
-            String query = "select sum(cantidad) as total, count(DISTINCT (idcolaborador)) as cantidad "
+            String query = "select ifnull(sum(cantidad),0) as total, count(DISTINCT (idcolaborador)) as cantidad "
                     + "from pesaje "
                     + "where fecha = '" + fecha + "' "
                     + "and idservicio = '" + idservicio + "' ";
@@ -442,7 +442,7 @@ public class cl_pesaje_trabajador {
 
     public Integer[] pesaje_mensual() {
         int total_mes = cl_varios.diasDelMes(c_varios.obtener_mes(), c_varios.obtener_anio());
-        Integer[] valor_x = new Integer[total_mes];
+        Integer[] valor_x = new Integer[total_mes + 1];
         // System.out.println("total dias de este mes = " + total_mes);
 
         try {
@@ -452,7 +452,7 @@ public class cl_pesaje_trabajador {
                     + "where strftime('%Y', pt.fecha) =  strftime('%Y', current_date) and strftime('%m', pt.fecha) =  strftime('%m', current_date) "
                     + "group by pt.idservicio, pt.fecha "
                     + "order by pt.fecha asc";
-            //System.out.println(query);
+           // System.out.println(query);
             ResultSet rs = c_conectar.consulta(st, query);
 
             while (rs.next()) {
@@ -469,7 +469,7 @@ public class cl_pesaje_trabajador {
 
     public Integer[] cortadoresMensual() {
         int total_mes = cl_varios.diasDelMes(c_varios.obtener_mes(), c_varios.obtener_anio());
-        Integer[] valor_x = new Integer[total_mes];
+        Integer[] valor_x = new Integer[total_mes + 1];
         // System.out.println("total dias de este mes = " + total_mes);
 
         try {

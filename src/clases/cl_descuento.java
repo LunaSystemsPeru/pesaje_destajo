@@ -94,7 +94,7 @@ public class cl_descuento {
                     + "from descuentos as d "
                     + "inner join parametros_detalles as pd on pd.iddetalles = d.idarticulo "
                     + "inner join usuarios as u on u.idusuario = d.idusuario "
-                    + "where d.idcolaborador = '" + this.idcolaborador + "' and fecha = '"+fecha+"' "
+                    + "where d.idcolaborador = '" + this.idcolaborador + "' and fecha = '" + fecha + "' "
                     + "order by d.fecha asc "
                     + "limit 30";
             ResultSet rs = c_conectar.consulta(st, query);
@@ -130,6 +130,50 @@ public class cl_descuento {
             tabla.getColumnModel().getColumn(4).setMaxWidth(0);
             tabla.getColumnModel().getColumn(4).setMinWidth(0);
 
+        } catch (SQLException e) {
+            System.out.print(e);
+        }
+    }
+
+    public void AgruparDescuentos(JTable tabla) {
+        DefaultTableModel modelo;
+        try {
+            modelo = new DefaultTableModel() {
+                @Override
+                public boolean isCellEditable(int fila, int columna) {
+                    return false;
+                }
+            };
+
+            Statement st = c_conectar.conexion();
+            String query = "select pd.nombre, sum(monto) as total_descuento, count(idarticulo) as nropersonas from descuentos as d "
+                    + "inner join parametros_detalles as pd on pd.iddetalles = d.idarticulo "
+                    + "where d.fecha = '" + this.fecha + "' "
+                    + "GROUP by idarticulo";
+            ResultSet rs = c_conectar.consulta(st, query);
+
+            modelo.addColumn("Nombre");
+            modelo.addColumn("Total");
+            modelo.addColumn("Nro Items");
+
+            while (rs.next()) {
+                Object[] fila = new Object[3];
+                fila[0] = rs.getString("nombre");
+                fila[1] = c_varios.formato_numero(rs.getDouble("total_descuento"));
+                fila[2] = rs.getInt("nropersonas");
+
+                modelo.addRow(fila);
+
+            }
+            c_conectar.cerrar(st);
+            c_conectar.cerrar(rs);
+
+            tabla.setModel(modelo);
+            tabla.getColumnModel().getColumn(0).setPreferredWidth(100);
+            tabla.getColumnModel().getColumn(1).setPreferredWidth(60);
+            tabla.getColumnModel().getColumn(2).setPreferredWidth(60);
+            c_varios.derecha_celda(tabla, 1);
+            c_varios.centrar_celda(tabla, 2);
         } catch (SQLException e) {
             System.out.print(e);
         }

@@ -6,6 +6,7 @@
 package formularios;
 
 import clases.cl_colaborador;
+import clases.cl_descuento;
 import clases.cl_llamadas;
 import clases.cl_parametro_detalle;
 import clases.cl_pesaje_trabajador;
@@ -29,6 +30,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
     cl_colaborador c_busqueda_colaborador = new cl_colaborador();
     cl_pesaje_trabajador c_busqueda_pesaje = new cl_pesaje_trabajador();
     cl_pesaje_trabajador c_pesaje_trabajador = new cl_pesaje_trabajador();
+    cl_descuento c_descuento = new cl_descuento();
 
     cl_parametro_detalle c_detalle = new cl_parametro_detalle();
     cl_llamadas c_llamada = new cl_llamadas();
@@ -65,6 +67,8 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         fecha = c_varios.getFechaActual();
         setearFecha(fecha);
 
+        c_descuento.setFecha(fecha);
+        c_descuento.AgruparDescuentos(jTable2);
     }
 
     private void setearFecha(String date) {
@@ -225,6 +229,8 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         jButton11 = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
 
         jd_detalle_trabajador.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         jd_detalle_trabajador.setTitle("ver detalle de Pesaje de Trabajador");
@@ -430,7 +436,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         });
 
         jButton13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/find.png"))); // NOI18N
-        jButton13.setText("Busca");
+        jButton13.setText("Buscar");
         jButton13.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton13ActionPerformed(evt);
@@ -465,7 +471,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
                                 .addComponent(txt_cod_memorandum1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton13)
-                                .addGap(0, 151, Short.MAX_VALUE)))))
+                                .addGap(0, 147, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         jd_total_trabajadorLayout.setVerticalGroup(
@@ -599,7 +605,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cbx_trabajo, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 284, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -927,7 +933,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
                 .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(321, Short.MAX_VALUE))
+                .addContainerGap(315, Short.MAX_VALUE))
         );
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -946,6 +952,21 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         jTable1.setShowVerticalLines(false);
         jScrollPane4.setViewportView(jTable1);
 
+        jScrollPane5.setPreferredSize(new java.awt.Dimension(452, 402));
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane5.setViewportView(jTable2);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -959,7 +980,9 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -973,7 +996,10 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jScrollPane4))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -1011,6 +1037,8 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
             //limpiar campos
             limpiar();
             c_pesaje_trabajador.pesaje_horas_hoy(jTable1);
+            c_descuento.setFecha(fecha);
+            c_descuento.AgruparDescuentos(jTable2);
 
             btn_agregar.setEnabled(false);
             txt_colaborador.setText("");
@@ -1265,6 +1293,8 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
                     total += Double.parseDouble(t_detalle_trabajador.getValueAt(i, 2).toString());
                 }
                 jTextField4.setText(c_varios.formato_totales(total));
+                jTextField7.requestFocus();
+                jTextField7.selectAll();
             }
         }
 
@@ -1296,7 +1326,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
                 c_detalle.obtener_datos();
                 String activo_descuento = c_detalle.getValor();
                 //System.out.println(activo_descuento);
-                
+
                 c_detalle.setIddetalle(12);
                 c_detalle.obtener_datos();
                 double totalkgdescuentos = Double.parseDouble(c_detalle.getValor());
@@ -1314,13 +1344,16 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
                 c_busqueda_pesaje.setFecha(c_varios.fecha_myql(fecha));
                 c_busqueda_pesaje.setIdservicio(o_trabajo.getId_tipo_trabajo());
                 c_busqueda_pesaje.setIdcolaborador(c_busqueda_colaborador.getIdcolaborador());
-                double totaltrabajadores = c_pesaje_trabajador.obtener_total_trabajador_fecha();
+                double totaltrabajadores = c_busqueda_pesaje.obtener_total_trabajador_fecha();
                 if (totaltrabajadores > 2) {
                     if (activo_descuento.equals("1")) {
                         totaltrabajadores = totaltrabajadores - totalkgdescuentos;
                     }
                 }
                 jTextField8.setText(c_varios.formato_totales(totaltrabajadores));
+
+                txt_cod_memorandum1.requestFocus();
+                txt_cod_memorandum1.selectAll();
             }
         }
     }//GEN-LAST:event_jButton13ActionPerformed
@@ -1347,6 +1380,9 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
         c_pesaje_trabajador.setIdservicio(o_trabajo.getId_tipo_trabajo());
         c_pesaje_trabajador.ver_pesaje_fecha(modelo);
         t_listrabaj.setModel(modelo);
+
+        c_descuento.setFecha(c_varios.fecha_myql(fecha));
+        c_descuento.AgruparDescuentos(jTable2);
 
         txt_colaborador.setEnabled(true);
         jButton1.setEnabled(true);
@@ -1421,8 +1457,8 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void jTextField7KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField7KeyPressed
-        if (evt.getKeyCode()==KeyEvent.VK_ENTER) {
-            if (jTextField7.getText().length()>0) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (jTextField7.getText().length() > 0) {
                 jButton10.doClick();
             }
         }
@@ -1477,7 +1513,9 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField4;
