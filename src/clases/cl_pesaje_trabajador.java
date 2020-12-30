@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -145,7 +146,7 @@ public class cl_pesaje_trabajador {
                     + "from pesaje "
                     + "where fecha = '" + fecha + "' "
                     + "and idservicio = '" + idservicio + "' ";
-            System.out.println(query);
+            // System.out.println(query);
             ResultSet rs = c_conectar.consulta(st, query);
 
             while (rs.next()) {
@@ -158,6 +159,33 @@ public class cl_pesaje_trabajador {
             JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
         }
         return datos;
+
+    }
+
+    public ArrayList obtenerServiciosFecha() {
+        ArrayList lista = new ArrayList();
+        try {
+            Statement st = c_conectar.conexion();
+            String query = "select p.idservicio, pd.nombre "
+                    + "from pesaje as p "
+                    + "inner join parametros_detalles as pd on pd.iddetalles = p.idservicio "
+                    + "where p.fecha = '" + fecha + "' "
+                    + "GROUP by p.idservicio";
+            //  System.out.println(query);
+            ResultSet rs = c_conectar.consulta(st, query);
+
+            while (rs.next()) {
+                Object objeto[] = new Object[2];
+                objeto[0] = rs.getString("idservicio");
+                objeto[1] = rs.getString("nombre");
+                lista.add(objeto);
+            }
+            c_conectar.cerrar(rs);
+            c_conectar.cerrar(st);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
+        }
+        return lista;
 
     }
 
@@ -184,8 +212,31 @@ public class cl_pesaje_trabajador {
 
     }
 
+    public int contar_pesadas_trabajador_fecha() {
+        int total_cantidad = 0;
+        try {
+            Statement st = c_conectar.conexion();
+            String query = "select count(cantidad) as total "
+                    + "from pesaje "
+                    + "where fecha = '" + fecha + "' "
+                    + "and idservicio = '" + idservicio + "' and idcolaborador = '" + idcolaborador + "'";
+            //  System.out.println(query);
+            ResultSet rs = c_conectar.consulta(st, query);
+
+            while (rs.next()) {
+                total_cantidad = rs.getInt("total");
+            }
+            c_conectar.cerrar(rs);
+            c_conectar.cerrar(st);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
+        }
+        return total_cantidad;
+
+    }
+
     public String obtenerPrimerPesaje() {
-        String hora = c_varios.getHoraActual();
+        String _1erahora = c_varios.getHoraActual();
         try {
             Statement st = c_conectar.conexion();
             String query = "select min(hora) as hora from pesaje "
@@ -193,26 +244,26 @@ public class cl_pesaje_trabajador {
             ResultSet rs = c_conectar.consulta(st, query);
 
             if (rs.next()) {
-                hora = rs.getString("hora");
+                _1erahora = rs.getString("hora");
             } else {
-                hora = c_varios.getHoraActual();
+                _1erahora = c_varios.getHoraActual();
             }
             c_conectar.cerrar(rs);
             c_conectar.cerrar(st);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
         }
-        if (hora == null) {
-            hora = c_varios.getHoraActual();
+        if (_1erahora == null) {
+            _1erahora = c_varios.getHoraActual();
         }
-        hora = hora.substring(0, 2);
+        _1erahora = _1erahora.substring(0, 2);
 
-        return hora;
+        return _1erahora;
 
     }
 
     public String obtenerPrimerPesajeTrabajador() {
-        String hora = "";
+        String _1erahora = "";
         try {
             Statement st = c_conectar.conexion();
             String query = "select min(hora) as hora from pesaje "
@@ -220,19 +271,19 @@ public class cl_pesaje_trabajador {
             ResultSet rs = c_conectar.consulta(st, query);
 
             if (rs.next()) {
-                hora = rs.getString("hora");
-            } 
+                _1erahora = rs.getString("hora");
+            }
             c_conectar.cerrar(rs);
             c_conectar.cerrar(st);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
         }
-        if (hora == null) {
-            hora = "00:00:00";
+        if (_1erahora == null) {
+            _1erahora = "00:00:00";
         }
-        hora = hora.substring(0, 2);
+        _1erahora = _1erahora.substring(0, 2);
 
-        return hora;
+        return _1erahora;
 
     }
 
@@ -309,19 +360,22 @@ public class cl_pesaje_trabajador {
                     + "where p.fecha = '" + fecha + "' "
                     + "and p.idservicio = '" + idservicio + "' and p.idcolaborador = '" + idcolaborador + "' "
                     + "order by p.hora asc";
-            // System.out.println(query);
+           // System.out.println(query);
             ResultSet rs = c_conectar.consulta(st, query);
 
+            modelo.addColumn("Item");
             modelo.addColumn("Fecha");
             modelo.addColumn("Hora");
             modelo.addColumn("Cantidad");
 
+            int item = 1;
             while (rs.next()) {
-                Object[] fila = new Object[3];
-                fila[0] = rs.getString("fecha");
-                fila[1] = rs.getString("hora");
-                fila[2] = c_varios.formato_numero(rs.getDouble("cantidad"));
-
+                Object[] fila = new Object[4];
+                fila[0] = item;
+                fila[1] = rs.getString("fecha");
+                fila[2] = rs.getString("hora");
+                fila[3] = c_varios.formato_numero(rs.getDouble("cantidad"));
+                item++;
                 modelo.addRow(fila);
 
             }
@@ -329,12 +383,13 @@ public class cl_pesaje_trabajador {
             c_conectar.cerrar(rs);
 
             tabla.setModel(modelo);
-            tabla.getColumnModel().getColumn(0).setPreferredWidth(80);
+            tabla.getColumnModel().getColumn(0).setPreferredWidth(40);
             tabla.getColumnModel().getColumn(1).setPreferredWidth(80);
-            tabla.getColumnModel().getColumn(2).setPreferredWidth(90);
-            c_varios.centrar_celda(tabla, 0);
+            tabla.getColumnModel().getColumn(2).setPreferredWidth(80);
+            tabla.getColumnModel().getColumn(3).setPreferredWidth(90);
             c_varios.centrar_celda(tabla, 1);
-            c_varios.derecha_celda(tabla, 2);
+            c_varios.centrar_celda(tabla, 2);
+            c_varios.derecha_celda(tabla, 3);
         } catch (SQLException e) {
             System.out.print(e);
         }
@@ -452,7 +507,7 @@ public class cl_pesaje_trabajador {
                     + "where strftime('%Y', pt.fecha) =  strftime('%Y', current_date) and strftime('%m', pt.fecha) =  strftime('%m', current_date) "
                     + "group by pt.idservicio, pt.fecha "
                     + "order by pt.fecha asc";
-           // System.out.println(query);
+            // System.out.println(query);
             ResultSet rs = c_conectar.consulta(st, query);
 
             while (rs.next()) {

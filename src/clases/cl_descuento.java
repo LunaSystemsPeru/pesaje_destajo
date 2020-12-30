@@ -8,6 +8,9 @@ package clases;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -135,6 +138,33 @@ public class cl_descuento {
         }
     }
 
+    public ArrayList AgruparDescuentosTrabajador() {
+        ArrayList lista = new ArrayList();
+        Statement st = c_conectar.conexion();
+        String query = "select pd.nombre, sum(monto) as total_descuento, count(idarticulo) as nropersonas from descuentos as d "
+                + "inner join parametros_detalles as pd on pd.iddetalles = d.idarticulo "
+                + "where d.fecha = '" + this.fecha + "' and d.idcolaborador = '" + this.idcolaborador + "' "
+                + "GROUP by d.idarticulo";
+        ResultSet rs = c_conectar.consulta(st, query);
+
+        try {
+            while (rs.next()) {
+                ArrayList items = new ArrayList();
+                items.add(0, rs.getString("nombre"));
+                items.add(1, rs.getDouble("total_descuento"));
+
+                lista.add(items);
+
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
+        c_conectar.cerrar(st);
+        c_conectar.cerrar(rs);
+
+        return lista;
+    }
+
     public void AgruparDescuentos(JTable tabla) {
         DefaultTableModel modelo;
         try {
@@ -195,6 +225,27 @@ public class cl_descuento {
         }
         c_conectar.cerrar(st);
         return registrado;
+    }
+
+    public double sumaDescuentodelDia() {
+        double totaldescuento = 0;
+        try {
+            Statement st = c_conectar.conexion();
+            String query = "select sum(d.monto) as total_descuento "
+                    + "from descuentos as d "
+                    + "where d.fecha = '" + this.fecha + "' and d.idcolaborador = '" + this.idcolaborador + "' ";
+            ResultSet rs = c_conectar.consulta(st, query);
+
+            while (rs.next()) {
+                totaldescuento = rs.getDouble("total_descuento");
+            }
+            c_conectar.cerrar(rs);
+            c_conectar.cerrar(st);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
+        }
+        return totaldescuento;
+
     }
 
     //para guardar cuando hay problemas de llave primaria

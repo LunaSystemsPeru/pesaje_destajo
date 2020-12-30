@@ -44,6 +44,21 @@ public class frm_descuento extends javax.swing.JDialog {
        // fecha = c_varios.getFechaActual();
         setearFecha(fecha);
         desactivar_botones();
+        
+        txt_codigo.requestFocus();
+        obtenerDatos();
+    }
+    
+    private void obtenerDatos () {
+        c_items.setIddetalle(5);
+        c_items.obtener_datos();
+        double preciotijera = Double.parseDouble(c_items.getValor());
+        jLabel1.setText("S/ " + c_varios.formato_totales(preciotijera));
+        
+        c_items.setIddetalle(4);
+        c_items.obtener_datos();
+        double precioguantes = Double.parseDouble(c_items.getValor());
+        jLabel7.setText("S/ " + c_varios.formato_totales(precioguantes));
     }
     
     private void setearFecha(String date) {
@@ -311,8 +326,6 @@ public class frm_descuento extends javax.swing.JDialog {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"26/10/2020", "Tijeras", "6.00"},
-                {"26/10/2020", "Guantes", "3.00"},
                 {null, null, null},
                 {null, null, null}
             },

@@ -27,7 +27,7 @@ import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-
+import static org.apache.poi.ss.usermodel.CellType.NUMERIC;
 /**
  *
  * @author Mariela
@@ -214,11 +214,13 @@ public class cl_reporte {
         //guardar.showSaveDialog(null);
 
         guardar.setDialogTitle("Seleccionar Carpeta para guardar Reporte");
-        guardar.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        //guardar.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        guardar.setFileSelectionMode(JFileChooser.FILES_ONLY);
         guardar.setName("pesaje_" + fecha_inicio + "_hasta_" + date_final + ".xls");
         guardar.setAcceptAllFileFilterUsed(false);
+        guardar.setApproveButtonText("Sel. Carpeta ");
 
-        if (guardar.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+        if (guardar.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
             String carpetanueva = guardar.getSelectedFile().toString();
             System.out.println(carpetanueva);
             carpeta_reportes = carpetanueva;
@@ -227,6 +229,7 @@ public class cl_reporte {
         }
 
         //   System.out.println(guardarComo());
+        /*
         File directorio = new File(carpeta_reportes);
         if (!directorio.exists()) {
             if (directorio.mkdirs()) {
@@ -235,11 +238,11 @@ public class cl_reporte {
                 System.out.println("Error al crear directorio");
             }
         }
-
+         */
         // Creamos el archivo donde almacenaremos la hoja
         // de calculo, recuerde usar la extension correcta,
         // en este caso .xlsx
-        String nombre_archivo = carpeta_reportes + File.separator + "pesaje_" + fecha_inicio + "_hasta_" + date_final + ".xls";
+        String nombre_archivo = carpeta_reportes + ".xls";// + File.separator + "pesaje_" + fecha_inicio + "_hasta_" + date_final + ".xls";
         File archivo = new File(nombre_archivo);
         //File archivo =narchivo;
 
@@ -275,6 +278,9 @@ public class cl_reporte {
         Statement st = c_conectar.conexion();
         ResultSet rs = c_conectar.consulta(st, sql);
 
+        HSSFCellStyle style = workbook.createCellStyle();
+        style.setDataFormat(HSSFDataFormat.getBuiltinFormat("###0.00"));
+
         int filanro = 1;
         try {
             while (rs.next()) {
@@ -300,10 +306,9 @@ public class cl_reporte {
                         if (i < dias + 8) {
                             celda.setCellValue(rs.getDouble(i + 1));
                         }
-                        HSSFCellStyle style = workbook.createCellStyle();
-                        style.setDataFormat(HSSFDataFormat.getBuiltinFormat("###0.00"));
+
                         celda.setCellStyle(style);
-                        celda.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+                        celda.setCellType(NUMERIC);
                     }
 
                     if (i == (dias + 8)) {
@@ -312,10 +317,8 @@ public class cl_reporte {
                         desc_jorge = rs.getDouble(dias + 8);
                         apagar = monto_pesaje - desc_jorge - desc_juan;
                         celda.setCellValue(apagar);
-                        HSSFCellStyle style = workbook.createCellStyle();
-                        style.setDataFormat(HSSFDataFormat.getBuiltinFormat("###0.00"));
                         celda.setCellStyle(style);
-                        celda.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+                        celda.setCellType(NUMERIC);
                     }
 
                 }
