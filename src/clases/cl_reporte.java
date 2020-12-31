@@ -27,7 +27,6 @@ import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import static org.apache.poi.ss.usermodel.CellType.NUMERIC;
 /**
  *
  * @author Mariela
@@ -308,7 +307,7 @@ public class cl_reporte {
                         }
 
                         celda.setCellStyle(style);
-                        celda.setCellType(NUMERIC);
+                        celda.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
                     }
 
                     if (i == (dias + 8)) {
@@ -318,7 +317,7 @@ public class cl_reporte {
                         apagar = monto_pesaje - desc_jorge - desc_juan;
                         celda.setCellValue(apagar);
                         celda.setCellStyle(style);
-                        celda.setCellType(NUMERIC);
+                        celda.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
                     }
 
                 }
