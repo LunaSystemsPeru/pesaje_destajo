@@ -96,7 +96,7 @@ public class Print_Pesaje_Corte_Dia {
             double pagokg = Double.parseDouble(c_detalle.getValor());
             int nropesadas = c_pesaje.contar_pesadas_trabajador_fecha();
             double totalkios = c_pesaje.obtener_total_trabajador_fecha();
-            
+
             double pagoservicio = totalkios * pagokg;
             pagoservicio = Math.floor(pagoservicio);
             pagokilos += pagoservicio;
@@ -107,9 +107,9 @@ public class Print_Pesaje_Corte_Dia {
             printer.printTextLinCol(inicioitem, 1, textoizquierda + textoderecha);
 
             inicioitem++;
-            
+
             String textoizquierda2 = varios_impresion.texto_izquierda(20, "TOT KG: " + c_varios.formato_numero(totalkios));
-            String textoderecha2 = varios_impresion.texto_derecha(20, "A PAGAR:  S/ " + c_varios.formato_numero(pagoservicio) + ""); 
+            String textoderecha2 = varios_impresion.texto_derecha(20, "A PAGAR:  S/ " + c_varios.formato_numero(pagoservicio) + "");
             printer.printTextLinCol(inicioitem, 1, textoizquierda2 + textoderecha2);
         }
 

@@ -1249,6 +1249,9 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
             String texto = txt_tope.getText();
             if (c_varios.esDecimal(texto)) {
                 tope = Double.parseDouble(texto);
+                o_trabajo o_trabajo = (o_trabajo) cbx_trabajo.getSelectedItem();
+
+                c_detalle.setIddetalle(o_trabajo.getId_tipo_trabajo());
                 c_detalle.setValor(tope + "");
                 c_detalle.actualizar();
                 txt_colaborador.setEnabled(true);
