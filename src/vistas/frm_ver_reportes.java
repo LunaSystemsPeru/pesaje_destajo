@@ -35,7 +35,6 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
     cl_parametro_detalle c_detalle = new cl_parametro_detalle();
     cl_colaborador c_colaborador = new cl_colaborador();
 
-    m_trabajo m_trabajo = new m_trabajo();
 
     String fecha;
 
@@ -64,7 +63,7 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
         fecha = date;
         setearFecha(fecha, txt_fecha_inicio);
 
-        m_trabajo.cbx_trabajo(cbx_tipo_servico);
+
 
     }
 
@@ -144,13 +143,12 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
         jLabel19 = new javax.swing.JLabel();
         lbl_dtrabajados_menos = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
-        cbx_tipo_servico = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         btn_generar_excel = new javax.swing.JButton();
         jSpinner1 = new javax.swing.JSpinner();
-        jLabel6 = new javax.swing.JLabel();
         txt_fecha_inicio = new com.toedter.calendar.JDateChooser();
+        jButton4 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
@@ -375,13 +373,6 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
         jPanel4.setBackground(new java.awt.Color(223, 255, 207));
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Generar Excel para Pagos"));
 
-        cbx_tipo_servico.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Rpt. Pesaje dias planilla", "Rpt. Pesaje del Dia x Trabajador", "Rpt. Resumen del Trabajador", " " }));
-        cbx_tipo_servico.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cbx_tipo_servicoItemStateChanged(evt);
-            }
-        });
-
         jLabel7.setText("Escriba Fecha ");
 
         jLabel8.setText("Nro Dias:");
@@ -399,16 +390,22 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
         jSpinner1.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
         jSpinner1.setValue(7);
 
-        jLabel6.setText("Seleccionar Tipo Servicio");
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/excel.png"))); // NOI18N
+        jButton4.setText("Generar SQL del DIA");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+            .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel7)
                             .addComponent(txt_fecha_inicio, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -419,18 +416,15 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btn_generar_excel))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbx_tipo_servico, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jButton4)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbx_tipo_servico, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
@@ -725,7 +719,7 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTabbedPane1)
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -733,11 +727,6 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void cbx_tipo_servicoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbx_tipo_servicoItemStateChanged
-        txt_fecha_inicio.setEnabled(true);
-        txt_fecha_inicio.requestFocus();
-    }//GEN-LAST:event_cbx_tipo_servicoItemStateChanged
 
     private void btn_generar_excelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generar_excelActionPerformed
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -800,13 +789,19 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String ffecha2 = sdf.format(txt_fecha_inicio.getDate());
+        c_colaborador.generarExcelDia(c_varios.fecha_myql(ffecha2));
+    }//GEN-LAST:event_jButton4ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_generar_excel;
-    private javax.swing.JComboBox<String> cbx_tipo_servico;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
@@ -821,7 +816,6 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
