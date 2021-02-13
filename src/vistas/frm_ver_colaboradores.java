@@ -35,7 +35,7 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
 
         query = "select * "
                 + "from colaboradores "
-                + "order by apellidos asc, nombres asc";
+                + "order by codigo desc";
 
         c_colaborador.mostrar(t_colaboradores, query);
     }
@@ -371,10 +371,13 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
         desactivar_botones();
         int confirmado = JOptionPane.showConfirmDialog(null, "¿Esta Seguro de Eliminar el Colaborador?");
         if (JOptionPane.OK_OPTION == confirmado) {
+            /*   
             int id_trabajador = Integer.parseInt(t_colaboradores.getValueAt(fila_seleccionada, 7).toString());
             c_colaborador.setIdcolaborador(id_trabajador);
             c_colaborador.eliminar();
             c_colaborador.mostrar(t_colaboradores, query);
+             */
+            JOptionPane.showMessageDialog(null, "Se desabilito esta opcion");
         }
     }//GEN-LAST:event_btn_eliminarActionPerformed
 

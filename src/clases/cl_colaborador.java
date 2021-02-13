@@ -15,6 +15,8 @@ import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -485,11 +487,12 @@ public class cl_colaborador {
     public void generarExcelDia(String fecha) {
         String sql = "select * "
                 + "from pesaje "
-                + "where fecha = '" + fecha + "' ";
+                + "LEFT join colaboradores on colaboradores.idcolaborador = pesaje.idcolaborador "
+                + "where pesaje.fecha = '" + fecha + "' ";
         Statement st = c_conectar.conexion();
         ResultSet rs = c_conectar.consulta(st, sql);
 
-        String[] titulos = new String[7];
+        String[] titulos = new String[16];
         titulos[0] = "Codigo";
         titulos[1] = "Fecha";
         titulos[2] = "Hora";
@@ -497,6 +500,15 @@ public class cl_colaborador {
         titulos[4] = "idUsuario";
         titulos[5] = "Cantidad";
         titulos[6] = "idServico";
+        titulos[7] = "idcolaborador";
+        titulos[8] = "codigo";
+        titulos[9] = "documento";
+        titulos[10] = "idnacionalidad";
+        titulos[11] = "apellidos";
+        titulos[12] = "nombres";
+        titulos[13] = "nrocuenta";
+        titulos[14] = "estado";
+        titulos[15] = "quejas";
 
         File dir = new File("");
 
@@ -514,9 +526,9 @@ public class cl_colaborador {
         // Creamos el archivo donde almacenaremos la hoja
         // de calculo, recuerde usar la extension correcta,
         // en este caso .xlsx
-        File archivo = new File(dir.getAbsolutePath() + File.separator + "reportes" + File.separator + "rpt_corte_dia" + ".xls");
+        File archivo = new File(dir.getAbsolutePath() + File.separator + "reportes" + File.separator + "rpt_sql_dia_" + fecha + ".xls");
 
-        System.out.println(dir.getAbsolutePath() + File.separator + "reportes" + File.separator + "rpt_corte_dia" + ".xls");
+        System.out.println(dir.getAbsolutePath() + File.separator + "reportes" + File.separator + "rpt_sql_dia_" + fecha + ".xls");
 
         // Creamos el libro de trabajo de Excel formato OOXML
         HSSFWorkbook workbook = new HSSFWorkbook();
@@ -694,23 +706,26 @@ public class cl_colaborador {
     }
 
     public void llenar_text() {
-        String query = "select * from colaboradores order by codigo asc";
+        FileWriter fichero = null;
+        PrintWriter pw = null;
+        File dir = new File("");
+        String archivo = dir.getAbsolutePath() + File.separator + "excel.csv";
+
+        Statement st = c_conectar.conexion();
+        String query = "select * from colaboradores order by codigo asc limit 10";
+        ResultSet rs = c_conectar.consulta(st, query);
+
         try {
+            fichero = new FileWriter(archivo);
+            pw = new PrintWriter(fichero);
 
-            Statement st = c_conectar.conexion();
-            ResultSet rs = c_conectar.consulta(st, query);
-
-            String linea = "";
-            FileWriter fichero = null;
-            PrintWriter pw = null;
             try {
-                File dir;
-                dir = new File("");
-                //System.out.println(dir.getAbsolutePath() + File.separator + "excel.csv");
-
-                fichero = new FileWriter(dir.getAbsolutePath() + File.separator + "excel.csv");
-                pw = new PrintWriter(fichero);
-
+                String linea = "";
+                linea = "borrar fila 1 y 2";
+                 pw.println(linea);
+                linea = "idcolaborador, codigo, documento, idnacionalidad, apellidos, nombres, nrocuenta, estado, nrollamadas";
+                 pw.println(linea);
+                    linea = "";
                 while (rs.next()) {
                     linea
                             += rs.getString("idcolaborador") + ","
@@ -721,31 +736,32 @@ public class cl_colaborador {
                             + rs.getString("nombres") + ","
                             + rs.getString("nrocuenta") + ","
                             + rs.getString("estado") + ","
-                            + rs.getString("nro_llamadas") + "\n";
-                    //    System.out.println(linea);
+                            + rs.getString("nro_llamadas");
+                        System.out.println(linea);
 
                     pw.println(linea);
+                    linea = "";
 
                 }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    // Nuevamente aprovechamos el finally para 
-                    // asegurarnos que se cierra el fichero.
-                    if (null != fichero) {
-                        fichero.close();
-                    }
-                } catch (Exception e2) {
-                    e2.printStackTrace();
-                }
+                c_conectar.cerrar(st);
+                c_conectar.cerrar(rs);
+            } catch (SQLException e) {
+                System.out.println(e.getLocalizedMessage());
             }
 
-            c_conectar.cerrar(st);
-            c_conectar.cerrar(rs);
-        } catch (SQLException e) {
-            System.out.print(e);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                // Nuevamente aprovechamos el finally para 
+                // asegurarnos que se cierra el fichero.
+                if (null != fichero) {
+                    fichero.close();
+                }
+                Desktop.getDesktop().open(new File(archivo));
+            } catch (IOException e2) {
+                e2.printStackTrace();
+            }
         }
 
     }

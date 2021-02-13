@@ -30,14 +30,18 @@ public class frm_colaborador extends javax.swing.JDialog {
         if (c_colaborador.getIdcolaborador() > 0) {
             c_colaborador.obtener_datos();
             txt_codigo.setText(c_colaborador.getCodigo() + "");
+            txt_codigo.setEditable(false);
             txt_apellidos.setText(c_colaborador.getApellidos());
             txt_nombres.setText(c_colaborador.getNombres());
             txt_documento.setText(c_colaborador.getDocumento());
             txt_nrocuenta.setText(c_colaborador.getNrocuenta());
             btn_modificar.setEnabled(true);
+            txt_apellidos.requestFocus();
         } else {
             c_colaborador.obtener_codigovisible();
             txt_codigo.setText(c_colaborador.getCodigo() + "");
+            txt_codigo.setEditable(false);
+            txt_apellidos.requestFocus();
             btn_guardar.setEnabled(true);
         }
     }

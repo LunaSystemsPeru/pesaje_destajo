@@ -7,6 +7,7 @@ package formularios;
 
 import clases.cl_colaborador;
 import clases.cl_varios;
+import java.awt.HeadlessException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -54,6 +55,7 @@ public class frm_load_colaborador extends javax.swing.JDialog {
         jButton2 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
+        jCheckBox1 = new javax.swing.JCheckBox();
 
         jButton3.setText("jButton3");
 
@@ -101,6 +103,8 @@ public class frm_load_colaborador extends javax.swing.JDialog {
             }
         });
 
+        jCheckBox1.setText("Eliminar Todo");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -131,7 +135,8 @@ public class frm_load_colaborador extends javax.swing.JDialog {
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton4)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jCheckBox1)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -140,7 +145,8 @@ public class frm_load_colaborador extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jCheckBox1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -185,22 +191,34 @@ public class frm_load_colaborador extends javax.swing.JDialog {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         String aux = "";
+        boolean eliminar = false;
+        if (jCheckBox1.isSelected()) {
+            eliminar = true;
+        }
         try {
             if (abre != null) {
                 barraProgreso.setValue(0);
-                JOptionPane.showMessageDialog(null, "ELIMINAREMOS TODA LA INFORMACION");
-                c_colaborador.eliminar_todo();
+                int codigo = 1;
+                if (eliminar) {
+                    JOptionPane.showMessageDialog(null, "ELIMINAREMOS TODA LA INFORMACION");
+                    c_colaborador.eliminar_todo();
+               }
+
                 barraProgreso.setValue(2); // Al 33%
                 FileReader archivos = new FileReader(abre);
                 BufferedReader lee = new BufferedReader(archivos);
-                int codigo = 1;
-                
+
                 barraProgreso.setValue(10); // Al 33%
                 while ((aux = lee.readLine()) != null) {
 
                     String[] values = aux.split(";");    //your seperator
-                  //  System.out.println("longitud" + values.length);
-                    c_colaborador.setIdcolaborador(codigo);
+                     // System.out.println("longitud" + values.length);
+                    if (eliminar) {
+                        c_colaborador.setIdcolaborador(codigo);
+                    } else {
+                        c_colaborador.setIdcolaborador(Integer.parseInt(values[0]));
+                    }
+                    
                     c_colaborador.setCodigo(Integer.parseInt(values[1]));
                     c_colaborador.setDocumento(values[2]);
                     c_colaborador.setIdnacionalidad(Integer.parseInt(values[3]));
@@ -218,19 +236,18 @@ public class frm_load_colaborador extends javax.swing.JDialog {
                 }
 
                 lee.close();
+                barraProgreso.setValue(100); // Al 100%
             }
-            
-            try
-            {
-               barraProgreso.setValue(100); // Al 100%
-               JOptionPane.showMessageDialog(null, "CARGA FINALIZADA");
+
+            try {
+                //barraProgreso.setValue(100); // Al 100%
+                JOptionPane.showMessageDialog(null, "CARGA FINALIZADA");
                 frm_ver_colaboradores.btn_actualizar.doClick();
                 this.dispose();
 //               barraProgreso.setVisible(false);
-            }
-            catch (Exception e)
-            {
-               e.printStackTrace();
+            } catch (HeadlessException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
             }
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, ex + ""
@@ -299,6 +316,7 @@ public class frm_load_colaborador extends javax.swing.JDialog {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
