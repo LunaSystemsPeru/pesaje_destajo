@@ -35,7 +35,6 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
     cl_parametro_detalle c_detalle = new cl_parametro_detalle();
     cl_colaborador c_colaborador = new cl_colaborador();
 
-
     String fecha;
 
     /**
@@ -57,13 +56,11 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
         c_grafica.llenar_horas(jPanel10, fecha);
         setearFecha(fecha, jDateChooser2);
         setearFecha(fecha, jDateChooser1);
-        
+
         Date fecha_temp = c_varios.suma_dia(fecha, -6);
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(fecha_temp);
         fecha = date;
         setearFecha(fecha, txt_fecha_inicio);
-
-
 
     }
 
@@ -149,6 +146,7 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
         jSpinner1 = new javax.swing.JSpinner();
         txt_fecha_inicio = new com.toedter.calendar.JDateChooser();
         jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
@@ -398,6 +396,14 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
             }
         });
 
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/excel.png"))); // NOI18N
+        jButton5.setText("Exportar para Liquidacion");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -417,6 +423,8 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
                         .addComponent(btn_generar_excel))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jButton4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton5)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -424,7 +432,9 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
@@ -795,6 +805,12 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
         c_colaborador.generarExcelDia(c_varios.fecha_myql(ffecha2));
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String ffecha2 = sdf.format(txt_fecha_inicio.getDate());
+        c_colaborador.ExportarExcelLiquidacion(c_varios.fecha_myql(ffecha2));
+    }//GEN-LAST:event_jButton5ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_generar_excel;
@@ -802,6 +818,7 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
