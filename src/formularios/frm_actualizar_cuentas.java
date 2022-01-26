@@ -9,7 +9,12 @@ import clases.CuentasExteriores;
 import clases.JsonAPI;
 import clases.cl_colaborador;
 import clases.cl_varios;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -64,7 +69,7 @@ public class frm_actualizar_cuentas extends javax.swing.JDialog {
         jLabel1.setText("1er Paso: Conectarse al Servidor");
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/accept.png"))); // NOI18N
-        jButton1.setText("Conectarse y descargar Cuentas");
+        jButton1.setText("1. Conectarse y descargar Cuentas");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -82,7 +87,7 @@ public class frm_actualizar_cuentas extends javax.swing.JDialog {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 512, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 500, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addContainerGap())
         );
@@ -146,8 +151,7 @@ public class frm_actualizar_cuentas extends javax.swing.JDialog {
         jToolBar1.add(jButton5);
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/accept.png"))); // NOI18N
-        jButton4.setText("Enviar Cuentas modificadas");
-        jButton4.setEnabled(false);
+        jButton4.setText("2. Enviar Cuentas modificadas");
         jButton4.setFocusable(false);
         jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -161,7 +165,7 @@ public class frm_actualizar_cuentas extends javax.swing.JDialog {
         jToolBar1.add(jSeparator2);
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/find.png"))); // NOI18N
-        jButton2.setText("Ver Personal sin Cuentas");
+        jButton2.setText("3. Ver Personal sin Cuentas");
         jButton2.setFocusable(false);
         jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -173,7 +177,7 @@ public class frm_actualizar_cuentas extends javax.swing.JDialog {
         jToolBar1.add(jButton2);
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/banco.png"))); // NOI18N
-        jButton3.setText("Solicitar Cuentas");
+        jButton3.setText("4. Solicitar Cuentas");
         jButton3.setEnabled(false);
         jButton3.setFocusable(false);
         jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -262,6 +266,7 @@ public class frm_actualizar_cuentas extends javax.swing.JDialog {
         }
         //System.out.println(listadnis.toString());
         jsonapi.crearJsonDnis(listadnis);
+        JOptionPane.showMessageDialog(null, "Ya se solicitaron los datos, revise la informacion");
         jButton2.doClick();
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -270,7 +275,31 @@ public class frm_actualizar_cuentas extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        //generar json con dni, dni titular y cuenta modificada x mi
+        //enviar dnis para solicitar cuentas
+        int nrodefilas = jTable1.getRowCount();
+        Gson g = new Gson();
+        JsonArray array = new JsonArray();
+        
+        for (int i = 0; i < nrodefilas; i++) {
+            //personal.setDocumento(dnis.get(i).toString());
+            JsonPrimitive documento = new JsonPrimitive(jTable1.getValueAt(i, 2).toString());
+            JsonPrimitive documentocta = new JsonPrimitive(jTable1.getValueAt(i, 4).toString());
+            JsonPrimitive numerocta = new JsonPrimitive(jTable1.getValueAt(i, 5).toString());
+            JsonPrimitive fechamodificacion = new JsonPrimitive(jTable1.getValueAt(i, 6).toString());
+            JsonObject object = new JsonObject();
+            object.add("documento", documento);
+            object.add("documentocuenta", documentocta);
+            object.add("nrocuenta", numerocta);
+            object.add("fechamodificacion", fechamodificacion);
+            array.add(object);
+        }
+        //generar json 
+         String json = "arraydocumentos=" + array.toString();
+         System.out.println("json = " + json);
+         jsonapi.enviarCuentas(json);
+         JOptionPane.showMessageDialog(null, "Cuentas Fueron enviadas\nRevisar si le falta cargar cuentas");
+         jButton4.setEnabled(false);
+         jButton2.setEnabled(true);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**

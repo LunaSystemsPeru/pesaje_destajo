@@ -1109,7 +1109,7 @@ public class cl_colaborador {
         boolean actualizado = false;
         Statement st = c_conectar.conexion();
         String query = "update colaboradores "
-                + "set apellidos ='" + apellidos + "', nombres ='" + nombres + "', documento ='" + documento + "', idtipodocumento='" + idtipodocumento + "', documentocuenta='" + documentocuenta + "', nrocuenta= '" + nrocuenta + "',estado= '" + estado + "' "
+                + "set apellidos ='" + apellidos + "', nombres ='" + nombres + "', documento ='" + documento + "', idtipodocumento='" + idtipodocumento + "', documentocuenta='" + documentocuenta + "', nrocuenta= '" + nrocuenta + "',estado= '" + estado + "', fecha_modificacion = '"+this.fechamodificacion+"' "
                 + "where idcolaborador ='" + idcolaborador + "' ";
         // System.out.println(query);
         int resultado = c_conectar.actualiza(st, query);

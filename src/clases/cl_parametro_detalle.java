@@ -127,6 +127,61 @@ public class cl_parametro_detalle {
         }
     }
 
+    public void verProductosDescuento(JTable tabla) {
+        DefaultTableModel modelo;
+        try {
+            modelo = new DefaultTableModel() {
+                @Override
+                public boolean isCellEditable(int fila, int columna) {
+                    //return false;
+                    return columna == 3;
+                }
+
+                public Class<?> getColumnClass(int column) {
+                    switch (column) {
+                        case 0:
+                            return Integer.class;
+                        case 3:
+                            return Boolean.class;
+                        default:
+                            return String.class;
+                    }
+                }
+            };
+
+            String query = "select * from parametros_detalles "
+                    + "where idparametros = '" + this.idparametro + "' "
+                    + "order by nombre asc";
+            Statement st = c_conectar.conexion();
+            ResultSet rs = c_conectar.consulta(st, query);
+
+            modelo.addColumn("id");
+            modelo.addColumn("Nombre");
+            modelo.addColumn("Precio");
+            modelo.addColumn("Seleccionado");
+
+            while (rs.next()) {
+                Object[] fila = new Object[4];
+                fila[0] = rs.getInt("iddetalles");
+                fila[1] = rs.getString("nombre");
+                fila[2] = c_varios.formato_numero(rs.getDouble("valor"));
+                fila[3] = false;
+                modelo.addRow(fila);
+            }
+            c_conectar.cerrar(st);
+            c_conectar.cerrar(rs);
+
+            tabla.setModel(modelo);
+            tabla.getColumnModel().getColumn(0).setPreferredWidth(50);
+            tabla.getColumnModel().getColumn(1).setPreferredWidth(200);
+            tabla.getColumnModel().getColumn(2).setPreferredWidth(80);
+            tabla.getColumnModel().getColumn(3).setPreferredWidth(50);
+
+        } catch (SQLException e) {
+            System.out.print(e);
+        }
+    }
+
     public boolean registrar() {
         boolean registrado = false;
         Statement st = c_conectar.conexion();

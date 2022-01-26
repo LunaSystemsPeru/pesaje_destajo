@@ -199,4 +199,50 @@ public class JsonAPI {
             }
         }
     }
+    
+    public void enviarCuentas (String json) {
+        String url = "http://localhost/clientes/gth/ajax/obtenerCuentasModificadas.php";
+        
+        StringBuffer response = null;
+        
+        try {
+            //Creamos un nuevo objeto URL con la url donde pedir el JSON
+            URL obj = new URL(url);
+            //Creamos un objeto de conexión
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            //Añadimos la cabecera
+            con.setRequestMethod("POST");
+            con.setRequestProperty("User-Agent", USER_AGENT);
+            con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+            // Enviamos la petición por POST
+            con.setDoOutput(true);
+            OutputStream os = con.getOutputStream();
+            os.write(json.getBytes());
+            os.flush();
+            os.close();
+
+            //Capturamos la respuesta del servidor
+            int responseCode = con.getResponseCode();
+            System.out.println("\nSending 'GET' request to URL : " + url);
+            System.out.println("Response Code : " + responseCode);
+
+            //if (responseCode != 200) {
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            response = new StringBuffer();
+            
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            //Mostramos la respuesta del servidor por consola
+            System.out.println("Respuesta del servidor: " + response);
+            //cerramos la conexión
+            in.close();
+            // }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 }
