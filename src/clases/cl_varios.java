@@ -379,7 +379,7 @@ public class cl_varios {
 
     public boolean verificar_conexion() {
         boolean conectado = false;
-        String dirWeb = "www.lunasystemsperu.com";
+        String dirWeb = "www.goempresarial.com";
         int puerto = 80;
         try {
             Socket s = new Socket(dirWeb, puerto);

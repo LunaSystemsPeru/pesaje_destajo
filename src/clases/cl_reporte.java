@@ -192,7 +192,7 @@ public class cl_reporte {
         titulos[dias + 7] = "Desc. Empresa";
         titulos[dias + 8] = "a Pagar";
 
-        String sql = "select c.codigo, c.apellidos || ' ' || c.nombres as empleado, c.documento, c.nrocuenta, "
+        String sql = "select c.codigo, c.apellidos || ' ' || c.nombres as empleado, c.documentocuenta, c.nrocuenta, "
                 + subquery
                 + "sum(cantidad) as total,"
                 + "sum(cantidad) * 0.5 as subtotal, "

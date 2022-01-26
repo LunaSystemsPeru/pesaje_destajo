@@ -15,6 +15,9 @@ import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -38,12 +41,14 @@ public class cl_colaborador {
     private int idcolaborador;
     private int codigo;
     private String documento;
-    private int idnacionalidad;
+    private int idtipodocumento;
     private String apellidos;
     private String nombres;
+    private String documentocuenta;
     private String nrocuenta;
     private int estado;
     private int nro_llamadas;
+    private String fechamodificacion;
 
     public cl_colaborador() {
     }
@@ -72,12 +77,12 @@ public class cl_colaborador {
         this.documento = documento;
     }
 
-    public int getIdnacionalidad() {
-        return idnacionalidad;
+    public int getIdtipodocumento() {
+        return idtipodocumento;
     }
 
-    public void setIdnacionalidad(int idnacionalidad) {
-        this.idnacionalidad = idnacionalidad;
+    public void setIdtipodocumento(int idtipodocumento) {
+        this.idtipodocumento = idtipodocumento;
     }
 
     public String getApellidos() {
@@ -94,6 +99,14 @@ public class cl_colaborador {
 
     public void setNombres(String nombres) {
         this.nombres = nombres;
+    }
+
+    public String getDocumentocuenta() {
+        return documentocuenta;
+    }
+
+    public void setDocumentocuenta(String documentocuenta) {
+        this.documentocuenta = documentocuenta;
     }
 
     public String getNrocuenta() {
@@ -120,63 +133,16 @@ public class cl_colaborador {
         this.nro_llamadas = nro_llamadas;
     }
 
+    public String getFechamodificacion() {
+        return fechamodificacion;
+    }
+
+    public void setFechamodificacion(String fechamodificacion) {
+        this.fechamodificacion = fechamodificacion;
+    }
+
     public String getDatos() {
-        return apellidos + " " + nombres;
-    }
-
-    public boolean obtener_datos() {
-        boolean existe = false;
-
-        try {
-            Statement st = c_conectar.conexion();
-            String query = "select * "
-                    + "from colaboradores "
-                    + "where idcolaborador = '" + idcolaborador + "'";
-            //System.out.println(query);
-            ResultSet rs = c_conectar.consulta(st, query);
-
-            while (rs.next()) {
-                existe = true;
-                codigo = rs.getInt("codigo");
-                apellidos = rs.getString("apellidos");
-                nombres = rs.getString("nombres");
-                documento = rs.getString("documento");
-                idnacionalidad = rs.getInt("idnacionalidad");
-                nrocuenta = rs.getString("nrocuenta");
-                nro_llamadas = rs.getInt("nro_llamadas");
-                estado = rs.getInt("estado");
-            }
-            c_conectar.cerrar(rs);
-            c_conectar.cerrar(st);
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
-        }
-
-        return existe;
-    }
-
-    public boolean obtener_datos_codigo() {
-        boolean existe = false;
-
-        try {
-            Statement st = c_conectar.conexion();
-            String query = "select idcolaborador "
-                    + "from colaboradores "
-                    + "where codigo = '" + codigo + "'";
-            //System.out.println(query);
-            ResultSet rs = c_conectar.consulta(st, query);
-
-            while (rs.next()) {
-                existe = true;
-                idcolaborador = rs.getInt("idcolaborador");
-            }
-            c_conectar.cerrar(rs);
-            c_conectar.cerrar(st);
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
-        }
-
-        return existe;
+        return this.apellidos + " " + this.nombres;
     }
 
     public void mostrarHistorico() {
@@ -386,17 +352,23 @@ public class cl_colaborador {
     }
 
     public void generarExcelTrabajadores() {
-        String sql = "select codigo, documento, apellidos || ' ' || nombres, nrocuenta "
+        String sql = "select idcolaborador, codigo, idtipodocumento, documento, apellidos, nombres, documentocuenta, nrocuenta, estado, fecha_modificacion "
                 + "from colaboradores "
                 + "order by apellidos asc, nombres asc ";
         Statement st = c_conectar.conexion();
         ResultSet rs = c_conectar.consulta(st, sql);
 
-        String[] titulos = new String[4];
-        titulos[0] = "Codigo";
-        titulos[1] = "Documento";
-        titulos[2] = "Apellidos y Nombres";
-        titulos[3] = "Nro Cuenta";
+        String[] titulos = new String[10];
+        titulos[0] = "IdSistema";
+        titulos[1] = "COD Trabajador";
+        titulos[2] = "Tipo Documento";
+        titulos[3] = "Nro Documento";
+        titulos[4] = "Apellidos";
+        titulos[5] = "Nombres";
+        titulos[6] = "DNICuenta";
+        titulos[7] = "Nro Cuenta";
+        titulos[8] = "Estado";
+        titulos[9] = "Ultima Modf.";
 
         File dir = new File("");
 
@@ -449,7 +421,7 @@ public class cl_colaborador {
                 fila = pagina.createRow(filanro);
                 // Y colocamos los datos en esa fila
 
-                for (int i = 0; i < 4; i++) {
+                for (int i = 0; i < 8; i++) {
                     // Creamos una celda en esa fila, en la
                     // posicion indicada por el contador del ciclo
                     HSSFCell celda = fila.createCell(i);
@@ -492,7 +464,7 @@ public class cl_colaborador {
         Statement st = c_conectar.conexion();
         ResultSet rs = c_conectar.consulta(st, sql);
 
-        String[] titulos = new String[16];
+        String[] titulos = new String[17];
         titulos[0] = "Codigo";
         titulos[1] = "Fecha";
         titulos[2] = "Hora";
@@ -503,12 +475,13 @@ public class cl_colaborador {
         titulos[7] = "idcolaborador";
         titulos[8] = "codigo";
         titulos[9] = "documento";
-        titulos[10] = "idnacionalidad";
+        titulos[10] = "idtipodocumento";
         titulos[11] = "apellidos";
         titulos[12] = "nombres";
-        titulos[13] = "nrocuenta";
-        titulos[14] = "estado";
-        titulos[15] = "quejas";
+        titulos[13] = "documentocuenta";
+        titulos[14] = "nrocuenta";
+        titulos[15] = "estado";
+        titulos[16] = "quejas";
 
         File dir = new File("");
 
@@ -598,7 +571,7 @@ public class cl_colaborador {
 
     public void ExportarExcelLiquidacion(String fecha) {
         String sql = "select pesaje.fecha, pesaje.idcolaborador,  sum(pesaje.cantidad), colaboradores.codigo, colaboradores.documento, "
-                + "colaboradores.apellidos || colaboradores.nombres as datos, colaboradores.nrocuenta, pesaje.idservicio, pd.nombre "
+                + "colaboradores.apellidos || colaboradores.nombres as datos, colaboradores.documentocuenta, colaboradores.nrocuenta, pesaje.idservicio, pd.nombre "
                 + "from pesaje "
                 + "inner join parametros_detalles as pd on pd.iddetalles = pesaje.idservicio "
                 + "LEFT JOIN colaboradores on colaboradores.idcolaborador = pesaje.idcolaborador "
@@ -607,16 +580,17 @@ public class cl_colaborador {
         Statement st = c_conectar.conexion();
         ResultSet rs = c_conectar.consulta(st, sql);
 
-        String[] titulos = new String[9];
+        String[] titulos = new String[10];
         titulos[0] = "Fecha";
         titulos[1] = "Idsistema";
         titulos[2] = "Cantidad Kg";
         titulos[3] = "Codigo";
         titulos[4] = "DNI";
         titulos[5] = "Apellidos y Nombres";
-        titulos[6] = "Nro Cuenta";
-        titulos[7] = "IDServicio";
-        titulos[8] = "Servicio";
+        titulos[6] = "DNI Cuenta";
+        titulos[7] = "Nro Cuenta";
+        titulos[8] = "IDServicio";
+        titulos[9] = "Servicio";
 
         File dir = new File("");
 
@@ -722,22 +696,23 @@ public class cl_colaborador {
             try {
                 String linea = "";
                 linea = "borrar fila 1 y 2";
-                 pw.println(linea);
-                linea = "idcolaborador, codigo, documento, idnacionalidad, apellidos, nombres, nrocuenta, estado, nrollamadas";
-                 pw.println(linea);
-                    linea = "";
+                pw.println(linea);
+                linea = "idcolaborador, codigo, documento, idtipodocumento, apellidos, nombres, documentocuenta, nrocuenta, estado, nrollamadas";
+                pw.println(linea);
+                linea = "";
                 while (rs.next()) {
                     linea
                             += rs.getString("idcolaborador") + ","
                             + rs.getString("codigo") + ","
                             + rs.getString("documento") + ","
-                            + rs.getString("idnacionalidad") + ","
+                            + rs.getString("idtipodocumento") + ","
                             + rs.getString("apellidos") + ","
                             + rs.getString("nombres") + ","
+                            + rs.getString("documentocuenta") + ","
                             + rs.getString("nrocuenta") + ","
                             + rs.getString("estado") + ","
                             + rs.getString("nro_llamadas");
-                        System.out.println(linea);
+                    System.out.println(linea);
 
                     pw.println(linea);
                     linea = "";
@@ -780,31 +755,18 @@ public class cl_colaborador {
             ResultSet rs = c_conectar.consulta(st, query);
 
             modelo.addColumn("Codigo");
-            modelo.addColumn("Nacionalidad");
+            modelo.addColumn("Tipo Documento");
             modelo.addColumn("Documento");
             modelo.addColumn("Apellidos y Nombres");
+            modelo.addColumn("DNI. Dueño CTA");
             modelo.addColumn("Nro Cuenta");
             modelo.addColumn("Mensajes");
             modelo.addColumn("Estado");
             modelo.addColumn("");
 
             while (rs.next()) {
-                int idnacion = rs.getInt("idnacionalidad");
                 int idestado = rs.getInt("estado");
-                String nacionalidad = "";
                 String sestado = "";
-                if (idnacion == 1) {
-                    nacionalidad = "PERUANO";
-                }
-                if (idnacion == 2) {
-                    nacionalidad = "VENEZOLANO";
-                }
-                if (idnacion == 2) {
-                    nacionalidad = "COLOMBIANO";
-                }
-                if (idnacion == 4) {
-                    nacionalidad = "OTRO";
-                }
 
                 if (idestado == 0) {
                     sestado = "ACTIVO";
@@ -812,14 +774,162 @@ public class cl_colaborador {
                 if (idestado == 1) {
                     sestado = "DESCANSO";
                 }
-                Object[] fila = new Object[8];
+                Object[] fila = new Object[9];
                 fila[0] = rs.getInt("codigo");
-                fila[1] = nacionalidad;
+                fila[1] = rs.getString("nombre");
                 fila[2] = rs.getString("documento");
                 fila[3] = rs.getString("apellidos") + " " + rs.getString("nombres");
-                fila[4] = rs.getString("nrocuenta");
-                fila[5] = rs.getString("nro_llamadas");
-                fila[6] = sestado;
+                fila[4] = rs.getString("documentocuenta");
+                fila[5] = rs.getString("nrocuenta");
+                fila[6] = rs.getString("nro_llamadas");
+                fila[7] = sestado;
+                fila[8] = rs.getString("idcolaborador");
+
+                modelo.addRow(fila);
+
+            }
+            c_conectar.cerrar(st);
+            c_conectar.cerrar(rs);
+
+            tabla.setModel(modelo);
+            tabla.getColumnModel().getColumn(0).setPreferredWidth(50);
+            tabla.getColumnModel().getColumn(1).setPreferredWidth(100);
+            tabla.getColumnModel().getColumn(2).setPreferredWidth(100);
+            tabla.getColumnModel().getColumn(3).setPreferredWidth(400);
+            tabla.getColumnModel().getColumn(4).setPreferredWidth(150);
+            tabla.getColumnModel().getColumn(5).setPreferredWidth(150);
+            tabla.getColumnModel().getColumn(6).setPreferredWidth(80);
+            tabla.getColumnModel().getColumn(7).setPreferredWidth(100);
+            tabla.getColumnModel().getColumn(8).setPreferredWidth(1);
+            tabla.getTableHeader().getColumnModel().getColumn(8).setMaxWidth(0);
+            tabla.getTableHeader().getColumnModel().getColumn(8).setMinWidth(0);
+            tabla.getColumnModel().getColumn(8).setMaxWidth(0);
+            tabla.getColumnModel().getColumn(8).setMinWidth(0);
+
+            c_varios.centrar_celda(tabla, 1);
+            c_varios.centrar_celda(tabla, 2);
+            c_varios.centrar_celda(tabla, 4);
+            c_varios.centrar_celda(tabla, 5);
+            c_varios.centrar_celda(tabla, 6);
+
+        } catch (SQLException e) {
+            System.out.print(e);
+        }
+    }
+
+    public void mostrarSinCuentas(JTable tabla, String query, String fechainicio) {
+        String fecha_inicial = fechainicio;
+        Date date_final = c_varios.suma_dia(fecha_inicial, -7);
+        String fecha_final = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date_final);
+
+        query = "select p.idcolaborador, c.codigo, c.documento, c.apellidos, c.nombres, c.documentocuenta, c.nrocuenta, pd.nombre "
+                + "from pesaje as p inner join colaboradores as c on c.idcolaborador = p.idcolaborador "
+                + "inner join parametros_detalles as pd on pd.iddetalles = c.idtipodocumento "
+                + "where p.fecha BETWEEN '" + fecha_final + "' and '" + fecha_inicial + "' and (c.nrocuenta is NULL or c.documentocuenta IS NULL or c.nrocuenta = '' or c.documentocuenta = '') and (c.documento is not null or c.documento != '' ) "
+                + "group by c.idcolaborador "
+                + "order by c.apellidos, c.nombres asc";
+        //System.out.println(query);
+        DefaultTableModel modelo;
+        try {
+            modelo = new DefaultTableModel() {
+                @Override
+                public boolean isCellEditable(int fila, int columna) {
+                    return false;
+                }
+            };
+
+            Statement st = c_conectar.conexion();
+            ResultSet rs = c_conectar.consulta(st, query);
+
+            modelo.addColumn("Codigo");
+            modelo.addColumn("Tipo Documento");
+            modelo.addColumn("Documento");
+            modelo.addColumn("Apellidos y Nombres");
+            modelo.addColumn("DNI. Dueño CTA");
+            modelo.addColumn("Nro Cuenta");
+            modelo.addColumn("");
+
+            while (rs.next()) {
+                Object[] fila = new Object[7];
+                fila[0] = rs.getInt("codigo");
+                fila[1] = rs.getString("nombre");
+                fila[2] = rs.getString("documento");
+                fila[3] = rs.getString("apellidos") + " " + rs.getString("nombres");
+                fila[4] = rs.getString("documentocuenta");
+                fila[5] = rs.getString("nrocuenta");
+                fila[6] = rs.getString("idcolaborador");
+
+                modelo.addRow(fila);
+
+            }
+            c_conectar.cerrar(st);
+            c_conectar.cerrar(rs);
+
+            tabla.setModel(modelo);
+            tabla.getColumnModel().getColumn(0).setPreferredWidth(50);
+            tabla.getColumnModel().getColumn(1).setPreferredWidth(100);
+            tabla.getColumnModel().getColumn(2).setPreferredWidth(100);
+            tabla.getColumnModel().getColumn(3).setPreferredWidth(400);
+            tabla.getColumnModel().getColumn(4).setPreferredWidth(150);
+            tabla.getColumnModel().getColumn(5).setPreferredWidth(150);
+            tabla.getColumnModel().getColumn(6).setPreferredWidth(1);
+            tabla.getTableHeader().getColumnModel().getColumn(6).setMaxWidth(0);
+            tabla.getTableHeader().getColumnModel().getColumn(6).setMinWidth(0);
+            tabla.getColumnModel().getColumn(6).setMaxWidth(0);
+            tabla.getColumnModel().getColumn(6).setMinWidth(0);
+
+            c_varios.centrar_celda(tabla, 0);
+            c_varios.centrar_celda(tabla, 1);
+            c_varios.centrar_celda(tabla, 2);
+            c_varios.centrar_celda(tabla, 4);
+            c_varios.centrar_celda(tabla, 5);
+
+        } catch (SQLException e) {
+            System.out.print(e);
+        }
+    }
+
+    public void mostrarCuentasModificadasxMi(JTable tabla, String query, String fechainicio) {
+        String fecha_inicial = fechainicio;
+        Date date_final = c_varios.suma_dia(fecha_inicial, -7);
+        String fecha_final = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date_final);
+
+        query = "select c.idcolaborador, c.codigo, c.documento, c.apellidos, c.nombres, c.documentocuenta, c.nrocuenta, c.fecha_modificacion, pd.nombre "
+                + "from colaboradores as c "
+                + "inner join parametros_detalles as pd on pd.iddetalles = c.idtipodocumento "
+                + "where c.fecha_modificacion BETWEEN '" + fecha_final + "' and '" + fecha_inicial + "' and c.documento != '' and c.nrocuenta != '' "
+                + "order by c.apellidos, c.nombres asc";
+        //System.out.println(query);
+        DefaultTableModel modelo;
+        try {
+            modelo = new DefaultTableModel() {
+                @Override
+                public boolean isCellEditable(int fila, int columna) {
+                    return false;
+                }
+            };
+
+            Statement st = c_conectar.conexion();
+            ResultSet rs = c_conectar.consulta(st, query);
+
+            modelo.addColumn("Codigo");
+            modelo.addColumn("Tipo Documento");
+            modelo.addColumn("Documento");
+            modelo.addColumn("Apellidos y Nombres");
+            modelo.addColumn("DNI. Dueño CTA");
+            modelo.addColumn("Nro Cuenta");
+            modelo.addColumn("Fecha Modificacion");
+            modelo.addColumn("");
+
+            while (rs.next()) {
+                Object[] fila = new Object[8];
+                fila[0] = rs.getInt("codigo");
+                fila[1] = rs.getString("nombre");
+                fila[2] = rs.getString("documento");
+                fila[3] = rs.getString("apellidos") + " " + rs.getString("nombres");
+                fila[4] = rs.getString("documentocuenta");
+                fila[5] = rs.getString("nrocuenta");
+                fila[6] = rs.getString("fecha_modificacion");
                 fila[7] = rs.getString("idcolaborador");
 
                 modelo.addRow(fila);
@@ -834,24 +944,122 @@ public class cl_colaborador {
             tabla.getColumnModel().getColumn(2).setPreferredWidth(100);
             tabla.getColumnModel().getColumn(3).setPreferredWidth(400);
             tabla.getColumnModel().getColumn(4).setPreferredWidth(150);
-            tabla.getColumnModel().getColumn(5).setPreferredWidth(80);
-            tabla.getColumnModel().getColumn(6).setPreferredWidth(100);
+            tabla.getColumnModel().getColumn(5).setPreferredWidth(150);
             tabla.getColumnModel().getColumn(7).setPreferredWidth(1);
             tabla.getTableHeader().getColumnModel().getColumn(7).setMaxWidth(0);
             tabla.getTableHeader().getColumnModel().getColumn(7).setMinWidth(0);
             tabla.getColumnModel().getColumn(7).setMaxWidth(0);
             tabla.getColumnModel().getColumn(7).setMinWidth(0);
 
+            c_varios.centrar_celda(tabla, 0);
+            c_varios.centrar_celda(tabla, 1);
+            c_varios.centrar_celda(tabla, 2);
+            c_varios.centrar_celda(tabla, 4);
+            c_varios.centrar_celda(tabla, 5);
+
         } catch (SQLException e) {
             System.out.print(e);
         }
+    }
+
+    public boolean obtener_datos() {
+        boolean existe = false;
+
+        try {
+            Statement st = c_conectar.conexion();
+            String query = "select * "
+                    + "from colaboradores "
+                    + "where idcolaborador = '" + idcolaborador + "'";
+            //System.out.println(query);
+            ResultSet rs = c_conectar.consulta(st, query);
+
+            while (rs.next()) {
+                existe = true;
+                codigo = rs.getInt("codigo");
+                apellidos = rs.getString("apellidos");
+                nombres = rs.getString("nombres");
+                documento = rs.getString("documento");
+                idtipodocumento = rs.getInt("idtipodocumento");
+                documentocuenta = rs.getString("documentocuenta");
+                nrocuenta = rs.getString("nrocuenta");
+                nro_llamadas = rs.getInt("nro_llamadas");
+                estado = rs.getInt("estado");
+                fechamodificacion = rs.getString("fecha_modificacion");
+            }
+            c_conectar.cerrar(rs);
+            c_conectar.cerrar(st);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
+        }
+
+        return existe;
+    }
+
+    public boolean obtener_datos_codigo() {
+        boolean existe = false;
+
+        try {
+            Statement st = c_conectar.conexion();
+            String query = "select idcolaborador "
+                    + "from colaboradores "
+                    + "where codigo = '" + codigo + "'";
+            //System.out.println(query);
+            ResultSet rs = c_conectar.consulta(st, query);
+
+            while (rs.next()) {
+                existe = true;
+                idcolaborador = rs.getInt("idcolaborador");
+            }
+            c_conectar.cerrar(rs);
+            c_conectar.cerrar(st);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
+        }
+
+        return existe;
+    }
+
+    public boolean validarDocumento() {
+        boolean existe = false;
+
+        try {
+            Statement st = c_conectar.conexion();
+            String query = "select idcolaborador "
+                    + "from colaboradores "
+                    + "where documento = '" + this.documento + "'";
+            //System.out.println(query);
+            ResultSet rs = c_conectar.consulta(st, query);
+
+            while (rs.next()) {
+                existe = true;
+                idcolaborador = rs.getInt("idcolaborador");
+            }
+            c_conectar.cerrar(rs);
+            c_conectar.cerrar(st);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
+        }
+
+        return existe;
     }
 
     public boolean registrar() {
         boolean registrado = false;
         Statement st = c_conectar.conexion();
         String query = "insert into colaboradores "
-                + "Values ('" + idcolaborador + "', '" + codigo + "', '" + documento + "', '" + idnacionalidad + "', '" + apellidos + "', '" + nombres + "', '" + nrocuenta + "', '" + estado + "', '" + nro_llamadas + "')";
+                + "Values ('" + idcolaborador + "', '" + codigo + "', '" + idtipodocumento + "', '" + documento + "', '" + apellidos + "', '" + nombres + "', '" + documentocuenta + "', '" + nrocuenta + "', '" + estado + "', '" + nro_llamadas + "', '" + fechamodificacion + "')";
+        int resultado = c_conectar.actualiza(st, query);
+        if (resultado > -1) {
+            registrado = true;
+        }
+        c_conectar.cerrar(st);
+        return registrado;
+    }
+
+    public boolean corregirFormatoDocumento() {
+        boolean registrado = false;
+        Statement st = c_conectar.conexion();
+        String query = "update colaboradores set documentocuenta = PRINTF('%08d',documentocuenta), documento = PRINTF('%08d',documento) ";
         int resultado = c_conectar.actualiza(st, query);
         if (resultado > -1) {
             registrado = true;
@@ -901,9 +1109,25 @@ public class cl_colaborador {
         boolean actualizado = false;
         Statement st = c_conectar.conexion();
         String query = "update colaboradores "
-                + "set apellidos ='" + apellidos + "', nombres ='" + nombres + "', documento ='" + documento + "', idnacionalidad='" + idnacionalidad + "',nrocuenta= '" + nrocuenta + "',estado= '" + estado + "' "
+                + "set apellidos ='" + apellidos + "', nombres ='" + nombres + "', documento ='" + documento + "', idtipodocumento='" + idtipodocumento + "', documentocuenta='" + documentocuenta + "', nrocuenta= '" + nrocuenta + "',estado= '" + estado + "' "
                 + "where idcolaborador ='" + idcolaborador + "' ";
         // System.out.println(query);
+        int resultado = c_conectar.actualiza(st, query);
+        if (resultado > -1) {
+            actualizado = true;
+        }
+        c_conectar.cerrar(st);
+        return actualizado;
+    }
+
+    public boolean actualizarCuenta() {
+        boolean actualizado = false;
+        fechamodificacion = c_varios.getFechaActual();
+        Statement st = c_conectar.conexion();
+        String query = "update colaboradores "
+                + "set documentocuenta ='" + documentocuenta + "', nrocuenta ='" + nrocuenta + "', fecha_modificacion = '"+this.fechamodificacion+"' "
+                + "where documento ='" + documento + "' and fecha_modificacion < '" + fechamodificacion + "' ";
+        //System.out.println(query);
         int resultado = c_conectar.actualiza(st, query);
         if (resultado > -1) {
             actualizado = true;
@@ -953,4 +1177,5 @@ public class cl_colaborador {
         c_conectar.cerrar(st);
         return actualizado;
     }
+
 }

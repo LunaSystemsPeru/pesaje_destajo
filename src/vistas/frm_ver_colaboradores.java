@@ -7,10 +7,14 @@ package vistas;
 
 import clases.cl_colaborador;
 import clases.cl_varios;
+import formularios.frm_actualizar_cuentas;
 import formularios.frm_colaborador;
 import formularios.frm_load_colaborador;
 import java.awt.Frame;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import javax.swing.JOptionPane;
 
@@ -33,9 +37,17 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
 
         txt_fecha_reporte.setText(c_varios.fecha_usuario(c_varios.getFechaActual()));
 
-        query = "select * "
-                + "from colaboradores "
-                + "order by codigo desc";
+        String fecha_inicial = c_varios.getFechaActual();
+        Date date_final = c_varios.suma_dia(fecha_inicial, -7);
+        String fecha_final = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date_final);
+
+        query = "select c.*, pd.nombre "
+                + "from pesaje as p "
+                + "inner join colaboradores as c on c.idcolaborador = p.idcolaborador "
+                + "inner join parametros_detalles as pd on pd.iddetalles = c.idtipodocumento "
+                + "where p.fecha BETWEEN '" + fecha_final + "' and '" + fecha_inicial + "' and (c.nrocuenta is NULL or c.documentocuenta IS NULL or c.nrocuenta = '' or c.documentocuenta = '') and (c.documento is not null or c.documento != '' ) "
+                + "group by c.idcolaborador "
+                + "order by c.apellidos, c.nombres asc";
 
         c_colaborador.mostrar(t_colaboradores, query);
     }
@@ -72,6 +84,8 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
         btn_modificar = new javax.swing.JButton();
         btn_d_baja = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
+        jButton3 = new javax.swing.JButton();
+        jSeparator3 = new javax.swing.JToolBar.Separator();
         btn_eliminar = new javax.swing.JButton();
         btn_actualizar = new javax.swing.JButton();
         btn_reporte = new javax.swing.JButton();
@@ -175,6 +189,19 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
         });
         jToolBar1.add(btn_d_baja);
         jToolBar1.add(jSeparator1);
+
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/banco.png"))); // NOI18N
+        jButton3.setText("Buscar Cuentas");
+        jButton3.setFocusable(false);
+        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButton3);
+        jToolBar1.add(jSeparator3);
 
         btn_eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/trash_16.png"))); // NOI18N
         btn_eliminar.setText("Eliminar");
@@ -345,7 +372,7 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
             //capture el nro de fla
             fila_seleccionada = t_colaboradores.getSelectedRow();
             //capturar id colaborador
-            c_colaborador.setIdcolaborador(Integer.parseInt(t_colaboradores.getValueAt(fila_seleccionada, 7).toString()));
+            c_colaborador.setIdcolaborador(Integer.parseInt(t_colaboradores.getValueAt(fila_seleccionada, 8).toString()));
             activar_botones();
         }
     }//GEN-LAST:event_t_colaboradoresMouseClicked
@@ -390,14 +417,16 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
         int tipo_busqueda = cbx_colaborador.getSelectedIndex();
         if (tipo_busqueda == 1) {
             query = "select * "
-                    + "from colaboradores "
+                    + "from colaboradores as c "
+                    + "inner join parametros_detalles as pd on pd.iddetalles = c.idtipodocumento "
                     + "where codigo ='" + text + "' "
                     + "order by apellidos, nombres asc";
 
         }
         if (tipo_busqueda == 0) {
             query = "select * "
-                    + "from colaboradores "
+                    + "from colaboradores as c "
+                    + "inner join parametros_detalles as pd on pd.iddetalles = c.idtipodocumento "
                     + "where apellidos || ' ' || nombres like  '%" + text + "%' "
                     + "order by apellidos, nombres asc";
         }
@@ -448,6 +477,14 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
         dialog.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        Frame f = JOptionPane.getRootFrame();
+        //frm_actualizar_cuentas.dcolaborador(this.c_colaborador.getIdcolaborador());
+        frm_actualizar_cuentas dialog = new frm_actualizar_cuentas(f, true);
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JButton btn_actualizar;
@@ -461,11 +498,13 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> cbx_colaborador;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JDialog jd_fecha;
     private javax.swing.JTable t_colaboradores;

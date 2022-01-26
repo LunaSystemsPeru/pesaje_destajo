@@ -221,7 +221,7 @@ public class frm_load_colaborador extends javax.swing.JDialog {
                     
                     c_colaborador.setCodigo(Integer.parseInt(values[1]));
                     c_colaborador.setDocumento(values[2]);
-                    c_colaborador.setIdnacionalidad(Integer.parseInt(values[3]));
+                    //c_colaborador.setIdnacionalidad(Integer.parseInt(values[3]));
                     c_colaborador.setApellidos(values[4]);
                     c_colaborador.setNombres(values[5].trim());
                     c_colaborador.setNrocuenta(values[6]);

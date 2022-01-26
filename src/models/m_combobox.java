@@ -20,18 +20,27 @@ import objects.o_combobox;
 public class m_combobox {
 
     cl_conectar c_conectar = new cl_conectar();
+    private int id;
 
-    public void llenar_bancos(JComboBox cbx) {
+    public m_combobox() {
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void llenarComboBox(JComboBox cbx) {
         try {
             cbx.removeAllItems();
             Statement st = c_conectar.conexion();
-            String query = "select id_banco, nombre "
-                    + "from bancos "
+            String query = "select iddetalles, nombre "
+                    + "from parametros_detalles  "
+                    + "where idparametros = '" + this.id + "' "
                     + "order by nombre asc";
             ResultSet rs = c_conectar.consulta(st, query);
 
             while (rs.next()) {
-                cbx.addItem(new o_combobox(rs.getInt("id_banco"), rs.getString("nombre")));
+                cbx.addItem(new o_combobox(rs.getInt("iddetalles"), rs.getString("nombre")));
             }
 
             c_conectar.cerrar(st);
