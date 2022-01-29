@@ -176,6 +176,8 @@ public class cl_parametro_detalle {
             tabla.getColumnModel().getColumn(1).setPreferredWidth(200);
             tabla.getColumnModel().getColumn(2).setPreferredWidth(80);
             tabla.getColumnModel().getColumn(3).setPreferredWidth(50);
+            c_varios.centrar_celda(tabla, 0);
+            c_varios.derecha_celda(tabla, 2);
 
         } catch (SQLException e) {
             System.out.print(e);
