@@ -45,7 +45,7 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
                 + "from pesaje as p "
                 + "inner join colaboradores as c on c.idcolaborador = p.idcolaborador "
                 + "inner join parametros_detalles as pd on pd.iddetalles = c.idtipodocumento "
-                + "where p.fecha BETWEEN '" + fecha_final + "' and '" + fecha_inicial + "' and (c.nrocuenta is NULL or c.documentocuenta IS NULL or c.nrocuenta = '' or c.documentocuenta = '') and (c.documento is not null or c.documento != '' ) "
+                + "where p.fecha BETWEEN '" + fecha_final + "' and '" + fecha_inicial + "' and (c.nrocuenta is NULL or c.documentocuenta IS NULL or c.nrocuenta = '' or c.documentocuenta = '' or c.documento is null or c.documento = '' ) "
                 + "group by c.idcolaborador "
                 + "order by c.apellidos, c.nombres asc";
 
