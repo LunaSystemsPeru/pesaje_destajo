@@ -429,13 +429,14 @@ public class frm_colaborador extends javax.swing.JDialog {
             c_colaborador.setFechamodificacion("1000-01-01");
         }
     }
+    
     private void btn_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_guardarActionPerformed
         llenar_datos();
         if (c_colaborador.validarDocumento()) {
             JOptionPane.showMessageDialog(null, "VERIFIQUE Numero de DNI\nEl trabajador ya se encuentra registrado");
             txt_apellidos.setText("");
         } else {
-            if (!"".equals(c_colaborador.getApellidos()) & !"".equals(c_colaborador.getNombres())) {
+            if (c_colaborador.getDocumento().length() > 6 & !"".equals(c_colaborador.getApellidos()) & !"".equals(c_colaborador.getNombres())) {
                 if (c_colaborador.getCodigo() == 0) {
                     c_colaborador.obtener_codigovisible();
                 }
@@ -457,7 +458,7 @@ public class frm_colaborador extends javax.swing.JDialog {
 
     private void btn_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificarActionPerformed
         llenar_datos();
-        if (!"".equals(c_colaborador.getApellidos()) & !"".equals(c_colaborador.getNombres())) {
+        if (c_colaborador.getDocumento().length() > 6 & !"".equals(c_colaborador.getApellidos()) & !"".equals(c_colaborador.getNombres())) {
             boolean actualizado = c_colaborador.actualizar();
 
             if (actualizado) {
