@@ -245,6 +245,8 @@ public class frm_actualizar_cuentas extends javax.swing.JDialog {
             Cuentas.start();
             jButton4.setEnabled(true);
             jButton2.setEnabled(true);
+
+            //Colaborador.mostrarCuentasModificadasxMi(jTable1, "", Util.getFechaActual());
         }
 
 
@@ -279,7 +281,7 @@ public class frm_actualizar_cuentas extends javax.swing.JDialog {
         int nrodefilas = jTable1.getRowCount();
         Gson g = new Gson();
         JsonArray array = new JsonArray();
-        
+
         for (int i = 0; i < nrodefilas; i++) {
             //personal.setDocumento(dnis.get(i).toString());
             JsonPrimitive documento = new JsonPrimitive(jTable1.getValueAt(i, 2).toString());
@@ -294,12 +296,12 @@ public class frm_actualizar_cuentas extends javax.swing.JDialog {
             array.add(object);
         }
         //generar json 
-         String json = "arraydocumentos=" + array.toString();
-         System.out.println("json = " + json);
-         jsonapi.enviarCuentas(json);
-         JOptionPane.showMessageDialog(null, "Cuentas Fueron enviadas\nRevisar si le falta cargar cuentas");
-         jButton4.setEnabled(false);
-         jButton2.setEnabled(true);
+        String json = "arraydocumentos=" + array.toString();
+        System.out.println("json = " + json);
+        jsonapi.enviarCuentas(json);
+        JOptionPane.showMessageDialog(null, "Cuentas Fueron enviadas\nRevisar si le falta cargar cuentas");
+        jButton4.setEnabled(false);
+        jButton2.setEnabled(true);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**

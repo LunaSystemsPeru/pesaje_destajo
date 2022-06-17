@@ -174,25 +174,26 @@ public class cl_reporte {
 
         String subquery = "";
 
-        String[] titulos = new String[dias + 9];
+        String[] titulos = new String[dias + 10];
         titulos[0] = "Codigo";
-        titulos[1] = "Empleado";
-        titulos[2] = "Documento";
-        titulos[3] = "Nro Cuenta";
+        titulos[1] = "DNI";
+        titulos[2] = "Empleado";
+        titulos[3] = "DNI Cuenta";
+        titulos[4] = "Nro Cuenta";
 
         for (int i = 0; i < dias; i++) {
             Date fecha_temp = c_varios.suma_dia(fecha_inicial, i);
             String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(fecha_temp);
             subquery += "sum(case when fecha= '" + date + "' then cantidad else 0 end) as '" + date + "', ";
-            titulos[4 + i] = c_varios.fecha_usuario(date);
+            titulos[5 + i] = c_varios.fecha_usuario(date);
         }
-        titulos[dias + 4] = "Total Kgs";
-        titulos[dias + 5] = "S/ Pesaje";
-        titulos[dias + 6] = "Desc. TG";
-        titulos[dias + 7] = "Desc. Empresa";
-        titulos[dias + 8] = "a Pagar";
+        titulos[dias + 5] = "Total Kgs";
+        titulos[dias + 6] = "S/ Pesaje";
+        titulos[dias + 7] = "Desc. TG";
+        titulos[dias + 8] = "Desc. Empresa";
+        titulos[dias + 9] = "a Pagar";
 
-        String sql = "select c.codigo, c.apellidos || ' ' || c.nombres as empleado, c.documentocuenta, c.nrocuenta, "
+        String sql = "select c.codigo, c.documento, c.apellidos || ' ' || c.nombres as empleado, c.documentocuenta, c.nrocuenta, "
                 + subquery
                 + "sum(cantidad) as total,"
                 + "sum(cantidad) * 0.5 as subtotal, "
@@ -260,8 +261,10 @@ public class cl_reporte {
         //System.out.println(titulos.length + " total columnas");
 
         pagina.setColumnWidth(0, 1550);
-        pagina.setColumnWidth(1, 15000);
-        pagina.setColumnWidth(3, 4200);
+        pagina.setColumnWidth(1, 2300);
+        pagina.setColumnWidth(2, 15000);
+        pagina.setColumnWidth(3, 2300);
+        pagina.setColumnWidth(4, 4200);
 
         // Creamos el encabezado
         for (int i = 0; i < titulos.length; i++) {
@@ -294,17 +297,17 @@ public class cl_reporte {
                 double apagar = 0;
                 // Y colocamos los datos en esa fila
 
-                for (int i = 0; i < (dias + 9); i++) {
+                for (int i = 0; i < (dias + 10); i++) {
                     // Creamos una celda en esa fila, en la
                     // posicion indicada por el contador del ciclo
                     HSSFCell celda = fila.createCell(i);
 
-                    if (i < 4) {
+                    if (i < 5) {
                         celda.setCellValue(rs.getString(i + 1));
                     }
 
-                    if (i > 3) {
-                        if (i < dias + 8) {
+                    if (i > 4) {
+                        if (i < dias + 9) {
                             celda.setCellValue(rs.getDouble(i + 1));
                         }
 
@@ -312,10 +315,10 @@ public class cl_reporte {
                         celda.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
                     }
 
-                    if (i == (dias + 8)) {
-                        monto_pesaje = rs.getDouble(dias + 6);
-                        desc_juan = rs.getDouble(dias + 7);
-                        desc_jorge = rs.getDouble(dias + 8);
+                    if (i == (dias + 9)) {
+                        monto_pesaje = rs.getDouble(dias + 7);
+                        desc_juan = rs.getDouble(dias + 8);
+                        desc_jorge = rs.getDouble(dias + 9);
                         apagar = monto_pesaje - desc_jorge - desc_juan;
                         celda.setCellValue(apagar);
                         celda.setCellStyle(style);
