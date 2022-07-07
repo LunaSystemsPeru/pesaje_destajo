@@ -379,7 +379,7 @@ public class cl_varios {
 
     public boolean verificar_conexion() {
         boolean conectado = false;
-        String dirWeb = "www.gthconsultora.ga";
+        String dirWeb = "www.gthconsultora.ml";
         int puerto = 80;
         try {
             Socket s = new Socket(dirWeb, puerto);
