@@ -201,7 +201,7 @@ public class JsonAPI {
     }
     
     public void enviarCuentas (String json) {
-        String url = "https://gthconsultora.ml/gth/ajax/obtenerCuentasModificadas.php";
+        String url = "https://gthconsultora.ml/ajax/obtenerCuentasModificadas.php";
         
         StringBuffer response = null;
         

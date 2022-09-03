@@ -21,7 +21,7 @@ import org.json.simple.parser.ParseException;
 public class cl_json_entidad {
 
     private static final String USER_AGENT = "Mozilla/5.0";
-    private static final String SERVER_PATH = "http://lunasystemsperu.com/";
+    private static final String SERVER_PATH = "https://lunasystemsperu.com/";
 
     public static String getJSONRUC(String ruc) {
 
