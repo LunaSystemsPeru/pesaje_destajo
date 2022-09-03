@@ -43,7 +43,7 @@ public class JsonAPI {
         try {
             //Generar la URL
             //String url = SERVER_PATH + "consultas_json/composer/consulta_sunat_JMP.php?ruc=" + ruc;
-            String url = "http://goempresarial.com/lsp/clientes/gth/ajax/obtenerListaObrerosCuenta.php";
+            String url = "https://gthconsultora.ml/ajax/obtenerListaObrerosCuenta.php";
             //Creamos un nuevo objeto URL con la url donde pedir el JSON
             URL obj = new URL(url);
             //Creamos un objeto de conexión
@@ -129,7 +129,7 @@ public class JsonAPI {
         //String json = new Gson().toJson(listajson);
         System.out.println(json);
         
-        String url = "http://goempresarial.com/lsp/clientes/gth/ajax/obtenerCuentasxDocumento.php";
+        String url = "https://gthconsultora.ml/ajax/obtenerCuentasxDocumento.php";
         
         StringBuffer response = null;
         
@@ -201,7 +201,7 @@ public class JsonAPI {
     }
     
     public void enviarCuentas (String json) {
-        String url = "http://goempresarial.com/lsp/clientes/gth/ajax/obtenerCuentasModificadas.php";
+        String url = "https://gthconsultora.ml/gth/ajax/obtenerCuentasModificadas.php";
         
         StringBuffer response = null;
         
