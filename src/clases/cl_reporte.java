@@ -42,6 +42,7 @@ public class cl_reporte {
 
     private String fecha_inicio;
     private int dias;
+    private int servicioid;
 
     public void maximo_minimo_fecha(String fecha, JTable tabla, int tipo) {
         DefaultTableModel modelo;
@@ -166,6 +167,14 @@ public class cl_reporte {
         this.dias = dias;
     }
 
+    public int getServicioid() {
+        return servicioid;
+    }
+
+    public void setServicioid(int servicioid) {
+        this.servicioid = servicioid;
+    }
+
     public void generar_excel() {
         String fecha_inicial = fecha_inicio;
         Date fecha_final = c_varios.suma_dia(fecha_inicial, dias - 1);
@@ -200,7 +209,7 @@ public class cl_reporte {
                 + "ifnull((select sum(monto) from descuentos where idarticulo in (3,10,11) and fecha BETWEEN '" + fecha_inicial + "' and '" + date_final + "' and idcolaborador = c.idcolaborador ), 0) as descuento_jorge"
                 + " from pesaje as p "
                 + "inner join colaboradores as c on c.idcolaborador = p.idcolaborador "
-                + "where p.fecha BETWEEN '" + fecha_inicial + "' and '" + date_final + "' "
+                + "where p.fecha BETWEEN '" + fecha_inicial + "' and '" + date_final + "' and idservicio = '"+servicioid+"' "
                 + "group by p.idcolaborador "
                 + "order by c.apellidos || ' ' || c.nombres asc";
 

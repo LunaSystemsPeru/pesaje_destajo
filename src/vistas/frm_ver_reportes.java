@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.Locale;
 import javax.swing.JOptionPane;
 import models.m_trabajo;
+import objects.o_trabajo;
 
 /**
  *
@@ -35,6 +36,8 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
     cl_parametro_detalle c_detalle = new cl_parametro_detalle();
     cl_colaborador c_colaborador = new cl_colaborador();
 
+    m_trabajo m_trabajo = new m_trabajo();
+
     String fecha;
 
     /**
@@ -46,6 +49,8 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
         cargar_mas_produce();
         cargar_menos_produce();
         cargar_resumen_anual();
+
+        m_trabajo.cbx_trabajo(jComboBox1);
 
         fecha = c_varios.getFechaActual();
 
@@ -524,7 +529,6 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
         jLabel5.setText("Tipo Servicio");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.setEnabled(false);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -798,9 +802,12 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_generar_excelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generar_excelActionPerformed
+        o_trabajo o_trabajo = (o_trabajo) jComboBox1.getSelectedItem();
+        int tipotrabajoid = o_trabajo.getId_tipo_trabajo();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         String ffecha2 = sdf.format(txt_fecha_inicio.getDate());
         c_reporte.setFecha_inicio(c_varios.fecha_myql(ffecha2));
+        c_reporte.setServicioid(tipotrabajoid);
         c_reporte.setDias(Integer.parseInt(jSpinner1.getValue().toString()));
         c_reporte.generar_excel();
     }//GEN-LAST:event_btn_generar_excelActionPerformed
