@@ -6,6 +6,7 @@
 package formularios;
 
 import clases.CuentasExteriores;
+import clases.HiloEnviaCuenta;
 import clases.JsonAPI;
 import clases.cl_colaborador;
 import clases.cl_varios;
@@ -280,26 +281,26 @@ public class frm_actualizar_cuentas extends javax.swing.JDialog {
         //enviar dnis para solicitar cuentas
         int nrodefilas = jTable1.getRowCount();
         Gson g = new Gson();
-        JsonArray array = new JsonArray();
+        JsonArray array;
+        HiloEnviaCuenta Hilo = new HiloEnviaCuenta();
+
+        ArrayList Lista = new ArrayList();
 
         for (int i = 0; i < nrodefilas; i++) {
-            //personal.setDocumento(dnis.get(i).toString());
-            JsonPrimitive documento = new JsonPrimitive(jTable1.getValueAt(i, 2).toString());
-            JsonPrimitive documentocta = new JsonPrimitive(jTable1.getValueAt(i, 4).toString());
-            JsonPrimitive numerocta = new JsonPrimitive(jTable1.getValueAt(i, 5).toString());
-            JsonPrimitive fechamodificacion = new JsonPrimitive(jTable1.getValueAt(i, 6).toString());
-            JsonObject object = new JsonObject();
-            object.add("documento", documento);
-            object.add("documentocuenta", documentocta);
-            object.add("nrocuenta", numerocta);
-            object.add("fechamodificacion", fechamodificacion);
-            array.add(object);
+            Object objeto[] = new Object[4];
+            objeto[0] = Util.ceros_izquieda_letras(8, jTable1.getValueAt(i, 2).toString());
+            objeto[1] = Util.ceros_izquieda_letras(8, jTable1.getValueAt(i, 4).toString());
+            objeto[2] = jTable1.getValueAt(i, 5).toString();
+            objeto[3] = jTable1.getValueAt(i, 6).toString();
+            Lista.add(objeto);
         }
-        //generar json 
-        String json = "arraydocumentos=" + array.toString();
-        System.out.println("json = " + json);
-        jsonapi.enviarCuentas(json);
-        JOptionPane.showMessageDialog(null, "Cuentas Fueron enviadas\nRevisar si le falta cargar cuentas");
+
+        try {
+            Hilo.setLista(Lista);
+            Hilo.start();
+        } catch (Exception e) {
+            System.out.println(e.getLocalizedMessage());
+        }
         jButton4.setEnabled(false);
         jButton2.setEnabled(true);
     }//GEN-LAST:event_jButton4ActionPerformed

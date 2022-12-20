@@ -13,6 +13,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import formularios.frm_actualizar_cuentas;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -28,18 +29,18 @@ import org.json.simple.parser.ParseException;
  * @author Mariela
  */
 public class JsonAPI {
-    
+
     cl_colaborador Colaborador = new cl_colaborador();
-    
+
     private final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36";
-    
+
     public JsonAPI() {
     }
-    
+
     public String getJsonCuentasServidor() {
-        
+
         StringBuffer response = null;
-        
+
         try {
             //Generar la URL
             //String url = SERVER_PATH + "consultas_json/composer/consulta_sunat_JMP.php?ruc=" + ruc;
@@ -64,7 +65,7 @@ public class JsonAPI {
                     new InputStreamReader(con.getInputStream()));
             String inputLine;
             response = new StringBuffer();
-            
+
             while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
             }
@@ -76,15 +77,15 @@ public class JsonAPI {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         return response.toString();
     }
-    
+
     public void leerCuentasServidor() throws ParseException {
         String json = getJsonCuentasServidor();
         ArrayList datos = new ArrayList(7);
         System.out.println("INFORMACIÓN OBTENIDA DE LA BASE DE DATOS:");
-        
+
         Gson gson = new Gson();
         JsonParser parser = new JsonParser();
         JsonElement obj = parser.parse(json);
@@ -108,14 +109,13 @@ public class JsonAPI {
             }
         }
     }
-    
+
     public void crearJsonDnis(ArrayList dnis) {
         Gson g = new Gson();
-        
-        
+
         JsonArray array = new JsonArray();
         ArrayList listajson = new ArrayList();
-        
+
         for (int i = 0; i < dnis.size(); i++) {
             //personal.setDocumento(dnis.get(i).toString());
             JsonPrimitive elemento = new JsonPrimitive(dnis.get(i).toString());
@@ -125,14 +125,14 @@ public class JsonAPI {
             listajson.add(object);
         }
         //generar json 
-         String json = "arraydocumentos=" + array.toString();
+        String json = "arraydocumentos=" + array.toString();
         //String json = new Gson().toJson(listajson);
         System.out.println(json);
-        
+
         String url = "https://gthconsultora.ml/ajax/obtenerCuentasxDocumento.php";
-        
+
         StringBuffer response = null;
-        
+
         try {
             //Creamos un nuevo objeto URL con la url donde pedir el JSON
             URL obj = new URL(url);
@@ -159,7 +159,7 @@ public class JsonAPI {
                     new InputStreamReader(con.getInputStream()));
             String inputLine;
             response = new StringBuffer();
-            
+
             while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
             }
@@ -199,19 +199,20 @@ public class JsonAPI {
             }
         }
     }
-    
-    public void enviarCuentas (String json) {
-        String url = "https://gthconsultora.ml/ajax/obtenerCuentasModificadas.php";
-        
+
+    public String enviarCuentas(String json) {
+        String url = "https://gthconsultora.ml/ajax/obtenerCuentasModificadas.php?" + json;
+
         StringBuffer response = null;
-        
+        String texto;
+
         try {
             //Creamos un nuevo objeto URL con la url donde pedir el JSON
             URL obj = new URL(url);
             //Creamos un objeto de conexión
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             //Añadimos la cabecera
-            con.setRequestMethod("POST");
+            con.setRequestMethod("GET");
             con.setRequestProperty("User-Agent", USER_AGENT);
             con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
             // Enviamos la petición por POST
@@ -231,7 +232,7 @@ public class JsonAPI {
                     new InputStreamReader(con.getInputStream()));
             String inputLine;
             response = new StringBuffer();
-            
+
             while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
             }
@@ -240,9 +241,10 @@ public class JsonAPI {
             //cerramos la conexión
             in.close();
             // }
-        } catch (Exception e) {
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
-
+        return response + " ";
     }
 }

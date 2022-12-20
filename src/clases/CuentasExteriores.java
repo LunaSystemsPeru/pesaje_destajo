@@ -6,6 +6,7 @@
 package clases;
 
 import static formularios.frm_actualizar_cuentas.jLabel2;
+import org.json.simple.parser.ParseException;
 
 /**
  *
@@ -21,7 +22,7 @@ public class CuentasExteriores extends Thread {
                 jLabel2.setText("Leyendo Cuentas del servidor, espere un momento");
                 apijson.leerCuentasServidor();
                 jLabel2.setText("Cuentas Modificadas en base de datos");
-            } catch (Exception e) {
+            } catch (ParseException e) {
                 System.out.println(e.getLocalizedMessage());
             }
     }
