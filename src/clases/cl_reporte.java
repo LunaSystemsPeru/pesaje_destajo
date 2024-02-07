@@ -28,6 +28,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import pesaje_trabajos.frm_principal;
+
 /**
  *
  * @author Mariela
@@ -36,6 +37,7 @@ public class cl_reporte {
 
     cl_varios c_varios = new cl_varios();
     cl_conectar c_conectar = new cl_conectar();
+    cl_parametro_detalle c_detalle = new cl_parametro_detalle();
 
     public cl_reporte() {
     }
@@ -176,6 +178,12 @@ public class cl_reporte {
     }
 
     public void generar_excel() {
+
+        //obtener tipo servicio para nombre d reporte
+        c_detalle.setIddetalle(2);
+        c_detalle.obtener_datos();
+        c_detalle.setNombre(c_detalle.getNombre().replace(' ', '_'));
+
         String fecha_inicial = fecha_inicio;
         Date fecha_final = c_varios.suma_dia(fecha_inicial, dias - 1);
         String date_final = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(fecha_final);
@@ -183,7 +191,8 @@ public class cl_reporte {
 
         String subquery = "";
 
-        String[] titulos = new String[dias + 10];
+        String[] titulos = new String[dias + 9];
+
         titulos[0] = "Codigo";
         titulos[1] = "DNI";
         titulos[2] = "Empleado";
@@ -197,20 +206,19 @@ public class cl_reporte {
             titulos[5 + i] = c_varios.fecha_usuario(date);
         }
         titulos[dias + 5] = "Total Kgs";
-        titulos[dias + 6] = "S/ Pesaje";
-        titulos[dias + 7] = "Desc. TG";
-        titulos[dias + 8] = "Desc. Empresa";
-        titulos[dias + 9] = "a Pagar";
+        titulos[dias + 6] = "Desc. TG";
+        titulos[dias + 7] = "Desc. Empresa";
+        titulos[dias + 8] = "Fec. Act. Cuenta";
 
         String sql = "select c.codigo, c.documento, c.apellidos || ' ' || c.nombres as empleado, c.documentocuenta, c.nrocuenta, "
                 + subquery
                 + "sum(cantidad) as total,"
-                + "sum(cantidad) * 0.5 as subtotal, "
                 + "ifnull((select sum(monto) from descuentos where idarticulo in (4,5) and fecha BETWEEN '" + fecha_inicial + "' and '" + date_final + "' and idcolaborador = c.idcolaborador ), 0) as descuento_juan, "
-                + "ifnull((select sum(monto) from descuentos where idarticulo in (3,10,11) and fecha BETWEEN '" + fecha_inicial + "' and '" + date_final + "' and idcolaborador = c.idcolaborador ), 0) as descuento_jorge"
-                + " from pesaje as p "
+                + "ifnull((select sum(monto) from descuentos where idarticulo in (3,10,11) and fecha BETWEEN '" + fecha_inicial + "' and '" + date_final + "' and idcolaborador = c.idcolaborador ), 0) as descuento_jorge,"
+                + "c.fecha_modificacion "
+                + "from pesaje as p "
                 + "inner join colaboradores as c on c.idcolaborador = p.idcolaborador "
-                + "where p.fecha BETWEEN '" + fecha_inicial + "' and '" + date_final + "' and idservicio = '"+servicioid+"' "
+                + "where p.fecha BETWEEN '" + fecha_inicial + "' and '" + date_final + "' and idservicio = '" + servicioid + "' "
                 + "group by p.idcolaborador "
                 + "order by c.apellidos || ' ' || c.nombres asc";
 
@@ -226,34 +234,23 @@ public class cl_reporte {
         guardar.setDialogTitle("Seleccionar Carpeta para guardar Reporte");
         guardar.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         //guardar.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        guardar.setName("pesaje_" + fecha_inicio + "_hasta_" + date_final + ".xls");
+        guardar.setName(c_detalle.getNombre() + "_pesaje_" + fecha_inicio + "_hasta_" + date_final + ".xls");
         guardar.setAcceptAllFileFilterUsed(false);
         guardar.setApproveButtonText("Sel. Carpeta ");
 
         if (guardar.showSaveDialog(frm_principal.jTabbedPane1) == JFileChooser.APPROVE_OPTION) {
             String carpetanueva = guardar.getSelectedFile().toString();
             System.out.println(carpetanueva);
-            carpeta_reportes = carpetanueva + File.separator + "pesaje_" + fecha_inicio + "_hasta_" + date_final;
+            carpeta_reportes = carpetanueva + File.separator + guardar.getName();
         } else {
             JOptionPane.showMessageDialog(null, "SE GUARDARA EL REPORTE EN LA CARPETA POR DEFECTO");
-            carpeta_reportes += File.separator + "pesaje_" + fecha_inicio + "_hasta_" + date_final;
+            carpeta_reportes += File.separator + guardar.getName();
         }
 
-        //   System.out.println(guardarComo());
-        /*
-        File directorio = new File(carpeta_reportes);
-        if (!directorio.exists()) {
-            if (directorio.mkdirs()) {
-                System.out.println("Directorio creado");
-            } else {
-                System.out.println("Error al crear directorio");
-            }
-        }
-         */
         // Creamos el archivo donde almacenaremos la hoja
         // de calculo, recuerde usar la extension correcta,
         // en este caso .xlsx
-        String nombre_archivo = carpeta_reportes + ".xls";// + File.separator + "pesaje_" + fecha_inicio + "_hasta_" + date_final + ".xls";
+        String nombre_archivo = carpeta_reportes;// + File.separator + "pesaje_" + fecha_inicio + "_hasta_" + date_final + ".xls";
         File archivo = new File(nombre_archivo);
         //File archivo =narchivo;
 
@@ -306,7 +303,7 @@ public class cl_reporte {
                 double apagar = 0;
                 // Y colocamos los datos en esa fila
 
-                for (int i = 0; i < (dias + 10); i++) {
+                for (int i = 0; i < (dias + 9); i++) {
                     // Creamos una celda en esa fila, en la
                     // posicion indicada por el contador del ciclo
                     HSSFCell celda = fila.createCell(i);
@@ -316,7 +313,7 @@ public class cl_reporte {
                     }
 
                     if (i > 4) {
-                        if (i < dias + 9) {
+                        if (i < dias + 8) {
                             celda.setCellValue(rs.getDouble(i + 1));
                         }
 
@@ -324,14 +321,8 @@ public class cl_reporte {
                         celda.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
                     }
 
-                    if (i == (dias + 9)) {
-                        monto_pesaje = rs.getDouble(dias + 7);
-                        desc_juan = rs.getDouble(dias + 8);
-                        desc_jorge = rs.getDouble(dias + 9);
-                        apagar = monto_pesaje - desc_jorge - desc_juan;
-                        celda.setCellValue(apagar);
-                        celda.setCellStyle(style);
-                        celda.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+                    if (i == (dias + 8)) {
+                        celda.setCellValue(rs.getString("fecha_modificacion"));
                     }
 
                 }

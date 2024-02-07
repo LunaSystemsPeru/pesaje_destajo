@@ -13,6 +13,7 @@ import clases.cl_llamadas;
 import clases.cl_parametro_detalle;
 import clases.cl_pesaje_trabajador;
 import clases.cl_varios;
+import com.toedter.calendar.JDateChooser;
 import java.awt.event.KeyEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -154,6 +155,11 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
             return false;
         }
 
+    }
+
+    private String getFechaSDT(JDateChooser ftffecha) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return sdf.format(ftffecha.getDate());
     }
 
     /**
@@ -700,6 +706,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
 
         jLabel16.setText("jLabel16");
 
+        ftffecha.setDateFormatString("dd/MM/yyyy");
         ftffecha.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 ftffechaKeyPressed(evt);
@@ -944,9 +951,6 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
             }
         ));
         t_listrabaj.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        t_listrabaj.setRowHeight(20);
-        t_listrabaj.setShowHorizontalLines(false);
-        t_listrabaj.setShowVerticalLines(false);
         t_listrabaj.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 t_listrabajMouseClicked(evt);
@@ -1071,9 +1075,6 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jTable1.setRowHeight(20);
-        jTable1.setShowHorizontalLines(false);
-        jTable1.setShowVerticalLines(false);
         jScrollPane4.setViewportView(jTable1);
 
         jScrollPane5.setPreferredSize(new java.awt.Dimension(452, 402));
@@ -1178,8 +1179,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
 
     private void cbx_trabajoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cbx_trabajoKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            fecha = sdf.format(ftffecha.getDate());
+            fecha = this.getFechaSDT(ftffecha);
 
             // btn_iniciar.requestFocus();
             o_trabajo o_trabajo = (o_trabajo) cbx_trabajo.getSelectedItem();
@@ -1209,8 +1209,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
 
     private void txt_colaboradorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_colaboradorKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            fecha = sdf.format(ftffecha.getDate());
+            fecha = getFechaSDT(ftffecha);
 
             if (txt_colaborador.getText().length() > 0) {
                 int colaborador = Integer.parseInt(txt_colaborador.getText());
@@ -1334,8 +1333,7 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         if (jTextArea1.getText().length() > 0) {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            String ffecha2 = sdf.format(jDateChooser1.getDate());
+            String ffecha2 = getFechaSDT(jDateChooser1);
 
             c_llamada.setFecha(c_varios.fecha_myql(ffecha2));
             c_llamada.setIdcolaborador(c_busqueda_colaborador.getIdcolaborador());
@@ -1571,19 +1569,20 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         //        try {
-            jd_detalle_trabajador.setModal(true);
-            jd_detalle_trabajador.setSize(436, 474);
-            jd_detalle_trabajador.setLocationRelativeTo(null);
-            String date = c_varios.fecha_myql(fecha);
-            //java.util.Date date2 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-            // jDateChooser2.setDate(date2);
-            jTextField7.setText("");
-            jTextField1.setText("");
-            jTextField4.setText("");
-            t_detalle_trabajador.removeAll();
+        jd_detalle_trabajador.setModal(true);
+        jd_detalle_trabajador.setSize(436, 474);
+        jd_detalle_trabajador.setLocationRelativeTo(null);
 
-            jd_detalle_trabajador.setVisible(true);
-            /*    } catch (ParseException ex) {
+        String date = c_varios.fecha_myql(fecha);
+        //java.util.Date date2 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+        // jDateChooser2.setDate(date2);
+        jTextField7.setText("");
+        jTextField1.setText("");
+        jTextField4.setText("");
+        t_detalle_trabajador.removeAll();
+
+        jd_detalle_trabajador.setVisible(true);
+        /*    } catch (ParseException ex) {
             System.out.println(ex.getLocalizedMessage());
         }*/
     }//GEN-LAST:event_jButton5ActionPerformed

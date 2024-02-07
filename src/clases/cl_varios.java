@@ -201,7 +201,7 @@ public class cl_varios {
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             Date fec = df.parse(fecha);
             m_fecha = dt.format(fec);
-        } catch (Exception ex) {
+        } catch (ParseException ex) {
             System.out.println(ex);
         }
         return m_fecha;
@@ -214,7 +214,7 @@ public class cl_varios {
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             Date fec = dt.parse(fecha);
             m_fecha = df.format(fec);
-        } catch (Exception ex) {
+        } catch (ParseException ex) {
             System.out.println(ex);
         }
         return m_fecha;
@@ -379,7 +379,7 @@ public class cl_varios {
 
     public boolean verificar_conexion() {
         boolean conectado = false;
-        String dirWeb = "www.gthconsultora.ml";
+        String dirWeb = "www.google.com";
         int puerto = 80;
         try {
             Socket s = new Socket(dirWeb, puerto);

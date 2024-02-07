@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import org.json.simple.parser.ParseException;
 
 /**
@@ -44,7 +45,7 @@ public class JsonAPI {
         try {
             //Generar la URL
             //String url = SERVER_PATH + "consultas_json/composer/consulta_sunat_JMP.php?ruc=" + ruc;
-            String url = "https://gthconsultora.ml/ajax/obtenerListaObrerosCuenta.php";
+            String url = "http://174.138.2.254/gth/ajax/obtenerListaObrerosCuenta.php";
             //Creamos un nuevo objeto URL con la url donde pedir el JSON
             URL obj = new URL(url);
             //Creamos un objeto de conexión
@@ -129,7 +130,7 @@ public class JsonAPI {
         //String json = new Gson().toJson(listajson);
         System.out.println(json);
 
-        String url = "https://gthconsultora.ml/ajax/obtenerCuentasxDocumento.php";
+        String url = "http://174.138.2.254/gth/ajax/obtenerCuentasxDocumento.php";
 
         StringBuffer response = null;
 
@@ -201,7 +202,7 @@ public class JsonAPI {
     }
 
     public String enviarCuentas(String json) {
-        String url = "https://gthconsultora.ml/ajax/obtenerCuentasModificadas.php?" + json;
+        String url = "http://174.138.2.254/gth/ajax/obtenerCuentasModificadas.php?" + json;
 
         StringBuffer response = null;
         String texto;
@@ -246,5 +247,58 @@ public class JsonAPI {
             e.printStackTrace();
         }
         return response + " ";
+    }
+
+    public String enviarSerial(String textoenvio) {
+        String url = "http://174.138.2.254/gth/ajax/validarSerial.php?serial=" + textoenvio;
+
+        StringBuffer response = null;
+        String texto;
+
+        try {
+            //Creamos un nuevo objeto URL con la url donde pedir el JSON
+            URL obj = new URL(url);
+            //Creamos un objeto de conexión
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            //Añadimos la cabecera
+            con.setRequestMethod("GET");
+            con.setRequestProperty("User-Agent", USER_AGENT);
+            con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+            // Enviamos la petición por POST
+            con.setDoOutput(true);
+            OutputStream os = con.getOutputStream();
+            os.write(textoenvio.getBytes());
+            os.flush();
+            os.close();
+
+            //Capturamos la respuesta del servidor
+            int responseCode = con.getResponseCode();
+            System.out.println("\nSending 'GET' request to URL : " + url);
+            System.out.println("Response Code : " + responseCode);
+
+            if (responseCode != 200) {
+                JOptionPane.showMessageDialog(null, "Response Code : " + responseCode);
+                return "";
+            }
+            
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            response = new StringBuffer();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            //Mostramos la respuesta del servidor por consola
+            //System.out.println("Respuesta del servidor: " + response);
+            //cerramos la conexión
+            in.close();
+            // }
+
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al enviar");
+            e.printStackTrace();
+        }
+        return " Clave Generada ";
     }
 }

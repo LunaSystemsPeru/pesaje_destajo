@@ -5,6 +5,7 @@
  */
 package pesaje_trabajos;
 
+import clases.cl_Licencia;
 import javax.swing.JFrame;
 import org.jvnet.substance.SubstanceLookAndFeel;
 

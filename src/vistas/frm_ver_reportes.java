@@ -54,6 +54,11 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
 
         fecha = c_varios.getFechaActual();
 
+        //maximo dia en jdatechoseer
+        jdt_fec_inicio_pesajepago.setMaxSelectableDate(new Date());
+        txt_fecha_inicio1.setMaxSelectableDate(new Date());
+        jdt_fec_fin_pesajepago.setMaxSelectableDate(new Date());
+
         c_reporte.maximo_minimo_fecha(fecha, jTable1, 0);
         c_reporte.maximo_minimo_fecha(fecha, jTable2, 1);
         c_grafica.llenar_series(jPanel9);
@@ -61,11 +66,12 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
         c_grafica.llenar_horas(jPanel10, fecha);
         setearFecha(fecha, jDateChooser2);
         setearFecha(fecha, jDateChooser1);
+        setearFecha(fecha, jdt_fec_fin_pesajepago);
 
         Date fecha_temp = c_varios.suma_dia(fecha, -6);
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(fecha_temp);
         fecha = date;
-        setearFecha(fecha, txt_fecha_inicio);
+        setearFecha(fecha, jdt_fec_inicio_pesajepago);
 
     }
 
@@ -74,6 +80,11 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         fechaconvertida = sdf.format(fechero.getDate());
         return c_varios.fecha_myql(fechaconvertida);
+    }
+
+    private String getFechaJDC(JDateChooser fechador) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return sdf.format(fechador.getDate());
     }
 
     private void setearFecha(String date, JDateChooser txt) {
@@ -155,12 +166,12 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
         lbl_dtrabajados_menos = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
         btn_generar_excel = new javax.swing.JButton();
-        jSpinner1 = new javax.swing.JSpinner();
-        txt_fecha_inicio = new com.toedter.calendar.JDateChooser();
+        jdt_fec_inicio_pesajepago = new com.toedter.calendar.JDateChooser();
         jLabel5 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
+        jdt_fec_fin_pesajepago = new com.toedter.calendar.JDateChooser();
+        jLabel13 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
@@ -509,9 +520,7 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
         jPanel4.setBackground(new java.awt.Color(223, 255, 207));
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Generar Excel para Pagos"));
 
-        jLabel7.setText("Escriba Fecha ");
-
-        jLabel8.setText("Nro Dias:");
+        jLabel7.setText("Fecha Inicio");
 
         btn_generar_excel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/excel.png"))); // NOI18N
         btn_generar_excel.setText("Generar");
@@ -523,12 +532,15 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
             }
         });
 
-        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
-        jSpinner1.setValue(7);
+        jdt_fec_inicio_pesajepago.setDateFormatString("dd/MM/yyyy");
 
         jLabel5.setText("Tipo Servicio");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jdt_fec_fin_pesajepago.setDateFormatString("dd/MM/yyyy");
+
+        jLabel13.setText("Fecha Fin");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -540,11 +552,11 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel7)
-                            .addComponent(txt_fecha_inicio, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(29, 29, 29)
+                            .addComponent(jdt_fec_inicio_pesajepago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8)
-                            .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel13)
+                            .addComponent(jdt_fec_fin_pesajepago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btn_generar_excel))
                     .addGroup(jPanel4Layout.createSequentialGroup()
@@ -556,22 +568,24 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jSpinner1, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-                            .addComponent(txt_fecha_inicio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addComponent(btn_generar_excel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jdt_fec_fin_pesajepago, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jdt_fec_inicio_pesajepago, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(78, 78, 78)
+                        .addComponent(btn_generar_excel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Generar Resumen Pesaje Diario x Trabajador"));
@@ -589,6 +603,8 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
         jTextField2.setEditable(false);
 
         jLabel2.setText("Fecha:");
+
+        jDateChooser1.setDateFormatString("dd/MM/yyyy");
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/excel.png"))); // NOI18N
         jButton2.setText("Generar por Fecha");
@@ -616,7 +632,7 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                         .addComponent(jButton2)))
                 .addContainerGap())
         );
@@ -641,6 +657,8 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Comparativa Pesadas Maximas y Minimas"));
 
         jLabel3.setText("Fecha:");
+
+        jDateChooser2.setDateFormatString("dd/MM/yyyy");
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/find.png"))); // NOI18N
         jButton3.setText("Buscar");
@@ -730,6 +748,8 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
 
         jLabel4.setText("Seleccionar Fecha");
 
+        txt_fecha_inicio1.setDateFormatString("dd/MM/yyyy");
+
         javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
         jPanel13.setLayout(jPanel13Layout);
         jPanel13Layout.setHorizontalGroup(
@@ -804,11 +824,27 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
     private void btn_generar_excelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generar_excelActionPerformed
         o_trabajo o_trabajo = (o_trabajo) jComboBox1.getSelectedItem();
         int tipotrabajoid = o_trabajo.getId_tipo_trabajo();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        String ffecha2 = sdf.format(txt_fecha_inicio.getDate());
-        c_reporte.setFecha_inicio(c_varios.fecha_myql(ffecha2));
+
+        String fecha_inicio = getFechaJDC(jdt_fec_inicio_pesajepago);
+        String fecha_fin = getFechaJDC(jdt_fec_fin_pesajepago);
+
+        int diasdiferenciafecha = 1;
+
+        try {
+            SimpleDateFormat date = new SimpleDateFormat("dd/MM/yyyy");
+            Date fechaInicio = date.parse(fecha_inicio);
+            Date fechaFin = date.parse(fecha_fin);
+
+            int milisecondsByDay = 86400000;
+            int dias = (int) ((fechaFin.getTime() - fechaInicio.getTime()) / milisecondsByDay);
+            diasdiferenciafecha = dias + 1;
+        } catch (ParseException e) {
+            System.out.println(e.getLocalizedMessage());
+        }
+
+        c_reporte.setFecha_inicio(c_varios.fecha_myql(fecha_inicio));
         c_reporte.setServicioid(tipotrabajoid);
-        c_reporte.setDias(Integer.parseInt(jSpinner1.getValue().toString()));
+        c_reporte.setDias(diasdiferenciafecha);
         c_reporte.generar_excel();
     }//GEN-LAST:event_btn_generar_excelActionPerformed
 
@@ -892,6 +928,7 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
@@ -903,7 +940,6 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
@@ -921,13 +957,14 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JDialog jdgraficas;
+    private com.toedter.calendar.JDateChooser jdt_fec_fin_pesajepago;
+    private com.toedter.calendar.JDateChooser jdt_fec_inicio_pesajepago;
     private javax.swing.JTextField lbl_dtrabajados_mas;
     private javax.swing.JTextField lbl_dtrabajados_menos;
     private javax.swing.JTextField lbl_pe_maximo;
@@ -940,7 +977,6 @@ public class frm_ver_reportes extends javax.swing.JInternalFrame {
     private javax.swing.JTextField lbl_tpesaje_menos;
     private javax.swing.JLabel lbl_trabajador_mas;
     private javax.swing.JLabel lbl_trabajador_menos;
-    private com.toedter.calendar.JDateChooser txt_fecha_inicio;
     private com.toedter.calendar.JDateChooser txt_fecha_inicio1;
     // End of variables declaration//GEN-END:variables
 }
