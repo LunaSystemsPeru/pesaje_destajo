@@ -92,7 +92,6 @@ public class frm_login extends javax.swing.JDialog {
 
         jDialog1.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         jDialog1.setTitle("Activacion de Producto");
-        jDialog1.setAlwaysOnTop(true);
         jDialog1.setLocationByPlatform(true);
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N

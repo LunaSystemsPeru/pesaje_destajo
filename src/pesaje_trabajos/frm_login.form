@@ -6,7 +6,6 @@
       <Properties>
         <Property name="defaultCloseOperation" type="int" value="0"/>
         <Property name="title" type="java.lang.String" value="Activacion de Producto"/>
-        <Property name="alwaysOnTop" type="boolean" value="true"/>
         <Property name="locationByPlatform" type="boolean" value="true"/>
       </Properties>
 
