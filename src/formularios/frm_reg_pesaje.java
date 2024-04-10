@@ -1217,6 +1217,12 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
 
                 if (c_colaborador.obtener_datos_codigo()) {
                     c_colaborador.obtener_datos();
+
+                    if (c_colaborador.getEstado() == 1) {
+                        JOptionPane.showMessageDialog(null, "El Trabajador " + c_colaborador.getDatos() + " esta desabilitado, no se puede registrar pesaje");
+                        return;
+                    }
+
                     txt_nombrecolaborador.setText(c_colaborador.getDatos());
 
                     //obtener primer pesaje
@@ -1260,6 +1266,11 @@ public class frm_reg_pesaje extends javax.swing.JInternalFrame {
     private void txt_cantidadKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_cantidadKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             if (txt_cantidad.getText().length() > 0) {
+                if (c_colaborador.getEstado() == 1) {
+                    JOptionPane.showMessageDialog(null, "El Trabajador " + c_colaborador.getDatos() + " esta desabilitado, no se puede registrar pesaje");
+                    return;
+                }
+
                 String tara = txt_tara_balanza.getText();
                 double dtara = 0;
                 if (c_varios.esDecimal(tara)) {

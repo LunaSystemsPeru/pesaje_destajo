@@ -441,7 +441,7 @@ public class frm_ver_colaboradores extends javax.swing.JInternalFrame {
         desactivar_botones();
         int confirmado = JOptionPane.showConfirmDialog(null, "¿Esta Seguro de dar de Baja al Colaborador?");
         if (JOptionPane.OK_OPTION == confirmado) {
-            int id_trabajador = Integer.parseInt(t_colaboradores.getValueAt(fila_seleccionada, 7).toString());
+            int id_trabajador = Integer.parseInt(t_colaboradores.getValueAt(fila_seleccionada, 0).toString());
             c_colaborador.setIdcolaborador(id_trabajador);
             c_colaborador.darbaja();
             c_colaborador.mostrar(t_colaboradores, query);

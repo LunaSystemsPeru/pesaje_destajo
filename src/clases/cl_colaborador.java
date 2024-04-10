@@ -1140,7 +1140,7 @@ public class cl_colaborador {
         boolean actualizado = false;
         Statement st = c_conectar.conexion();
         String query = "update colaboradores "
-                + "set estado = 0 "
+                + "set estado = 1 "
                 + "where idcolaborador ='" + idcolaborador + "' ";
         //   System.out.println(query);
         int resultado = c_conectar.actualiza(st, query);
